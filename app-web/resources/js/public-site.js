@@ -44,3 +44,47 @@ export function initPublicNavigation(document) {
         window.addEventListener('hashchange', syncAnchor);
     }
 }
+
+export function initServiceSearch(document) {
+    const search = document.querySelector('[data-service-search]');
+    if (!search) return;
+    const query = search.querySelector('[data-service-query]');
+    const counter = search.querySelector('[data-service-count]');
+    const empty = document.querySelector('[data-service-empty]');
+    const normalize = (text) => text.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLocaleLowerCase().trim();
+    const groups = [...document.querySelectorAll('[data-service-group]')];
+    const services = [...document.querySelectorAll('[data-service-item]')].map((item) => ({
+        item,
+        text: normalize(`${item.querySelector('summary').textContent} ${item.querySelector('.service-description p').textContent} ${item.closest('[data-service-group]').querySelector('h3').textContent}`),
+        wasOpen: item.open,
+    }));
+    let filtering = false;
+
+    function filter() {
+        const terms = normalize(query.value).split(/\s+/).filter(Boolean);
+        const active = terms.length > 0;
+        if (active && !filtering) services.forEach((service) => { service.wasOpen = service.item.open; });
+        let count = 0;
+        services.forEach((service) => {
+            const matches = terms.every((term) => service.text.includes(term));
+            service.item.hidden = !matches;
+            if (active) service.item.open = matches;
+            else if (filtering) service.item.open = service.wasOpen;
+            if (matches) count++;
+        });
+        groups.forEach((group) => { group.hidden = !group.querySelector('[data-service-item]:not([hidden])'); });
+        counter.textContent = counter.dataset.template.replace('{count}', count).replace('{total}', services.length);
+        empty.hidden = count > 0;
+        search.querySelector('[data-clear-service-search]').disabled = query.value.length === 0;
+        filtering = active;
+    }
+    const clear = () => { query.value = ''; filter(); query.focus(); };
+    query.addEventListener('input', filter);
+    query.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape' && query.value) { event.preventDefault(); clear(); }
+    });
+    document.querySelectorAll('[data-clear-service-search]').forEach((button) => button.addEventListener('click', clear));
+    document.defaultView.addEventListener('pageshow', filter);
+    search.hidden = false;
+    filter();
+}

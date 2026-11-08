@@ -25,6 +25,7 @@ class PublicSiteTest extends TestCase
     {
         $this->get('/es')->assertOk()->assertSee('Atención personalizada')->assertSee('12731500')
             ->assertSee('Ver horarios')->assertSee('id="hours"', false)->assertSee('class="mobile-contact"', false)
+            ->assertSee('Consultar servicios por WhatsApp')->assertDontSee('data-service-query', false)
             ->assertSee('https://wa.me/528781146336', false)->assertSee('14:00 y 18:00')
             ->assertDontSee('CNN-1956')->assertDontSee('RETMEDE')->assertHeader('X-Robots-Tag', 'noindex, nofollow');
         $this->get('/en')->assertOk()->assertSee('Personalized care')->assertSee('2:00 p.m. and 6:00 p.m.')
@@ -45,7 +46,10 @@ class PublicSiteTest extends TestCase
         $this->actingAs($owner)->get('/admin/preview/es')->assertOk()->assertSee($name)
             ->assertHeader('X-Robots-Tag', 'noindex, nofollow, noarchive');
         app(ServicePublisher::class)->publish($service, $service->current_revision_id, $owner);
-        $this->get('/es')->assertSee($name);
+        $this->get('/es')->assertSee($name)->assertSee('data-service-query', false)
+            ->assertSee('https://wa.me/528781146336?text='.rawurlencode('Hola, quisiera información sobre el servicio: '.$name.'.'), false);
+        $this->get('/en')->assertOk()->assertSee('Which service are you looking for?')
+            ->assertSee('https://wa.me/528781146336?text='.rawurlencode('Hello, I would like information about this service: '.$service->currentRevision->payload['en']['name'].'.'), false);
         $payload = $service->currentRevision->payload;
         $payload['es']['name'] = 'BORRADOR NO PUBLICADO';
         $payload['visible'] = false;

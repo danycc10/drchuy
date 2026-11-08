@@ -30,10 +30,27 @@
         <a class="explore-link" href="#services"><span aria-hidden="true">↓</span> {{ $copy['explore'] }}</a></div><div class="hero-image"><img src="{{ asset('images/doctor.webp') }}" alt="{{ $copy['doctor_alt'] }}" width="709" height="1536" fetchpriority="high"><div class="portrait-caption"><strong>{{ $clinic['physician'] }}</strong><span>{{ $copy['designation'] }}</span></div><span class="photo-index" aria-hidden="true">01 / MEDICINA RESPIRATORIA</span></div></section>
     <section class="care-section"><div class="container care-inner"><h2>{{ $copy['care_title'] }}</h2><p>{{ $copy['care_copy'] }}</p></div></section>
     <section class="section container" id="services"><div class="section-heading"><div><span class="eyebrow">{{ $copy['services_label'] }}</span><h2>{{ $copy['services_title'] }}</h2></div><p>{{ $copy['services_copy'] }}</p></div>
+        @if($services->isNotEmpty())@include('public.service-search')@endif
+        <div id="service-catalog">
         @foreach($categories as $category)
-            @if($services->has($category->id))<div class="service-group"><div class="category-heading"><span class="category-number">0{{ $loop->iteration }}</span><h3>{{ $category->name[$locale] }}</h3></div><div class="service-items">@foreach($services[$category->id] as $service)<details><summary>{{ $service[$locale]['name'] }}<span aria-hidden="true">+</span></summary><div class="service-description"><p>{{ $service[$locale]['description'] }}</p><a href="{{ $clinic['whatsapp'] }}" target="_blank" rel="noopener noreferrer">{{ $copy['ask_service'] }} ↗</a></div></details>@endforeach</div></div>@endif
+            @if($services->has($category->id))
+                <div class="service-group" data-service-group>
+                    <div class="category-heading"><span class="category-number">0{{ $loop->iteration }}</span><h3>{{ $category->name[$locale] }}</h3></div>
+                    <div class="service-items">
+                        @foreach($services[$category->id] as $service)
+                            <details data-service-item>
+                                <summary>{{ $service[$locale]['name'] }}<span aria-hidden="true">+</span></summary>
+                                <div class="service-description"><p>{{ $service[$locale]['description'] }}</p>
+                                    <a href="{{ $clinic['whatsapp'].'?text='.rawurlencode(($locale === 'es' ? 'Hola, quisiera información sobre el servicio: ' : 'Hello, I would like information about this service: ').$service[$locale]['name'].'.') }}" target="_blank" rel="noopener noreferrer">{{ $copy['ask_service'] }} ↗</a>
+                                </div>
+                            </details>
+                        @endforeach
+                    </div>
+                </div>
+            @endif
         @endforeach
-        @if($services->isEmpty())<p class="availability">{{ $copy['availability'] }}</p>@endif
+        </div>
+        @if($services->isEmpty())<div class="availability"><p>{{ $copy['availability'] }}</p><a class="button" href="{{ $clinic['whatsapp'] }}" target="_blank" rel="noopener noreferrer">{{ $locale === 'es' ? 'Consultar servicios por WhatsApp' : 'Ask about services on WhatsApp' }} ↗</a></div>@endif
         <p class="procedure-note">{{ $copy['procedure_note'] }}</p>
     </section>
     <section class="physician-section" id="physician"><div class="container physician-inner"><div class="physician-image"><img src="{{ asset('images/doctor.webp') }}" alt="{{ $copy['doctor_alt'] }}" width="709" height="1536" loading="lazy"></div><div><span class="eyebrow">{{ $copy['doctor_label'] }}</span><h2>{{ $clinic['physician'] }}</h2><p class="designation">{{ $copy['designation'] }}</p><p>{{ $copy['bio'] }}</p><p>{{ $copy['bio_second'] }}</p><div class="license"><span>{{ $copy['license_label'] }}</span><strong>{{ $clinic['license'] }}</strong></div></div></div></section>

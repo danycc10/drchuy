@@ -406,6 +406,80 @@ h1, h2, h3 {
     color: var(--muted);
     font-size: 14px;
 }
+.availability .button {
+    margin-top: 16px;
+}
+[hidden] {
+    display: none !important;
+}
+.service-search {
+    padding: 24px;
+    background: #eef3f0;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    margin-bottom: 28px;
+}
+.service-search label {
+    display: block;
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 6px;
+}
+.service-search p {
+    font-size: 14px;
+    color: #4d6974;
+}
+.search-controls {
+    display: flex;
+    gap: 12px;
+    margin-top: 16px;
+}
+.search-controls input {
+    min-width: 0;
+    width: 100%;
+    min-height: 48px;
+    border: 1px solid #91abad;
+    border-radius: 5px;
+    padding: 12px;
+    font: inherit;
+    font-size: 16px;
+    background: white;
+}
+.search-controls button {
+    min-height: 48px;
+    padding: 10px;
+    font-size: 14px;
+    text-decoration: underline;
+    text-underline-offset: 4px;
+}
+.search-controls button:disabled {
+    opacity: .6;
+    cursor: default;
+}
+.search-count {
+    margin-top: 12px;
+}
+.search-empty {
+    padding: 24px 0;
+}
+.search-empty h3 {
+    font-size: 20px;
+    margin-bottom: 8px;
+}
+.search-empty-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 20px;
+}
+.service-items details[open] {
+    border-left: 3px solid var(--teal);
+    padding-left: 16px;
+    margin-left: -19px;
+}
+.service-items summary:hover {
+    color: var(--teal);
+}
 .physician-section {
     background: #eaf0ee;
     padding: 75px 0;
@@ -664,6 +738,9 @@ h1, h2, h3 {
         min-height: 84px;
         flex-wrap: wrap;
         padding: 12px 0;
+    }
+    .public-home:not(.navigation-ready) .site-header {
+        position: static;
     }
     .public-home:not(.navigation-ready) .nav-toggle {
         display: none;
