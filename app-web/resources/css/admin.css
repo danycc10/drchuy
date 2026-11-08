@@ -756,6 +756,7 @@ td small {
 }
 
 .content-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 22px; }
+.dashboard-actions { display: flex; flex-wrap: wrap; gap: 12px; }
 .content-card { display: flex; flex-direction: column; gap: 12px; }
 .content-card .section-heading { align-items: start; }
 .content-card .button { align-self: start; margin-top: auto; }
