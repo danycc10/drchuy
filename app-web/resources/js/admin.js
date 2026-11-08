@@ -1,11 +1,8 @@
 import { initEditor } from './editor';
+import { initNavigation } from './navigation';
 
 initEditor(document);
-
-document.querySelector('[data-menu-toggle]')?.addEventListener('click', (event) => {
-    const opened = document.body.classList.toggle('nav-open');
-    event.currentTarget.setAttribute('aria-expanded', String(opened));
-});
+initNavigation(document);
 const editor = document.querySelector('[data-editor]');
 
 document.addEventListener('change', (event) => {

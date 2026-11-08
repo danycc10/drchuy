@@ -15,14 +15,16 @@
         <main id="main" class="auth-form"><span class="eyebrow">ADMINISTRACIÓN</span><h2>{{ $title }}</h2><x-feedback />{{ $slot }}<p class="auth-foot">Acceso exclusivo para el equipo del consultorio.</p></main>
     </div>
 @else
-    <aside class="sidebar" id="admin-navigation">
+    <button type="button" class="nav-backdrop" data-nav-backdrop tabindex="-1" aria-label="Cerrar menú" hidden></button>
+    <aside class="sidebar" id="admin-navigation" aria-label="Menú de administración">
+        <button type="button" class="nav-close" data-menu-close>Cerrar menú <span aria-hidden="true">×</span></button>
         <a class="admin-brand" href="{{ route('admin.dashboard') }}"><img src="{{ asset('images/logo-white.png') }}" alt="Medicina Respiratoria · Dr. Jesús García Espinoza" style="width:100%;height:auto"></a>
         <span class="nav-caption">ESPACIO DE TRABAJO</span>
         <nav aria-label="Administración">
-            <a class="{{ request()->routeIs('admin.dashboard') ? 'active' : '' }}" href="{{ route('admin.dashboard') }}"><span aria-hidden="true">◫</span> Resumen</a>
-            @if(Route::has('admin.services.index'))<a class="{{ request()->routeIs('admin.services.*') ? 'active' : '' }}" href="{{ route('admin.services.index') }}"><span aria-hidden="true">☷</span> Servicios</a>@endif
-            <a class="{{ request()->routeIs('admin.content.*') ? 'active' : '' }}" href="{{ route('admin.content.index') }}"><span aria-hidden="true">▤</span> Contenido y horarios</a>
-            @if(Route::has('admin.activity'))<a class="{{ request()->routeIs('admin.activity') ? 'active' : '' }}" href="{{ route('admin.activity') }}"><span aria-hidden="true">↺</span> Actividad</a>@endif
+            <a class="{{ request()->routeIs('admin.dashboard') ? 'active' : '' }}" aria-current="{{ request()->routeIs('admin.dashboard') ? 'page' : 'false' }}" href="{{ route('admin.dashboard') }}"><span aria-hidden="true">◫</span> Resumen</a>
+            @if(Route::has('admin.services.index'))<a class="{{ request()->routeIs('admin.services.*') ? 'active' : '' }}" aria-current="{{ request()->routeIs('admin.services.*') ? 'page' : 'false' }}" href="{{ route('admin.services.index') }}"><span aria-hidden="true">☷</span> Servicios</a>@endif
+            <a class="{{ request()->routeIs('admin.content.*') ? 'active' : '' }}" aria-current="{{ request()->routeIs('admin.content.*') ? 'page' : 'false' }}" href="{{ route('admin.content.index') }}"><span aria-hidden="true">▤</span> Contenido y horarios</a>
+            @if(Route::has('admin.activity'))<a class="{{ request()->routeIs('admin.activity') ? 'active' : '' }}" aria-current="{{ request()->routeIs('admin.activity') ? 'page' : 'false' }}" href="{{ route('admin.activity') }}"><span aria-hidden="true">↺</span> Actividad</a>@endif
         </nav>
         <div class="sidebar-bottom"><span class="status-dot"></span> Panel del consultorio<p>Contenido claro.<br>Atención cercana.</p></div>
     </aside>

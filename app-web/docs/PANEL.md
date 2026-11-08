@@ -8,6 +8,8 @@ Entrar a `/admin` con el correo y la contraseña elegidos. El rol `owner` public
 
 La recuperación usa enlaces de Laravel. En desarrollo, `MAIL_MAILER=log` guarda el mensaje en el log privado en lugar de enviarlo. En producción se necesita correo configurado y probado. El log puede contener el enlace de recuperación: no compartirlo ni subirlo a Git.
 
+En móvil, **Menú** abre la navegación. Puedes cerrarla con **Cerrar menú**, la tecla Escape o pulsando fuera. El foco del teclado permanece dentro mientras está abierta y vuelve al botón al cerrar. La sección actual se identifica también para lectores de pantalla.
+
 ## Editar un servicio
 
 1. Abrir **Servicios** y buscar por nombre, categoría o estado.

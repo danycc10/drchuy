@@ -513,6 +513,16 @@ input[type=checkbox] {
 .menu-toggle {
     display: none;
 }
+.nav-close {
+    display: none;
+}
+.nav-backdrop {
+    position: fixed;
+    inset: 0;
+    z-index: 30;
+    background: #09273599;
+    cursor: default;
+}
 .table-wrap {
     overflow-x: auto;
 }
@@ -761,13 +771,45 @@ td small {
     }
     .sidebar {
         position: fixed;
-        z-index: 30;
+        z-index: 40;
+        width: min(300px, 86vw);
+        overflow-y: auto;
         transform: translateX(-100%);
+        visibility: hidden;
         transition: transform .15s;
     }
     .nav-open .sidebar {
         transform: translateX(0);
-        top: 74px;
+        visibility: visible;
+    }
+    .nav-open {
+        overflow: hidden;
+    }
+    .nav-close {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        min-height: 44px;
+        border: 1px solid #577c88;
+        border-radius: 6px;
+        padding: 8px 12px;
+        margin-bottom: 24px;
+        color: #fff;
+        font-size: 13px;
+        flex-shrink: 0;
+    }
+    .nav-close span {
+        font-size: 24px;
+    }
+    .admin-body:not(.navigation-ready) .sidebar {
+        position: static;
+        width: auto;
+        transform: none;
+        visibility: visible;
+    }
+    .admin-body:not(.navigation-ready) .menu-toggle,
+    .admin-body:not(.navigation-ready) .nav-close {
+        display: none;
     }
     .admin-workspace {
         margin-left: 0;
