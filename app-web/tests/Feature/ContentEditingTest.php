@@ -111,4 +111,25 @@ class ContentEditingTest extends TestCase
         $this->assertNotSame($initial, $block->current_revision_id);
         $this->assertDatabaseHas('audit_events', ['content_block_id' => $block->id, 'action' => 'content.restored']);
     }
+
+    public function test_validation_preserves_unsaved_input_and_links_errors_to_the_language(): void
+    {
+        $this->actingAs(User::factory()->create(['role' => Role::Owner]));
+        $block = $this->block('home');
+        $url = route('admin.content.edit', $block);
+        $payload = $block->currentRevision->payload;
+        $payload['en']['hero'] = '';
+        $payload['es']['hero'] = 'Cambio todavía sin guardar';
+
+        $this->from($url)->put(route('admin.content.update', $block), [
+            'revision_id' => $block->current_revision_id,
+            'payload' => $payload,
+        ])->assertRedirect($url)->assertSessionHasErrors('en.hero');
+
+        $this->withCookie(session()->getName(), session()->getId())->get($url)->assertOk()
+            ->assertSee('data-recovered-input="true"', false)
+            ->assertSee('data-error-field="en.hero"', false)
+            ->assertSee('Cambio todavía sin guardar');
+        $this->assertSame($block->current_revision_id, $block->fresh()->current_revision_id);
+    }
 }

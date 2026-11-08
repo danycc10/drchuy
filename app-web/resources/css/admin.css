@@ -600,6 +600,85 @@ td small {
 .editor-fields label+label {
     margin-top: 20px;
 }
+.editor-fields .character-count + label {
+    margin-top: 20px;
+}
+.editor-fields, .page-heading > div {
+    min-width: 0;
+}
+.page-heading h1 {
+    overflow-wrap: anywhere;
+}
+.editor-toolbar {
+    position: sticky;
+    top: 0;
+    z-index: 15;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px 24px;
+    padding: 16px 20px;
+    margin-bottom: 24px;
+    background: #fff;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    box-shadow: 0 4px 16px #1237470d;
+}
+.editor-toolbar .button {
+    flex-shrink: 0;
+}
+.save-state {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--teal);
+}
+.save-state.unsaved {
+    color: #805610;
+}
+.language-tabs {
+    display: flex;
+    gap: 6px;
+    border-bottom: 1px solid var(--line);
+}
+.language-tabs button {
+    min-height: 48px;
+    padding: 12px 18px;
+    border-bottom: 3px solid transparent;
+    font-size: 14px;
+    font-weight: 600;
+}
+.language-tabs button[aria-selected=true] {
+    color: var(--teal);
+    background: #e5eff0;
+    border-bottom-color: var(--teal);
+}
+.language-tabs span {
+    font-size: 10px;
+    margin-left: 8px;
+}
+.preview-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 20px;
+    margin: 12px 0;
+}
+.preview-links a {
+    padding: 8px 0;
+}
+.character-count {
+    text-align: right;
+    font-weight: 400;
+}
+[data-error-summary] a {
+    text-decoration: underline;
+    text-underline-offset: 3px;
+}
+.editor-fields input, .editor-fields textarea, .editor-fields select {
+    scroll-margin-top: 160px;
+}
+[aria-invalid=true] {
+    border-color: #b7452e;
+}
 .editor-aside {
     display: grid;
     gap: 20px;
@@ -670,6 +749,16 @@ td small {
     }
 }
 @media(max-width:800px) {
+    .editor-toolbar {
+        flex-wrap: wrap;
+        padding: 12px;
+    }
+    .editor-toolbar > div {
+        flex: 1 1 200px;
+    }
+    .editor-toolbar .button {
+        flex: 1 1 160px;
+    }
     .sidebar {
         position: fixed;
         z-index: 30;

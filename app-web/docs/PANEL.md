@@ -11,13 +11,17 @@ La recuperación usa enlaces de Laravel. En desarrollo, `MAIL_MAILER=log` guarda
 ## Editar un servicio
 
 1. Abrir **Servicios** y buscar por nombre, categoría o estado.
-2. Pulsar **Editar** y completar nombre/descripción en español e inglés.
+2. Pulsar **Editar** y completar nombre/descripción en las pestañas **Español** e **Inglés**. Cambiar de pestaña conserva lo escrito; las flechas del teclado permiten recorrerlas.
 3. Ajustar orden y visibilidad si corresponde.
-4. Pulsar **Guardar borrador**. La versión pública todavía no cambia.
-5. Revisar el texto guardado y la **Vista previa** del tablero.
+4. Pulsar **Guardar borrador** en la barra que permanece visible al desplazarse. El estado indica si hay cambios sin guardar. La versión pública todavía no cambia.
+5. Revisar el texto guardado y abrir la vista previa en **Español** o **Inglés** desde el editor. Se abre en otra pestaña y muestra la última versión guardada.
 6. Si el rol lo permite, pulsar **Publicar versión guardada** y confirmar.
 
 Para ocultar un servicio publicado, desmarcar su visibilidad, guardar y publicar. Un servicio oculto conserva su historial y puede recuperarse. El contador de versiones publicadas incluye las versiones cuya visibilidad es «Oculto».
+
+Mientras hay cambios sin guardar, la publicación queda deshabilitada. Si reviertes lo escrito a su valor guardado, el estado se actualiza. El navegador pide confirmar antes de abandonar cambios pendientes. Los errores de validación enlazan al campo correspondiente y abren su idioma; los textos largos muestran un contador de caracteres. Tras un error, lo escrito sigue disponible para corregirlo y guardarlo.
+
+Estas ayudas se activan con JavaScript. Sin él, ambos idiomas y los botones siguen disponibles, y el servidor conserva las validaciones y los permisos.
 
 Si otra persona guardó cambios desde que se abrió el editor, se rechaza la edición antigua. Copiar los cambios pendientes y recargar antes de continuar.
 
