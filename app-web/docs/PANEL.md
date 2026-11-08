@@ -29,4 +29,24 @@ Abrir una versión desde el historial del servicio. **Recuperar como borrador** 
 
 **Vista previa** muestra los últimos borradores visibles en ES/EN y requiere autenticación. Las páginas públicas `/es` y `/en` muestran solo las versiones publicadas. Los 14 servicios iniciales llegan como borradores.
 
-Los demás módulos del plan todavía no aparecen en el menú porque no están implementados. Consultar `ESTADO_IMPLEMENTACION.md` en la raíz del repositorio.
+## Contenido y horarios
+
+Desde **Contenido y horarios** puedes editar inicio, perfil profesional, instalaciones, contacto, SEO, privacidad y horarios. Todos usan el mismo flujo: guardar borrador, revisar, publicar y recuperar versiones. Los datos compartidos se editan una vez; los textos tienen campos ES/EN.
+
+El propietario publica perfil profesional y avisos legales. Los administradores pueden publicar los demás bloques. El editor prepara borradores. El tablero cuenta los borradores de servicios y de contenido.
+
+Para contacto, introduce el teléfono con `+` y código de país. Ese único valor genera teléfono visible, enlace de llamada y WhatsApp. Los enlaces de ubicación y Facebook deben usar HTTPS y sus dominios oficiales. El correo público es opcional; no es el correo privado de acceso al panel.
+
+## Horarios y fechas especiales
+
+Define hasta dos turnos por día y la última cita de cada turno. Marca **Cerrado** cuando no haya atención. La última cita debe ser igual o posterior a la apertura y anterior al cierre; no se permiten turnos solapados ni que atraviesen medianoche.
+
+Las excepciones por fecha reemplazan el horario de ese día. Puedes agregar hasta 20 fechas, con cierre completo o turnos especiales. Las notas son opcionales, pero si incluyes una debe estar en ambos idiomas. El sitio muestra las fechas actuales y futuras; elimina las antiguas desde el editor cuando ya no se necesiten.
+
+La misma versión publicada alimenta horarios visibles y datos estructurados para buscadores. La vista previa utiliza los borradores. No se ofrece un estado automático de «abierto ahora» ni reservas automáticas.
+
+## Privacidad
+
+El aviso inicial está vacío. Pega el texto validado en ambos idiomas y publica con la cuenta propietaria. Hasta entonces no se muestra un enlace de privacidad al visitante. El aviso admite texto simple con saltos de línea; cualquier HTML se muestra como texto, sin ejecutarse.
+
+Los módulos de biblioteca de medios, usuarios por navegador y segundo factor siguen pendientes. Consultar `ESTADO_IMPLEMENTACION.md` en la raíz del repositorio.

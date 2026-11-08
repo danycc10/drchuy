@@ -1,6 +1,6 @@
 # Plan de implementación — Medicina Respiratoria
 
-Fecha: 8 de noviembre de 2026. Estado: implementación iniciada; primera entrega funcional local. Consultar `ESTADO_IMPLEMENTACION.md` para distinguir lo implementado de las etapas pendientes.
+Fecha: 8 de noviembre de 2026. Estado: segunda entrega funcional local, con sitio, servicios, contenido, contacto y horarios administrables. Consultar `ESTADO_IMPLEMENTACION.md` para distinguir lo implementado de las etapas pendientes.
 
 ## 1. Decisiones y punto de partida
 
