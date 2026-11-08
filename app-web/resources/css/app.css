@@ -119,8 +119,13 @@ h2 {
 }
 .site-header nav {
     display: flex;
-    gap: 28px;
-    font-size: 12px;
+    gap: 20px;
+    font-size: 14px;
+}
+.site-header nav a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
 }
 .site-header nav a:hover {
     color: var(--teal);
@@ -133,7 +138,12 @@ h2 {
     gap: 21px;
 }
 .language-switch {
-    font-size: 11px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 44px;
+    min-height: 44px;
+    font-size: 13px;
     font-weight: 700;
     border-bottom: 1px solid #abc0c5;
     padding: 7px 0;
@@ -155,6 +165,42 @@ h2 {
 }
 .button:hover {
     background: #105360;
+}
+.button.secondary {
+    background: white;
+    color: var(--teal);
+    border-color: #b7ccca;
+}
+.visit-shortcuts {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px 24px;
+    margin-top: 14px;
+}
+.visit-shortcuts a {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    min-height: 44px;
+    font-size: 14px;
+    font-weight: 600;
+    text-decoration: underline;
+    text-underline-offset: 5px;
+}
+.mobile-contact {
+    display: none;
+}
+.hero-copy, .contact-grid > div, .header-actions {
+    min-width: 0;
+}
+.contact-grid address, .contact-action a {
+    overflow-wrap: anywhere;
+}
+h1, h2, h3 {
+    overflow-wrap: anywhere;
+}
+:focus-visible {
+    outline: 3px solid #538b92;
 }
 .button.compact {
     padding: 12px 16px;
@@ -578,7 +624,7 @@ h2 {
         height: 240px;
     }
 }
-@media(max-width:860px) {
+@media(max-width:1000px) {
     .header-inner {
         height: 84px;
         gap: 18px;
@@ -588,7 +634,8 @@ h2 {
     }
     .nav-toggle {
         display: block;
-        font-size: 11px;
+        font-size: 14px;
+        min-height: 44px;
         margin-left: auto;
         padding: 10px;
         border: 1px solid var(--line);
@@ -604,13 +651,61 @@ h2 {
         border-bottom: 1px solid var(--line);
         padding: 24px 30px;
         gap: 25px;
+        max-height: calc(100dvh - 180px);
+        overflow-y: auto;
     }
     .site-header nav.open {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 4px 20px;
+    }
+    .public-home:not(.navigation-ready) .header-inner {
+        height: auto;
+        min-height: 84px;
+        flex-wrap: wrap;
+        padding: 12px 0;
+    }
+    .public-home:not(.navigation-ready) .nav-toggle {
+        display: none;
+    }
+    .public-home:not(.navigation-ready) .site-header nav {
+        position: static;
         display: flex;
         flex-wrap: wrap;
+        order: 3;
+        width: 100%;
+        padding: 0;
+        gap: 4px 20px;
+        max-height: none;
+        border: 0;
     }
     .header-actions .button {
         display: none;
+    }
+    .public-home {
+        padding-bottom: calc(84px + env(safe-area-inset-bottom, 0px));
+    }
+    html {
+        scroll-padding-bottom: calc(100px + env(safe-area-inset-bottom, 0px));
+    }
+    .mobile-contact {
+        display: grid;
+        grid-template-columns: 1fr 1.4fr;
+        gap: 12px;
+        position: fixed;
+        inset: auto 0 0;
+        z-index: 20;
+        padding: 12px 20px calc(12px + env(safe-area-inset-bottom, 0px));
+        background: #fbfcfa;
+        border-top: 1px solid var(--line);
+        box-shadow: 0 -3px 20px #1237470d;
+    }
+    .mobile-contact .button {
+        min-width: 0;
+        min-height: 48px;
+        padding: 12px;
+        font-size: 15px;
+        gap: 10px;
     }
     .hero {
         gap: 30px;
@@ -715,7 +810,7 @@ h2 {
         gap: 32px;
     }
     .hero h1 {
-        font-size: 48px;
+        font-size: clamp(36px, 9.5vw, 48px);
         max-width: 440px;
     }
     .hero .eyebrow {
@@ -823,7 +918,8 @@ h2 {
         margin-left: 0;
     }
     .site-brand {
-        width: 190px;
+        width: clamp(120px, 44vw, 190px);
+        flex-shrink: 1;
     }
     .header-inner {
         gap: 13px;
@@ -850,3 +946,41 @@ h2 {
 .privacy-document h1 { font-size: clamp(36px, 5vw, 54px); margin: 30px 0 20px; }
 .privacy-date { font-size: 13px; color: var(--muted); }
 .privacy-text { white-space: pre-wrap; line-height: 1.85; margin-top: 34px; font-size: 16px; overflow-wrap: anywhere; }
+
+/* Reading sizes apply across breakpoints, including the mobile layout. */
+.hero-intro, .care-inner p, .section-heading > p,
+.service-items summary, .service-description p,
+.physician-inner p, .contact-grid p, .contact-grid address {
+    font-size: 16px;
+    line-height: 1.75;
+}
+.appointment-note, .procedure-note, .office-gallery figcaption,
+.contact-grid small, .contact-grid .payment, .site-footer p {
+    font-size: 13px;
+    line-height: 1.7;
+}
+.portrait-caption span, .license, .footer-top {
+    font-size: 13px;
+}
+.contact-grid h3 {
+    font-size: 16px;
+    font-weight: 600;
+    color: #eef4f4;
+}
+.service-description a, .light-link, .explore-link {
+    font-size: 14px;
+    min-height: 44px;
+    align-content: center;
+}
+.hero .button, .contact-action .button {
+    font-size: 15px;
+}
+.footer-top {
+    gap: 16px;
+    flex-wrap: wrap;
+}
+.footer-links a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+}

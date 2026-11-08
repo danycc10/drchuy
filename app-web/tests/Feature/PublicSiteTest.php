@@ -24,9 +24,11 @@ class PublicSiteTest extends TestCase
     public function test_both_languages_and_contact_details_are_present_without_private_claims(): void
     {
         $this->get('/es')->assertOk()->assertSee('Atención personalizada')->assertSee('12731500')
+            ->assertSee('Ver horarios')->assertSee('id="hours"', false)->assertSee('class="mobile-contact"', false)
             ->assertSee('https://wa.me/528781146336', false)->assertSee('14:00 y 18:00')
             ->assertDontSee('CNN-1956')->assertDontSee('RETMEDE')->assertHeader('X-Robots-Tag', 'noindex, nofollow');
         $this->get('/en')->assertOk()->assertSee('Personalized care')->assertSee('2:00 p.m. and 6:00 p.m.')
+            ->assertSee('View office hours')->assertSee('Contact the office')
             ->assertSee('hreflang="es-MX"', false);
         $this->get('/fr')->assertNotFound();
         $this->get('/robots.txt')->assertOk()->assertSee('Disallow: /');
