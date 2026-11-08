@@ -37,7 +37,7 @@ Fecha: 8 de noviembre de 2026. Primera entrega funcional local. El plan completo
 
 ## Pendientes externos
 
-- Cuenta propietaria: correo aún por definir; comando de creación listo. No se creó una cuenta con datos inventados.
+- Cuenta propietaria local creada con el correo proporcionado por el titular y enlace temporal para elegir contraseña. Los datos de acceso se mantienen fuera del repositorio.
 - HostGator Turbo: cuenta contratada, sin acceso proporcionado ni comprobación de PHP/CLI, extensiones, SSH, raíz pública, límites, correo y cron.
 - Dominio, correo operativo, aviso de privacidad, traducción inglesa y condiciones de procedimientos por confirmar.
 - Repositorio remoto: no configurado. Los commits se encuentran en este equipo.
