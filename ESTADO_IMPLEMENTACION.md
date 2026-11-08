@@ -1,6 +1,6 @@
 # Estado de implementación
 
-Fecha: 8 de noviembre de 2026. Segunda entrega funcional local con mejora de UX del panel. El plan completo sigue en desarrollo.
+Fecha: 8 de noviembre de 2026. Segunda entrega funcional local con mejoras de UX del panel y del sitio público. El plan completo sigue en desarrollo.
 
 ## Implementado
 
@@ -23,15 +23,19 @@ Fecha: 8 de noviembre de 2026. Segunda entrega funcional local con mejora de UX 
 - Edición con barra de guardado visible al desplazarse, pestañas ES/EN accesibles por teclado, contadores de texto y errores que llevan al campo correspondiente. Los formularios siguen disponibles sin JavaScript.
 - Estado de cambios pendientes que reconoce ediciones revertidas, protección al abandonar y frente a envíos duplicados, publicación bloqueada hasta guardar y vistas previas por idioma. La vista previa legal se habilita al guardar ambos textos.
 - Navegación móvil con fondo, cierre por botón/Escape/clic exterior, control del foco y adaptación al cambiar el tamaño de pantalla.
+- Sitio público: accesos a horarios y ubicación desde la portada, horario enlazable directamente y barra móvil permanente de llamada/WhatsApp con espacio reservado al pie. Tipografía de lectura ampliada, controles táctiles mayores y encabezado adaptable a pantallas estrechas.
+- Menú público con cierre por Escape/clic exterior, foco en la sección elegida y navegación disponible sin JavaScript. Cambiar de idioma conserva el ancla de la sección.
+- Buscador local de servicios por nombre, descripción o categoría, tolerante a mayúsculas y acentos; contador de resultados, expansión de coincidencias y recuperación cuando no hay resultados. Aparece solo cuando existen servicios visibles en el catálogo consultado: publicados en público, borradores en la vista previa. Sin JavaScript el catálogo completo permanece disponible.
+- Cada consulta de servicio abre WhatsApp con su nombre en un mensaje editable. El sitio no envía mensajes automáticamente. Cuando no hay catálogo publicado, muestra una acción directa para consultar disponibilidad.
 
 ## Comprobaciones
 
 - 34 pruebas Laravel de funcionalidad: importaciones repetibles, acceso, cuentas inactivas, límite de intentos, recuperación y uso único de tokens, roles, revisiones, conflictos de edición, traducciones, escape de contenido, visibilidad pública, vistas privadas, enlaces oficiales, privacidad, horarios/excepciones, coherencia del JSON-LD y conservación de errores/cambios tras redirecciones.
-- 8 pruebas JavaScript de interacción con DOM: cambios/reversiones, validación entre idiomas, navegación por teclado, enlaces de error, envíos duplicados, regreso con el navegador y cierre/adaptación del menú móvil. Ejecutar con `npm.cmd test` dentro de `app-web`.
+- 11 pruebas JavaScript de interacción con DOM: cambios/reversiones, validación entre idiomas, navegación por teclado, enlaces de error, envíos duplicados, regreso con el navegador, cierre/adaptación de menús y búsqueda pública con recuperación de resultados. Ejecutar con `npm.cmd test` dentro de `app-web`.
 - Pruebas aisladas en SQLite en memoria; migración e importación ejecutadas también sobre MySQL local.
 - Compilación de recursos para producción correcta.
 - Composer válido, requisitos de plataforma local satisfechos y auditoría PHP sin avisos de vulnerabilidad al comprobarla. Auditoría npm de dependencias de producción sin vulnerabilidades reportadas.
-- Sitio ES y formulario de acceso comprobados por HTTP local con respuesta 200 y cabeceras de no indexación.
+- Sitio ES/EN y formulario de acceso comprobados por HTTP local con respuesta 200. Las páginas públicas incluyen los accesos y la barra de contacto nuevos; se mantiene la no indexación.
 - Revisión visual interactiva, Android/iPhone y mediciones Lighthouse pendientes: el control de navegador disponible en esta sesión informó que no hay navegador conectado. No se ha verificado visualmente el resultado renderizado.
 
 ## Siguiente bloque
