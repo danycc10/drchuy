@@ -1,0 +1,1 @@
+<x-admin-layout title="Actividad"><div class="page-heading"><div><span class="eyebrow">HISTORIAL DEL EQUIPO</span><h1>Actividad</h1><p>Un registro de los cambios y publicaciones.</p></div></div><section class="panel">@include('admin.partials.activity')<div class="pagination">{{ $events->links() }}</div></section></x-admin-layout>

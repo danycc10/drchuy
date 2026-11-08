@@ -15,6 +15,8 @@ use Illuminate\Notifications\Notifiable;
 #[Hidden(['password', 'remember_token'])]
 class User extends Authenticatable
 {
+    protected $attributes = ['role' => 'editor', 'is_active' => true];
+
     /** @use HasFactory<UserFactory> */
     use HasFactory, Notifiable;
 
