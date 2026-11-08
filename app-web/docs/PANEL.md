@@ -55,4 +55,6 @@ La misma versión publicada alimenta horarios visibles y datos estructurados par
 
 El aviso inicial está vacío. Pega el texto validado en ambos idiomas y publica con la cuenta propietaria. Hasta entonces no se muestra un enlace de privacidad al visitante. El aviso admite texto simple con saltos de línea; cualquier HTML se muestra como texto, sin ejecutarse.
 
+El editor habilita la vista previa del aviso cuando el borrador guardado contiene ambos idiomas. Antes muestra una indicación para completar los textos.
+
 Los módulos de biblioteca de medios, usuarios por navegador y segundo factor siguen pendientes. Consultar `ESTADO_IMPLEMENTACION.md` en la raíz del repositorio.

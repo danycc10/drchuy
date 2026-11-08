@@ -1,6 +1,6 @@
 # Estado de implementación
 
-Fecha: 8 de noviembre de 2026. Segunda entrega funcional local: contenido, contacto y horarios. El plan completo sigue en desarrollo.
+Fecha: 8 de noviembre de 2026. Segunda entrega funcional local con mejora de UX del panel. El plan completo sigue en desarrollo.
 
 ## Implementado
 
@@ -20,10 +20,14 @@ Fecha: 8 de noviembre de 2026. Segunda entrega funcional local: contenido, conta
 - Teléfono único para número visible, llamada y WhatsApp; validación de enlaces oficiales y correo público opcional.
 - Horario semanal con dos turnos por día, últimas citas y hasta 20 excepciones por fecha; validación de solapamientos, intervalos y fechas duplicadas.
 - Horarios publicados y datos estructurados MedicalClinic generados desde los mismos datos. JSON protegido contra cierre de etiquetas de script; no incluye especialidades ni certificaciones pendientes.
+- Edición con barra de guardado visible al desplazarse, pestañas ES/EN accesibles por teclado, contadores de texto y errores que llevan al campo correspondiente. Los formularios siguen disponibles sin JavaScript.
+- Estado de cambios pendientes que reconoce ediciones revertidas, protección al abandonar y frente a envíos duplicados, publicación bloqueada hasta guardar y vistas previas por idioma. La vista previa legal se habilita al guardar ambos textos.
+- Navegación móvil con fondo, cierre por botón/Escape/clic exterior, control del foco y adaptación al cambiar el tamaño de pantalla.
 
 ## Comprobaciones
 
-- 33 pruebas automatizadas de funcionalidad: importaciones repetibles, acceso, cuentas inactivas, límite de intentos, recuperación y uso único de tokens, roles, revisiones, conflictos de edición, traducciones, escape de contenido, visibilidad pública, vistas privadas, enlaces oficiales, privacidad, horarios/excepciones y coherencia del JSON-LD.
+- 34 pruebas Laravel de funcionalidad: importaciones repetibles, acceso, cuentas inactivas, límite de intentos, recuperación y uso único de tokens, roles, revisiones, conflictos de edición, traducciones, escape de contenido, visibilidad pública, vistas privadas, enlaces oficiales, privacidad, horarios/excepciones, coherencia del JSON-LD y conservación de errores/cambios tras redirecciones.
+- 8 pruebas JavaScript de interacción con DOM: cambios/reversiones, validación entre idiomas, navegación por teclado, enlaces de error, envíos duplicados, regreso con el navegador y cierre/adaptación del menú móvil. Ejecutar con `npm.cmd test` dentro de `app-web`.
 - Pruebas aisladas en SQLite en memoria; migración e importación ejecutadas también sobre MySQL local.
 - Compilación de recursos para producción correcta.
 - Composer válido, requisitos de plataforma local satisfechos y auditoría PHP sin avisos de vulnerabilidad al comprobarla. Auditoría npm de dependencias de producción sin vulnerabilidades reportadas.

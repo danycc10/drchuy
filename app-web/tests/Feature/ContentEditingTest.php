@@ -81,6 +81,9 @@ class ContentEditingTest extends TestCase
         $this->actingAs(User::factory()->create(['role' => Role::Owner]));
         $block = $this->block('legal');
         $this->get('/es/aviso-de-privacidad')->assertNotFound();
+        $this->get(route('admin.content.edit', $block))->assertOk()
+            ->assertSee('Guarda el aviso en español e inglés')
+            ->assertDontSee(route('admin.preview.privacy', 'es'));
         $this->post(route('admin.content.publish', $block), ['revision_id' => $block->current_revision_id])->assertSessionHasErrors('es.privacy_content');
         $payload = $block->currentRevision->payload;
         $payload['es']['privacy_content'] = 'Texto de prueba aprobado. <script>alert(1)</script>';
@@ -88,6 +91,9 @@ class ContentEditingTest extends TestCase
         $this->put(route('admin.content.update', $block), ['revision_id' => $block->current_revision_id, 'payload' => $payload])->assertSessionHasNoErrors();
         $this->get('/es/aviso-de-privacidad')->assertNotFound();
         $this->get('/admin/preview/es/privacy')->assertOk()->assertSee('Texto de prueba aprobado');
+        $this->get(route('admin.content.edit', $block))->assertOk()
+            ->assertSee(route('admin.preview.privacy', 'es'))
+            ->assertSee(route('admin.preview.privacy', 'en'));
         $this->post(route('admin.content.publish', $block), ['revision_id' => $block->fresh()->current_revision_id])->assertSessionHasNoErrors();
         $this->get('/es/aviso-de-privacidad')->assertOk()->assertDontSee('<script>alert(1)</script>', false)->assertSee('&lt;script&gt;', false);
         $this->get('/en/privacy-policy')->assertOk()->assertSee('Approved test copy.');
