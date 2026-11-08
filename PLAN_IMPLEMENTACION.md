@@ -1,6 +1,6 @@
 # Plan de implementación — Medicina Respiratoria
 
-Fecha: 8 de noviembre de 2026. Estado: propuesta técnica lista para iniciar desarrollo; aplicación aún no creada.
+Fecha: 8 de noviembre de 2026. Estado: implementación iniciada; primera entrega funcional local. Consultar `ESTADO_IMPLEMENTACION.md` para distinguir lo implementado de las etapas pendientes.
 
 ## 1. Decisiones y punto de partida
 
@@ -9,8 +9,8 @@ Fecha: 8 de noviembre de 2026. Estado: propuesta técnica lista para iniciar des
 - Dominio: por definir. No impide desarrollar ni revisar localmente.
 - Administración: panel avanzado propio en Laravel, con interfaz a medida, solicitado por el cliente e incluido en el alcance principal. Se descarta Filament por preferencia expresa del cliente.
 - Objetivo: presentar el consultorio y facilitar solicitudes de cita por WhatsApp, en español e inglés.
-- La carpeta actual contiene documentación y recursos, pero no una aplicación Laravel ni archivos Composer/package.json.
-- Se localizaron PHP 8.3 en Laragon, Composer, Node y npm. Falta verificar sus versiones efectivas, extensiones y conexión local a MySQL al iniciar.
+- Al levantar este plan, la carpeta contenía documentación y recursos sin aplicación Laravel. Ya se creó `app-web/` y un repositorio Git local con commits por cambio funcional.
+- Entorno local comprobado: PHP 8.3.28, Composer 2.9.2, Node 24.12.0, npm 11.10.1 y MySQL 8.4.3. La cuenta HostGator todavía requiere verificación independiente.
 
 Fuentes del proyecto: `Medicina_Respiratoria_Web/01_BRIEF_Y_CONTENIDOS/`, `02_LOGOS_Y_FOTOGRAFIAS_ORIGINALES/` y `04_DOCUMENTACION_Y_VERIFICACIONES/`. El ZIP de `03_REFERENCIA_PROTOTIPO/` contiene HTML/CSS previo: sirve como referencia visual, no como fuente definitiva de textos ni como aplicación terminada.
 
