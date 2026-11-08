@@ -1,0 +1,13 @@
+/.local/
+/.idea/
+/.vscode/
+**/.env
+**/.env.*
+!**/.env.example
+**/vendor/
+**/node_modules/
+**/*.sqlite
+**/*.sqlite-*
+*.log
+Thumbs.db
+.DS_Store

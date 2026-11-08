@@ -1,0 +1,1 @@
+El prototipo incluido es una referencia de diseño anterior. No está publicado, no es un producto terminado y puede contener versiones editoriales previas; contrastar todos los textos con 01_BRIEF_Y_CONTENIDOS y fotografías con 02_LOGOS_Y_FOTOGRAFIAS_ORIGINALES. No reemplazar el logotipo oficial por una ilustración creada por IA.
