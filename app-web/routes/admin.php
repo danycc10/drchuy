@@ -4,6 +4,7 @@ use App\Http\Controllers\Admin\AuthController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\ServiceController;
 use App\Models\AuditEvent;
+use App\Http\Controllers\PublicSiteController;
 use Illuminate\Support\Facades\Route;
 
 Route::prefix('admin')->middleware('admin.headers')->group(function () {
@@ -17,6 +18,7 @@ Route::prefix('admin')->middleware('admin.headers')->group(function () {
     });
     Route::middleware(['auth', 'admin.active'])->group(function () {
         Route::get('/', DashboardController::class)->name('admin.dashboard');
+        Route::get('/preview/{locale}', [PublicSiteController::class, 'preview'])->whereIn('locale', ['es', 'en'])->name('admin.preview');
         Route::get('/services', [ServiceController::class, 'index'])->name('admin.services.index');
         Route::get('/services/{service}/edit', [ServiceController::class, 'edit'])->name('admin.services.edit');
         Route::put('/services/{service}', [ServiceController::class, 'update'])->name('admin.services.update');
