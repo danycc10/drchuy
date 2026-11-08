@@ -62,7 +62,10 @@ class AdminAuthenticationTest extends TestCase
         Notification::fake();
         $user = User::factory()->create();
         $this->post('/admin/forgot-password', ['email' => $user->email])->assertSessionHas('status');
-        Notification::assertSentTo($user, ResetPassword::class);
+        Notification::assertSentTo($user, ResetPassword::class, function ($notification) use ($user) {
+            $this->assertStringStartsWith(rtrim(config('app.url'), '/').'/admin/reset-password/', $notification->toMail($user)->actionUrl);
+            return true;
+        });
         $message = session('status');
         $this->post('/admin/forgot-password', ['email' => 'unknown@example.test'])->assertSessionHas('status', $message);
         $token = Password::createToken($user);
