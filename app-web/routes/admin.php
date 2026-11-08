@@ -3,6 +3,7 @@
 use App\Http\Controllers\Admin\AuthController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\ServiceController;
+use App\Http\Controllers\Admin\ContentController;
 use App\Models\AuditEvent;
 use App\Http\Controllers\PublicSiteController;
 use Illuminate\Support\Facades\Route;
@@ -19,7 +20,14 @@ Route::prefix('admin')->middleware('admin.headers')->group(function () {
     Route::middleware(['auth', 'admin.active'])->group(function () {
         Route::get('/', DashboardController::class)->name('admin.dashboard');
         Route::get('/preview/{locale}', [PublicSiteController::class, 'preview'])->whereIn('locale', ['es', 'en'])->name('admin.preview');
+        Route::get('/preview/{locale}/privacy', [PublicSiteController::class, 'previewPrivacy'])->whereIn('locale', ['es', 'en'])->name('admin.preview.privacy');
         Route::get('/services', [ServiceController::class, 'index'])->name('admin.services.index');
+        Route::get('/content', [ContentController::class, 'index'])->name('admin.content.index');
+        Route::get('/content/{block}/edit', [ContentController::class, 'edit'])->name('admin.content.edit');
+        Route::put('/content/{block}', [ContentController::class, 'update'])->name('admin.content.update');
+        Route::post('/content/{block}/publish', [ContentController::class, 'publish'])->name('admin.content.publish');
+        Route::get('/content/{block}/revisions/{revision}', [ContentController::class, 'revision'])->name('admin.content.revision');
+        Route::post('/content/{block}/revisions/{revision}/restore', [ContentController::class, 'restore'])->name('admin.content.restore');
         Route::get('/services/{service}/edit', [ServiceController::class, 'edit'])->name('admin.services.edit');
         Route::put('/services/{service}', [ServiceController::class, 'update'])->name('admin.services.update');
         Route::post('/services/{service}/publish', [ServiceController::class, 'publish'])->name('admin.services.publish');

@@ -21,6 +21,7 @@
         <nav aria-label="Administración">
             <a class="{{ request()->routeIs('admin.dashboard') ? 'active' : '' }}" href="{{ route('admin.dashboard') }}"><span aria-hidden="true">◫</span> Resumen</a>
             @if(Route::has('admin.services.index'))<a class="{{ request()->routeIs('admin.services.*') ? 'active' : '' }}" href="{{ route('admin.services.index') }}"><span aria-hidden="true">☷</span> Servicios</a>@endif
+            <a class="{{ request()->routeIs('admin.content.*') ? 'active' : '' }}" href="{{ route('admin.content.index') }}"><span aria-hidden="true">▤</span> Contenido y horarios</a>
             @if(Route::has('admin.activity'))<a class="{{ request()->routeIs('admin.activity') ? 'active' : '' }}" href="{{ route('admin.activity') }}"><span aria-hidden="true">↺</span> Actividad</a>@endif
         </nav>
         <div class="sidebar-bottom"><span class="status-dot"></span> Panel del consultorio<p>Contenido claro.<br>Atención cercana.</p></div>

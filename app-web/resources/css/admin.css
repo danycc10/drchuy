@@ -754,3 +754,22 @@ td small {
         scroll-behavior: auto!important;
     }
 }
+
+.content-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 22px; }
+.content-card { display: flex; flex-direction: column; gap: 12px; }
+.content-card .section-heading { align-items: start; }
+.content-card .button { align-self: start; margin-top: auto; }
+.weekday { padding-top: 22px; margin-top: 24px; border-top: 1px solid var(--line); }
+.weekday > legend, .exception-row > legend { font-size: 15px; font-weight: 600; padding-right: 12px; }
+.closed-toggle { margin-bottom: 18px; }
+.shift-row { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; margin-bottom: 16px; }
+.shift-row legend { grid-column: 1/-1; font-size: 11px; color: var(--muted); margin-bottom: 8px; }
+.editor-fields .shift-row label + label { margin-top: 0; }
+.exception-row { position: relative; border: 1px solid var(--line); border-radius: 7px; padding: 18px; margin: 24px 0; }
+.exception-remove { display: block; margin: 0 0 16px auto; }
+.exception-row .hours-day { margin-top: 18px; }
+.exception-notes { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.editor-fields .exception-notes label + label { margin-top: 0; }
+.revision-fields dt { font-size: 12px; font-weight: 600; color: var(--teal); margin-top: 24px; }
+.revision-fields dd { font-size: 14px; white-space: pre-wrap; line-height: 1.75; margin-top: 8px; overflow-wrap: anywhere; }
+@media(max-width:700px) { .content-grid { grid-template-columns: 1fr; } .shift-row { gap: 8px; } .shift-row label { font-size: 11px; } .exception-notes { grid-template-columns: 1fr; } }

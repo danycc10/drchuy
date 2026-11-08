@@ -3,6 +3,7 @@
 @if(config('clinic.indexable'))
 @foreach(['es', 'en'] as $locale)
 <url><loc>{{ rtrim(config('app.url'), '/') }}/{{ $locale }}</loc></url>
+@if($hasPrivacy)<url><loc>{{ rtrim(config('app.url'), '/') }}{{ route('privacy.'.$locale, [], false) }}</loc></url>@endif
 @endforeach
 @endif
 </urlset>

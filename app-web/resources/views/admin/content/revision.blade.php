@@ -1,0 +1,11 @@
+<x-admin-layout title="Revisar contenido">
+    <div class="page-heading"><div><a class="small-link" href="{{ route('admin.content.edit', $block) }}">← {{ $block->label() }}</a><h1 style="margin-top:18px">Versión #{{ $revision->id }}</h1><p>{{ $revision->author?->name ?? 'Importación inicial' }} · {{ $revision->created_at->timezone('America/Matamoros')->format('d/m/Y H:i') }}</p></div></div>
+    <div class="editor-fields">
+        @foreach(['shared' => 'Datos compartidos', 'es' => 'Español', 'en' => 'English'] as $group => $label)
+            @php($fields = $group === 'shared' ? $schema['shared'] : $schema['translated'])
+            @if($fields)<section class="panel"><h2>{{ $label }}</h2><dl class="revision-fields">@foreach($fields as $field => $definition)<dt>{{ $definition['label'] }}</dt><dd>{{ $revision->payload[$group][$field] ?? '—' }}</dd>@endforeach</dl></section>@endif
+        @endforeach
+        @if($block->key === 'hours')<section class="panel"><h2>Horarios guardados</h2><dl class="revision-fields">@foreach(\App\Support\ContentSchema::days() as $day => $names)<dt>{{ $names['es'] }}</dt><dd>@if($revision->payload['week'][$day]['closed'])Cerrado @else @foreach($revision->payload['week'][$day]['sessions'] as $session){{ $session['start'] }}–{{ $session['end'] }} · última cita {{ $session['last'] }}<br>@endforeach @endif</dd>@endforeach @foreach($revision->payload['exceptions'] as $exception)<dt>{{ $exception['date'] }} · excepción</dt><dd>@if($exception['closed'])Cerrado @else @foreach($exception['sessions'] as $session){{ $session['start'] }}–{{ $session['end'] }} · última cita {{ $session['last'] }}<br>@endforeach @endif<br>{{ $exception['es_note'] ?? '' }} / {{ $exception['en_note'] ?? '' }}</dd>@endforeach</dl></section>@endif
+        <section class="panel"><p class="muted small">Recuperar crea un borrador nuevo, sin cambiar todavía el sitio.</p><form method="post" action="{{ route('admin.content.restore', [$block, $revision]) }}" data-confirm="¿Recuperar esta versión como un nuevo borrador?" style="margin-top:18px">@csrf<input type="hidden" name="revision_id" value="{{ $block->current_revision_id }}"><button class="button primary">Recuperar como borrador</button></form></section>
+    </div>
+</x-admin-layout>

@@ -8,6 +8,7 @@
     @foreach(['es' => 'es-MX', 'en' => 'en-US'] as $code => $tag)<link rel="alternate" hreflang="{{ $tag }}" href="{{ rtrim(config('app.url'), '/') }}/{{ $code }}">@endforeach
     <link rel="alternate" hreflang="x-default" href="{{ rtrim(config('app.url'), '/') }}/es">
     <meta property="og:type" content="website"><meta property="og:title" content="{{ $copy['title'] }}"><meta property="og:description" content="{{ $copy['description'] }}"><meta property="og:url" content="{{ rtrim(config('app.url'), '/') }}/{{ $locale }}"><meta property="og:image" content="{{ rtrim(config('app.url'), '/') }}/images/doctor.webp"><meta property="og:locale" content="{{ $locale === 'es' ? 'es_MX' : 'en_US' }}">
+    @if(!$preview)<script type="application/ld+json">{!! $structuredData !!}</script>@endif
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 <body>
@@ -32,8 +33,16 @@
     </section>
     <section class="physician-section" id="physician"><div class="container physician-inner"><div class="physician-image"><img src="{{ asset('images/doctor.webp') }}" alt="{{ $copy['doctor_alt'] }}" width="709" height="1536" loading="lazy"></div><div><span class="eyebrow">{{ $copy['doctor_label'] }}</span><h2>{{ $clinic['physician'] }}</h2><p class="designation">{{ $copy['designation'] }}</p><p>{{ $copy['bio'] }}</p><p>{{ $copy['bio_second'] }}</p><div class="license"><span>{{ $copy['license_label'] }}</span><strong>{{ $clinic['license'] }}</strong></div></div></div></section>
     <section class="section container" id="office"><div class="section-heading"><div><span class="eyebrow">{{ $copy['office_label'] }}</span><h2>{{ $copy['office_title'] }}</h2></div><p>{{ $copy['office_copy'] }}</p></div><div class="office-gallery">@foreach(['consultorio', 'fachada', 'entrada'] as $i => $photo)<figure><img src="{{ asset('images/'.$photo.'.webp') }}" alt="{{ $copy['photos'][$i] }}" loading="lazy" width="800" height="600"><figcaption><span>0{{ $i + 1 }}</span> {{ $copy['photos'][$i] }}</figcaption></figure>@endforeach</div></section>
-    <section class="contact-section" id="location"><div class="container"><span class="eyebrow">{{ $copy['contact_label'] }}</span><h2>{{ $copy['contact_title'] }}</h2><div class="contact-grid"><div><h3>{{ $copy['address_label'] }}</h3><address>{{ $clinic['address'] }}<br>{{ $clinic['city'] }}</address><a class="light-link" href="{{ $clinic['maps'] }}" target="_blank" rel="noopener noreferrer">{{ $copy['directions'] }} ↗</a><p class="payment">{{ $copy['payment'] }}</p></div><div><h3>{{ $copy['hours_label'] }}</h3><p><strong>{{ $copy['open_days'] }}</strong><br>{{ $copy['hours'] }}</p><p class="hours-detail">{{ $copy['last_appointment'] }}<br>{{ $copy['closed'] }}</p><small>{{ $copy['local_time'] }} · {{ $copy['special_hours'] }}</small></div><div class="contact-action"><p>{{ $copy['appointment'] }}</p><a class="button light" href="{{ $clinic['whatsapp'] }}" target="_blank" rel="noopener noreferrer">{{ $copy['short_cta'] }} ↗</a><a class="light-link" href="tel:{{ $clinic['phone'] }}">{{ $copy['call'] }}</a></div></div></div></section>
+    <section class="contact-section" id="location">
+        <div class="container"><span class="eyebrow">{{ $copy['contact_label'] }}</span><h2>{{ $copy['contact_title'] }}</h2>
+            <div class="contact-grid">
+                <div><h3>{{ $copy['address_label'] }}</h3><address>{{ $clinic['address'] }}<br>{{ $clinic['city'] }}</address><a class="light-link" href="{{ $clinic['maps'] }}" target="_blank" rel="noopener noreferrer">{{ $copy['directions'] }} ↗</a><p class="payment">{{ $copy['payment'] }}</p></div>
+                <div><h3>{{ $copy['hours_label'] }}</h3>@include('public.hours')</div>
+                <div class="contact-action"><p>{{ $copy['appointment'] }}</p><a class="button light" href="{{ $clinic['whatsapp'] }}" target="_blank" rel="noopener noreferrer">{{ $copy['short_cta'] }} ↗</a><a class="light-link" href="tel:{{ $clinic['phone'] }}">{{ $copy['call'] }}</a>@if(filled($clinic['email'] ?? null))<a class="light-link" href="mailto:{{ $clinic['email'] }}">{{ $clinic['email'] }}</a>@endif</div>
+            </div>
+        </div>
+    </section>
 </main>
-<footer class="site-footer"><div class="container"><div class="footer-top"><span>© {{ now()->year }} Medicina Respiratoria</span><a href="{{ $clinic['facebook'] }}" target="_blank" rel="noopener noreferrer">Facebook ↗</a></div><p>{{ $copy['disclaimer'] }}</p></div></footer>
+<footer class="site-footer"><div class="container"><div class="footer-top"><span>© {{ now()->year }} Medicina Respiratoria</span><div class="footer-links">@include('public.privacylink')<a href="{{ $clinic['facebook'] }}" target="_blank" rel="noopener noreferrer">Facebook ↗</a></div></div><p>{{ $copy['disclaimer'] }}</p></div></footer>
 </body>
 </html>
