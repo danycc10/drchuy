@@ -1,0 +1,270 @@
+{
+    "categories": [
+        {
+            "slug": "consultation",
+            "name": {
+                "es": "Consulta y seguimiento clínico",
+                "en": "Consultation and follow-up"
+            },
+            "position": 1
+        },
+        {
+            "slug": "diagnostics",
+            "name": {
+                "es": "Diagnóstico y sueño",
+                "en": "Diagnostics and sleep"
+            },
+            "position": 2
+        },
+        {
+            "slug": "treatment",
+            "name": {
+                "es": "Tratamiento y educación",
+                "en": "Treatment and education"
+            },
+            "position": 3
+        },
+        {
+            "slug": "procedures",
+            "name": {
+                "es": "Procedimientos",
+                "en": "Procedures"
+            },
+            "position": 4
+        },
+        {
+            "slug": "occupational",
+            "name": {
+                "es": "Salud ocupacional y empresarial",
+                "en": "Occupational health"
+            },
+            "position": 5
+        }
+    ],
+    "services": [
+        {
+            "source_id": 1,
+            "category": "consultation",
+            "payload": {
+                "es": {
+                    "name": "Consulta de medicina respiratoria",
+                    "description": "Valoración médica para el diagnóstico, tratamiento y seguimiento de enfermedades respiratorias."
+                },
+                "en": {
+                    "name": "Respiratory medicine consultations",
+                    "description": "Medical assessment, diagnosis, treatment, and follow-up for respiratory conditions."
+                },
+                "visible": true,
+                "position": 1
+            }
+        },
+        {
+            "source_id": 2,
+            "category": "consultation",
+            "payload": {
+                "es": {
+                    "name": "Atención del asma",
+                    "description": "Evaluación y control del asma, seguimiento del tratamiento y educación en el uso correcto de inhaladores, con revisión de la técnica inhalatoria."
+                },
+                "en": {
+                    "name": "Asthma assessment and follow-up",
+                    "description": "Evaluation and monitoring of asthma, treatment review, and inhaler technique education."
+                },
+                "visible": true,
+                "position": 2
+            }
+        },
+        {
+            "source_id": 3,
+            "category": "consultation",
+            "payload": {
+                "es": {
+                    "name": "Atención de EPOC",
+                    "description": "Evaluación y seguimiento de EPOC, síntomas, exacerbaciones y tratamiento; educación y revisión de técnica de inhaladores."
+                },
+                "en": {
+                    "name": "COPD assessment and follow-up",
+                    "description": "Evaluation and follow-up of COPD symptoms, exacerbations, treatment, and inhaler technique."
+                },
+                "visible": true,
+                "position": 3
+            }
+        },
+        {
+            "source_id": 5,
+            "category": "consultation",
+            "payload": {
+                "es": {
+                    "name": "Evaluación de tos crónica",
+                    "description": "Estudio médico de la tos persistente, mediante historia clínica, exploración y pruebas complementarias cuando se requieran."
+                },
+                "en": {
+                    "name": "Chronic cough evaluation",
+                    "description": "Clinical assessment of persistent cough and diagnostic tests when needed."
+                },
+                "visible": true,
+                "position": 5
+            }
+        },
+        {
+            "source_id": 6,
+            "category": "consultation",
+            "payload": {
+                "es": {
+                    "name": "Evaluación de disnea",
+                    "description": "Valoración clínica de la falta de aire, con identificación de posibles causas respiratorias y estudios necesarios según cada caso."
+                },
+                "en": {
+                    "name": "Shortness of breath evaluation",
+                    "description": "Clinical assessment of breathlessness and appropriate follow-up testing."
+                },
+                "visible": true,
+                "position": 6
+            }
+        },
+        {
+            "source_id": 4,
+            "category": "diagnostics",
+            "payload": {
+                "es": {
+                    "name": "Espirometría",
+                    "description": "Prueba de función pulmonar para medir flujos y volúmenes respiratorios. Puede incluir evaluación broncodilatadora cuando exista indicación clínica."
+                },
+                "en": {
+                    "name": "Spirometry and bronchodilator testing when appropriate",
+                    "description": "Pulmonary function assessment with bronchodilator response testing when clinically indicated."
+                },
+                "visible": true,
+                "position": 4
+            }
+        },
+        {
+            "source_id": 7,
+            "category": "diagnostics",
+            "payload": {
+                "es": {
+                    "name": "Estudios respiratorios del sueño",
+                    "description": "Valoración de ronquido y sospecha de apnea del sueño; poligrafía respiratoria domiciliaria, oximetría nocturna e interpretación de resultados según indicación clínica."
+                },
+                "en": {
+                    "name": "Sleep-related breathing studies (home respiratory polygraphy and overnight oximetry)",
+                    "description": "Clinical evaluation of snoring and suspected sleep apnea; home respiratory polygraphy and overnight oximetry as indicated."
+                },
+                "visible": true,
+                "position": 7
+            }
+        },
+        {
+            "source_id": 8,
+            "category": "treatment",
+            "payload": {
+                "es": {
+                    "name": "Oxigenoterapia",
+                    "description": "Evaluación de oxigenación, indicación y seguimiento de oxigenoterapia domiciliaria. Capacitación a pacientes y familiares en el manejo seguro de concentradores, tanques y accesorios."
+                },
+                "en": {
+                    "name": "Oxygen therapy assessment and home equipment education",
+                    "description": "Oxygenation assessment, appropriate home oxygen therapy follow-up, and equipment safety education."
+                },
+                "visible": true,
+                "position": 8
+            }
+        },
+        {
+            "source_id": 9,
+            "category": "treatment",
+            "payload": {
+                "es": {
+                    "name": "CPAP y BiPAP",
+                    "description": "Evaluación y seguimiento del tratamiento con presión positiva, revisión de uso, tolerancia y respuesta clínica."
+                },
+                "en": {
+                    "name": "CPAP and BiPAP follow-up",
+                    "description": "Assessment of positive airway pressure therapy use, comfort, and clinical response."
+                },
+                "visible": true,
+                "position": 9
+            }
+        },
+        {
+            "source_id": 10,
+            "category": "procedures",
+            "payload": {
+                "es": {
+                    "name": "Toracocentesis",
+                    "description": "Procedimiento pleural diagnóstico o terapéutico, sujeto a valoración médica e indicación clínica."
+                },
+                "en": {
+                    "name": "Thoracentesis",
+                    "description": "Diagnostic or therapeutic pleural procedure when clinically indicated."
+                },
+                "visible": true,
+                "position": 10
+            }
+        },
+        {
+            "source_id": 11,
+            "category": "procedures",
+            "payload": {
+                "es": {
+                    "name": "Colocación de sondas",
+                    "description": "Colocación de sondas para procedimientos respiratorios, de acuerdo con la valoración clínica y el tipo de intervención."
+                },
+                "en": {
+                    "name": "Respiratory tube placement",
+                    "description": "Placement of tubes for respiratory procedures when appropriate."
+                },
+                "visible": true,
+                "position": 11
+            }
+        },
+        {
+            "source_id": 12,
+            "category": "procedures",
+            "payload": {
+                "es": {
+                    "name": "Biopsias pleurales",
+                    "description": "Obtención de muestras de pleura para estudio diagnóstico cuando exista indicación médica."
+                },
+                "en": {
+                    "name": "Pleural biopsy",
+                    "description": "Pleural sampling for diagnostic analysis when medically indicated."
+                },
+                "visible": true,
+                "position": 12
+            }
+        },
+        {
+            "source_id": 13,
+            "category": "procedures",
+            "payload": {
+                "es": {
+                    "name": "Broncoscopía",
+                    "description": "Exploración endoscópica de las vías respiratorias para evaluación y procedimientos diagnósticos indicados."
+                },
+                "en": {
+                    "name": "Bronchoscopy",
+                    "description": "Endoscopic assessment of the airways when clinically indicated."
+                },
+                "visible": true,
+                "position": 13
+            }
+        },
+        {
+            "source_id": 14,
+            "category": "occupational",
+            "payload": {
+                "es": {
+                    "name": "Evaluación de salud respiratoria ocupacional y empresarial",
+                    "description": "Valoración respiratoria de trabajadores, espirometría ocupacional, evaluaciones para empresas e informes médicos de salud respiratoria según riesgos y exigencias del puesto."
+                },
+                "en": {
+                    "name": "Occupational and corporate respiratory health assessment",
+                    "description": "Respiratory occupational evaluations, spirometry for workers, and clinical respiratory health reports."
+                },
+                "visible": true,
+                "position": 14
+            }
+        }
+    ]
+}
