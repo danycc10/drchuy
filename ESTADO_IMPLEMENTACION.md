@@ -1,6 +1,6 @@
 # Estado de implementación
 
-Fecha: 9 de noviembre de 2026. Segunda entrega funcional local con mejoras de UX del panel y del sitio público. El plan completo sigue en desarrollo.
+Fecha: 9 de noviembre de 2026. Entrega local con biblioteca de imágenes, publicación editorial y mejoras de UX del panel y del sitio público. El plan completo sigue en desarrollo.
 
 ## Implementado
 
@@ -15,7 +15,7 @@ Fecha: 9 de noviembre de 2026. Segunda entrega funcional local con mejoras de UX
 - Vista previa privada de borradores, etiquetas SEO/OG, robots y sitemap controlados por configuración.
 - Derivados WebP y recorte exclusivo de márgenes transparentes de logos. Los archivos originales permanecen intactos.
 - Guía de uso y preparación del despliegue.
-- Siete bloques editables: inicio, perfil, consultorio, contacto, SEO, privacidad y horarios. Todos con borradores, publicación, historial, recuperación y control de ediciones simultáneas.
+- Ocho bloques editables: inicio, perfil, consultorio, contacto, SEO, privacidad, horarios y fotografías. Todos con borradores, publicación, historial, recuperación y control de ediciones simultáneas.
 - Perfil profesional y avisos legales publicables únicamente por el propietario. El aviso de privacidad se mantiene vacío hasta incorporar contenido validado; las páginas públicas aparecen después de publicar ambos idiomas.
 - Teléfono único para número visible, llamada y WhatsApp; validación de enlaces oficiales y correo público opcional.
 - Horario semanal con dos turnos por día, últimas citas y hasta 20 excepciones por fecha; validación de solapamientos, intervalos y fechas duplicadas.
@@ -31,11 +31,13 @@ Fecha: 9 de noviembre de 2026. Segunda entrega funcional local con mejoras de UX
 - Iconos SVG locales con trazo, tamaño y alineación comunes para contacto, ubicación, horarios, búsqueda y menú. Reemplazan flechas tipográficas; los servicios usan un indicador que gira al abrirse. Botones, accesos rápidos y selector de idioma tienen bordes, espaciado y estados visuales unificados. Los iconos son decorativos para lectores de pantalla y conservan etiquetas de texto; no requieren fuentes de iconos ni servicios externos.
 - Movimiento público discreto: entrada de portada, aparición de secciones una sola vez al recorrerlas, galería con entrada escalonada breve, sombra del encabezado al desplazar, subrayado de navegación y transiciones de menú/servicios/botones. Usa APIs nativas, sin dependencias nuevas. Respeta movimiento reducido, cancela animaciones al enfocar o navegar por anclas y mantiene contenido disponible sin JavaScript o sin soporte de animación. Las acciones principales de cita no esperan la entrada de la portada.
 - URL pública limpia: `/` para inicio y `/aviso-de-privacidad` para privacidad, en ambos idiomas. Selector POST con CSRF, idioma en sesión, español inicial y conservación de anclas permitidas. Rutas antiguas redirigidas; canonical, Open Graph, JSON-LD y sitemap sin prefijos de idioma. Respuestas de contenido privadas/no-store para evitar mezclar idiomas mediante cachés compartidas.
+- Biblioteca privada de fotografías con búsqueda, filtros de uso, carga JPG/PNG/WebP, límites de tamaño/dimensiones/memoria, orientación EXIF, WebP y miniaturas, preservación del original y transparencia. Descarga de originales y eliminación sin uso para propietario/administradores; protección mediante relaciones de base de datos de imágenes conservadas en revisiones.
+- Selección del retrato e imágenes de interior/fachada/entrada, descripciones alternativas ES/EN, vistas previas y publicación exclusiva del propietario. Los derivados de borradores requieren autenticación; los originales permanecen privados. El contenido publicado alimenta fotos, imagen social y foto del marcado estructurado. Se mantiene la opción de las fotografías iniciales y los logos originales.
 
 ## Comprobaciones
 
-- 39 pruebas Laravel de funcionalidad: importaciones repetibles, acceso, cuentas inactivas, límite de intentos, recuperación y uso único de tokens, roles, revisiones, conflictos de edición, traducciones, escape de contenido, visibilidad pública, vistas privadas, enlaces oficiales, privacidad, horarios/excepciones, coherencia del JSON-LD, conservación de errores/cambios y selección de idioma con URLs limpias, sesión, metadatos y redirecciones restringidas.
-- 16 pruebas JavaScript de interacción con DOM: cambios/reversiones, validación entre idiomas, navegación por teclado, enlaces de error, envíos duplicados, regreso con el navegador, cierre/adaptación de menús, selector de idioma con anclas, búsqueda pública con recuperación de resultados y comportamiento del movimiento. Estas últimas verifican entrada única, cancelación al cambiar preferencias/enfocar/navegar y disponibilidad sin APIs de animación mediante dobles de prueba; no sustituyen una revisión visual de fluidez. Ejecutar con `npm.cmd test` dentro de `app-web`.
+- 48 pruebas Laravel de funcionalidad: importaciones repetibles, acceso, cuentas inactivas, límite de intentos, recuperación y uso único de tokens, roles, revisiones, conflictos de edición, traducciones, escape de contenido, visibilidad pública, vistas privadas, enlaces oficiales, privacidad, horarios/excepciones, coherencia del JSON-LD, selección de idioma, cargas inválidas, optimización/orientación/transparencia, fallos de almacenamiento y ciclo privado/publicado/recuperado de fotografías.
+- 18 pruebas JavaScript de interacción con DOM: cambios/reversiones, validación entre idiomas, navegación por teclado, enlaces de error, envíos duplicados, regreso con el navegador, cierre/adaptación de menús, selector de idioma con anclas, búsqueda pública, selección de imágenes/carga y comportamiento del movimiento. Estas últimas verifican entrada única, cancelación al cambiar preferencias/enfocar/navegar y disponibilidad sin APIs de animación mediante dobles de prueba; no sustituyen una revisión visual de fluidez. Ejecutar con `npm.cmd test` dentro de `app-web`.
 - Pruebas aisladas en SQLite en memoria; migración e importación ejecutadas también sobre MySQL local.
 - Compilación de recursos para producción correcta.
 - Composer válido, requisitos de plataforma local satisfechos y auditoría PHP sin avisos de vulnerabilidad al comprobarla. Auditoría npm de dependencias de producción sin vulnerabilidades reportadas.
@@ -45,7 +47,7 @@ Fecha: 9 de noviembre de 2026. Segunda entrega funcional local con mejoras de UX
 ## Siguiente bloque
 
 1. Revisar visualmente el sitio y el panel en escritorio y móvil, y ajustar el patrón de diseño.
-2. Incorporar biblioteca de medios con validación de cargas, derivados y control de usos. Por ahora las imágenes originales se preparan mediante script local.
+2. Incorporar preguntas frecuentes editables con contenido práctico aprobado por el médico.
 3. Incorporar administración de usuarios por navegador y segundo factor con un componente mantenido.
 4. Añadir solicitudes explícitas de revisión. Los servicios y bloques actuales permiten guardar, revisar, publicar y recuperar, sin una bandeja de solicitudes separada.
 5. Revisar contenido legal, validar el marcado en herramientas externas y completar accesibilidad/rendimiento.

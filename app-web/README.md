@@ -4,7 +4,7 @@ Panel propio en Laravel, Blade y Tailwind; MySQL en desarrollo y producción. El
 
 ## Instalación local
 
-Requisitos: PHP 8.3 compatible con las dependencias, Composer 2, MySQL y Node para compilar recursos.
+Requisitos: PHP 8.3 compatible con las dependencias, GD con WebP y EXIF, Composer 2, MySQL y Node para compilar recursos.
 
 1. Ejecutar `composer install` en esta carpeta.
 2. Copiar `.env.example` a `.env`, configurar una base exclusiva y ejecutar `php artisan key:generate`.
@@ -22,6 +22,8 @@ Requisitos: PHP 8.3 compatible con las dependencias, Composer 2, MySQL y Node pa
 El contenido inicial se conserva en `database/content/services.json`. Se puede regenerar desde el paquete original mediante `php scripts/prepare-content.php`; no ejecutar esa preparación durante un despliegue.
 
 Las imágenes de `public/images` se preparan con `php scripts/prepare-assets.php` usando GD y el paquete original. El script genera WebP y recorta únicamente márgenes transparentes de los logos. No altera los archivos originales.
+
+Las fotografías nuevas se gestionan desde **Imágenes** en el panel. Se almacenan en `storage/app/private/media` y se seleccionan en **Fotografías del sitio**, con descripciones ES/EN y publicación explícita. Respaldar tanto archivos como base de datos. Para agregar el bloque a una instalación existente: `php artisan migrate` y `php artisan db:seed --class=ContentSeeder` (importación idempotente).
 
 Consultar `docs/PANEL.md` y `docs/HOSTGATOR.md`. La base de datos local no contiene cuentas predeterminadas. Los servicios se revisan desde la vista previa privada y se publican explícitamente desde el panel.
 

@@ -39,9 +39,9 @@ La preferencia pública se guarda en la sesión y comienza en español para una 
 
 ## Contenido y horarios
 
-Desde **Contenido y horarios** puedes editar inicio, perfil profesional, instalaciones, contacto, SEO, privacidad y horarios. Todos usan el mismo flujo: guardar borrador, revisar, publicar y recuperar versiones. Los datos compartidos se editan una vez; los textos tienen campos ES/EN.
+Desde **Contenido y horarios** puedes editar inicio, perfil profesional, instalaciones, contacto, SEO, privacidad, horarios y fotografías. Todos usan el mismo flujo: guardar borrador, revisar, publicar y recuperar versiones. Los datos compartidos se editan una vez; los textos tienen campos ES/EN.
 
-El propietario publica perfil profesional y avisos legales. Los administradores pueden publicar los demás bloques. El editor prepara borradores. El tablero cuenta los borradores de servicios y de contenido.
+El propietario publica perfil profesional, avisos legales y fotografías. Los administradores pueden publicar los demás bloques. El editor prepara borradores. El tablero cuenta los borradores de servicios y de contenido.
 
 Para contacto, introduce el teléfono con `+` y código de país. Ese único valor genera teléfono visible, enlace de llamada y WhatsApp. Los enlaces de ubicación y Facebook deben usar HTTPS y sus dominios oficiales. El correo público es opcional; no es el correo privado de acceso al panel.
 
@@ -59,4 +59,19 @@ El aviso inicial está vacío. Pega el texto validado en ambos idiomas y publica
 
 El editor habilita la vista previa del aviso cuando el borrador guardado contiene ambos idiomas. Antes muestra una indicación para completar los textos.
 
-Los módulos de biblioteca de medios, usuarios por navegador y segundo factor siguen pendientes. Consultar `ESTADO_IMPLEMENTACION.md` en la raíz del repositorio.
+## Biblioteca de imágenes
+
+1. Abrir **Imágenes** en el menú y pulsar **Subir fotografía**.
+2. Darle un nombre descriptivo y elegir un JPG, PNG o WebP de hasta 8 MB, 12 megapíxeles y 8,000 píxeles por lado. Los límites de memoria del servidor también pueden exigir una imagen menor.
+3. Subirla. Se conserva el original, se corrige la orientación de fotos JPEG y se crean un WebP de hasta 1,600 píxeles por lado y una miniatura. Los derivados conservan transparencia y no llevan metadatos EXIF del original.
+4. Abrir **Fotografías del sitio**. Seleccionar imágenes para el retrato del médico, interior, fachada y entrada. El retrato se utiliza en portada, perfil y vista previa social.
+5. Ajustar las descripciones en Español e Inglés para que correspondan a cada fotografía. Guardar el borrador y revisar ambas vistas previas.
+6. Publicar con la cuenta propietaria. Subir o seleccionar una fotografía no modifica por sí solo la web pública.
+
+La biblioteca permite buscar por nombre/archivo y filtrar por uso. Todos los roles activos pueden subir y preparar borradores. Propietarios y administradores pueden descargar originales y eliminar imágenes sin uso. Si una imagen aparece en cualquier versión guardada, no se elimina: se conserva para recuperar el historial. Cambiar una fotografía no borra la anterior.
+
+La opción **Fotografía original del sitio** conserva la imagen inicial del paquete del consultorio. Los originales de ese paquete y los logos no se reemplazan al subir archivos. El orden de las tres fotografías corresponde a interior, fachada y entrada.
+
+Las cargas se guardan fuera de la raíz pública. Las imágenes de borradores y los originales requieren acceso al panel. Solo los derivados asociados a la versión publicada están disponibles mediante la ruta pública; pueden permanecer en la caché del navegador hasta cinco minutos después de un reemplazo.
+
+Los módulos de usuarios por navegador y segundo factor siguen pendientes. Consultar `ESTADO_IMPLEMENTACION.md` en la raíz del repositorio.

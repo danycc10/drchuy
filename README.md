@@ -16,6 +16,7 @@ Con el servidor iniciado:
 - Sitio: http://127.0.0.1:8085/
 - Idioma: selector ES/EN en el encabezado; conserva la misma URL y recuerda la selección durante la sesión.
 - Panel: http://127.0.0.1:8085/admin
+- Biblioteca de imágenes: http://127.0.0.1:8085/admin/media (requiere acceso al panel).
 
 Para crear tu cuenta, abre otra terminal en `app-web` y ejecuta:
 

@@ -5,6 +5,7 @@ Guía inicial; no se ha conectado a la cuenta ni realizado un despliegue. Comple
 ## Verificar la cuenta
 
 - PHP web y CLI compatibles con `composer.lock` y las extensiones requeridas por `composer check-platform-reqs`.
+- Para la biblioteca: extensiones GD y EXIF; GD debe incluir lectura JPEG/PNG/WebP y escritura WebP. Comprobar `gd_info()` en el servidor real. Configurar `upload_max_filesize` de al menos 8M y `post_max_size` mayor (por ejemplo, 12M). La aplicación limita cada carga a 8 MB y comprueba dimensiones y memoria antes de decodificar.
 - MySQL, base y usuario exclusivos; SSH y Composer disponibles o un proceso de empaquetado compatible.
 - HTTPS, raíz pública configurable, permisos sobre `storage` y `bootstrap/cache`, SMTP, cron, cuotas y respaldos.
 - Dominio y subdominio de pruebas bajo control del titular.
@@ -25,6 +26,8 @@ Configurar `.env` con `APP_ENV=production`, `APP_DEBUG=false`, `APP_URL=https://
 Ejecutar migraciones revisadas y después `php artisan db:seed --force` para importar registros iniciales faltantes de servicios y bloques. Los seeders no publican contenido, no sobrescriben ediciones existentes y no crean usuarios. Crear la cuenta propietaria con `php artisan app:create-admin` en la instalación inicial.
 
 Regenerar cachés en destino con `php artisan optimize`. No copiar cachés de configuración generadas con el entorno local. Preservar `.env`, imágenes subidas y archivos persistentes entre versiones. No usar permisos 777 ni un endpoint web para ejecutar Artisan.
+
+La biblioteca guarda originales y derivados en `storage/app/private/media`. Incluir esta carpeta y las tablas de medios/revisiones en los respaldos y conservarlas al desplegar. No crear enlaces públicos hacia esa carpeta. Las rutas de Laravel sirven derivados publicados y comprueban autenticación para borradores y originales; no se necesita `storage:link` para este módulo. Las cargas se procesan durante la petición, sin workers permanentes. Confirmar memoria, tiempo de ejecución y cuota disponibles en el plan Turbo.
 
 ## Aceptación y reversión
 
