@@ -1,5 +1,6 @@
 @import 'tailwindcss';
 @source '../views/public';
+@source '../views/components/site-icon.blade.php';
 @theme {
     --font-sans: 'Segoe UI',ui-sans-serif,system-ui,sans-serif;
 }
@@ -35,6 +36,23 @@ button {
 }
 a,button,summary {
     outline-offset: 5px;
+}
+.site-icon {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    flex: 0 0 auto;
+    vertical-align: middle;
+    pointer-events: none;
+}
+.menu-close-icon {
+    display: none;
+}
+.nav-toggle[aria-expanded=true] .menu-open-icon {
+    display: none;
+}
+.nav-toggle[aria-expanded=true] .menu-close-icon {
+    display: inline-block;
 }
 p {
     line-height: 1.8;
@@ -88,6 +106,16 @@ h2 {
 .location-bar .container {
     display: flex;
     justify-content: space-between;
+}
+.location-bar a {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    white-space: nowrap;
+}
+.location-bar .site-icon {
+    width: 14px;
+    height: 14px;
 }
 .location-separator {
     color: #72939f;
@@ -145,37 +173,50 @@ h2 {
     min-height: 44px;
     font-size: 13px;
     font-weight: 700;
-    border-bottom: 1px solid #abc0c5;
-    padding: 7px 0;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    padding: 7px;
+    background: white;
 }
 .button {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    gap: 28px;
+    gap: 10px;
     border: 1px solid var(--teal);
     background: var(--teal);
     color: white;
-    border-radius: 5px;
+    border-radius: 8px;
     padding: 17px 23px;
-    font-size: 12px;
+    font-size: 14px;
     font-weight: 600;
     min-height: 46px;
     line-height: 1.4;
+    box-shadow: 0 2px 4px #1237470a;
+    transition: background-color .18s, border-color .18s, box-shadow .18s;
 }
 .button:hover {
     background: #105360;
+    box-shadow: 0 4px 12px #1237471a;
 }
 .button.secondary {
     background: white;
     color: var(--teal);
     border-color: #b7ccca;
 }
+.button.secondary:hover {
+    background: #edf4f2;
+    border-color: #799f9f;
+}
+.button.light:hover {
+    background: white;
+    border-color: white;
+}
 .visit-shortcuts {
     display: flex;
     flex-wrap: wrap;
-    gap: 4px 24px;
-    margin-top: 14px;
+    gap: 10px;
+    margin-top: 20px;
 }
 .visit-shortcuts a {
     display: inline-flex;
@@ -184,8 +225,25 @@ h2 {
     min-height: 44px;
     font-size: 14px;
     font-weight: 600;
-    text-decoration: underline;
-    text-underline-offset: 5px;
+    padding: 8px 14px 8px 8px;
+    background: white;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    transition: border-color .18s, background-color .18s;
+}
+.visit-shortcuts a:hover {
+    border-color: #83a8aa;
+    background: #f3f7f4;
+}
+.shortcut-icon {
+    display: grid;
+    place-items: center;
+    width: 34px;
+    height: 34px;
+    flex-shrink: 0;
+    color: var(--teal);
+    background: #eaf2ef;
+    border-radius: 6px;
 }
 .mobile-contact {
     display: none;
@@ -204,8 +262,12 @@ h1, h2, h3 {
 }
 .button.compact {
     padding: 12px 16px;
-    font-size: 11px;
-    gap: 16px;
+    font-size: 12px;
+    gap: 8px;
+}
+.button.compact .site-icon {
+    width: 18px;
+    height: 18px;
 }
 .hero {
     display: grid;
@@ -239,16 +301,16 @@ h1, h2, h3 {
     gap: 12px;
     align-items: center;
     font-size: 11px;
-    margin-top: 43px;
+    margin-top: 24px;
     color: #4d6974;
 }
-.explore-link span {
-    border: 1px solid #cbd9d9;
-    width: 30px;
-    height: 30px;
-    display: grid;
-    place-items: center;
-    border-radius: 50%;
+.explore-link .site-icon {
+    color: var(--teal);
+}
+.explore-link:hover {
+    color: var(--teal);
+    text-decoration: underline;
+    text-underline-offset: 5px;
 }
 .hero-image {
     height: 540px;
@@ -271,6 +333,7 @@ h1, h2, h3 {
     padding: 21px 24px;
     box-shadow: 0 5px 30px #163c4910;
     border-left: 3px solid #277b86;
+    border-radius: 6px;
 }
 .portrait-caption strong {
     display: block;
@@ -371,13 +434,18 @@ h1, h2, h3 {
 .service-items summary::-webkit-details-marker {
     display: none;
 }
-.service-items summary span {
-    font-size: 20px;
-    font-weight: 300;
+.service-chevron {
+    width: 30px;
+    height: 30px;
+    padding: 5px;
     color: var(--teal);
+    border: 1px solid #dce5e4;
+    border-radius: 50%;
+    background: #f3f7f4;
+    transition: transform .18s;
 }
-.service-items details[open] summary span {
-    transform: rotate(45deg);
+.service-items details[open] .service-chevron {
+    transform: rotate(180deg);
 }
 .service-description {
     padding: 0 30px 20px 0;
@@ -387,7 +455,9 @@ h1, h2, h3 {
     color: var(--muted);
 }
 .service-description a {
-    display: inline-block;
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
     font-size: 11px;
     color: var(--teal);
     font-weight: 600;
@@ -434,13 +504,25 @@ h1, h2, h3 {
     gap: 12px;
     margin-top: 16px;
 }
+.search-input-wrap {
+    position: relative;
+    flex: 1;
+    min-width: 0;
+}
+.search-input-wrap > .site-icon {
+    position: absolute;
+    left: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--muted);
+}
 .search-controls input {
     min-width: 0;
     width: 100%;
     min-height: 48px;
     border: 1px solid #91abad;
     border-radius: 5px;
-    padding: 12px;
+    padding: 12px 12px 12px 44px;
     font: inherit;
     font-size: 16px;
     background: white;
@@ -539,7 +621,7 @@ h1, h2, h3 {
     width: 100%;
     height: 290px;
     object-fit: cover;
-    border-radius: 3px;
+    border-radius: 8px;
 }
 .office-gallery figcaption {
     font-size: 10px;
@@ -586,7 +668,9 @@ h1, h2, h3 {
     color: #eef4f4;
 }
 .light-link {
-    display: inline-block;
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
     font-size: 11px;
     border-bottom: 1px solid #64838f;
     padding-bottom: 4px;
@@ -618,7 +702,7 @@ h1, h2, h3 {
     margin-top: 23px;
 }
 .contact-action .light-link {
-    display: block;
+    display: flex;
     width: fit-content;
 }
 .site-footer {
@@ -707,13 +791,16 @@ h1, h2, h3 {
         width: 195px;
     }
     .nav-toggle {
-        display: block;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        flex-shrink: 0;
         font-size: 14px;
         min-height: 44px;
         margin-left: auto;
         padding: 10px;
         border: 1px solid var(--line);
-        border-radius: 4px;
+        border-radius: 8px;
     }
     .site-header nav {
         display: none;
@@ -865,7 +952,7 @@ h1, h2, h3 {
         padding: 25px 0 0;
     }
     .contact-action .light-link {
-        display: inline-block;
+        display: inline-flex;
         margin-left: 25px;
     }
     .contact-action .button {
@@ -1040,6 +1127,9 @@ h1, h2, h3 {
     font-size: 13px;
 }
 .contact-grid h3 {
+    display: flex;
+    align-items: center;
+    gap: 10px;
     font-size: 16px;
     font-weight: 600;
     color: #eef4f4;

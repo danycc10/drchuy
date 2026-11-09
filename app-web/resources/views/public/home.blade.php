@@ -13,21 +13,21 @@
 </head>
 <body class="public-home">
 <a class="skip-link" href="#main">{{ $locale === 'es' ? 'Ir al contenido' : 'Skip to content' }}</a>
-@if($preview)<div class="preview-banner">Vista previa privada · incluye borradores sin publicar <a href="{{ route('admin.dashboard') }}">Volver al panel →</a></div>@endif
-<div class="location-bar"><div class="container"><span>{{ $copy['location'] }} <span class="location-separator">/</span> <span class="appointment-top">{{ $locale === 'es' ? 'Atención con cita previa' : 'By appointment' }}</span></span><a href="tel:{{ $clinic['phone'] }}">{{ $clinic['phone_display'] }}</a></div></div>
+@if($preview)<div class="preview-banner">Vista previa privada · incluye borradores sin publicar <a href="{{ route('admin.dashboard') }}"><x-site-icon name="grid" /> Volver al panel</a></div>@endif
+<div class="location-bar"><div class="container"><span>{{ $copy['location'] }} <span class="location-separator">/</span> <span class="appointment-top">{{ $locale === 'es' ? 'Atención con cita previa' : 'By appointment' }}</span></span><a href="tel:{{ $clinic['phone'] }}"><x-site-icon name="phone" /> {{ $clinic['phone_display'] }}</a></div></div>
 <header class="site-header"><div class="container header-inner">
     <a class="site-brand" href="{{ route($preview ? 'admin.preview' : 'home', $locale) }}"><img src="{{ asset('images/logo.png') }}" alt="Medicina Respiratoria · Dr. Jesús García Espinoza" width="1400" height="445"></a>
-    <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-navigation">{{ $locale === 'es' ? 'Menú' : 'Menu' }}</button>
+    <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-navigation"><x-site-icon name="menu" class="menu-open-icon" /><x-site-icon name="close" class="menu-close-icon" /> {{ $locale === 'es' ? 'Menú' : 'Menu' }}</button>
     <nav id="site-navigation" aria-label="{{ $locale === 'es' ? 'Principal' : 'Main navigation' }}">@foreach(['services', 'physician', 'office', 'location'] as $i => $anchor)<a href="#{{ $anchor }}">{{ $copy['nav'][$i] }}</a>@endforeach<a href="#hours">{{ $locale === 'es' ? 'Horarios' : 'Hours' }}</a></nav>
-    <div class="header-actions"><a class="language-switch" data-language-switch href="{{ route($preview ? 'admin.preview' : 'home', $locale === 'es' ? 'en' : 'es') }}" lang="{{ $locale === 'es' ? 'en' : 'es' }}" aria-label="{{ $locale === 'es' ? 'Read in English' : 'Leer en español' }}">{{ $locale === 'es' ? 'EN' : 'ES' }}</a><a class="button compact" href="{{ $clinic['whatsapp'] }}" target="_blank" rel="noopener noreferrer">{{ $copy['short_cta'] }} <span aria-hidden="true">↗</span></a></div>
+    <div class="header-actions"><a class="language-switch" data-language-switch href="{{ route($preview ? 'admin.preview' : 'home', $locale === 'es' ? 'en' : 'es') }}" lang="{{ $locale === 'es' ? 'en' : 'es' }}" aria-label="{{ $locale === 'es' ? 'Read in English' : 'Leer en español' }}">{{ $locale === 'es' ? 'EN' : 'ES' }}</a><a class="button compact" href="{{ $clinic['whatsapp'] }}" target="_blank" rel="noopener noreferrer"><x-site-icon name="message" /> {{ $copy['short_cta'] }}</a></div>
 </div></header>
 <main id="main">
-    <section class="hero container"><div class="hero-copy"><span class="eyebrow"><span class="little-line"></span> {{ $copy['practice_label'] }}</span><h1><span class="sr-only">{{ $clinic['name'] }}: </span>{{ $copy['hero'] }}</h1><p class="hero-intro">{{ $copy['intro'] }}</p><a class="button" href="{{ $clinic['whatsapp'] }}" target="_blank" rel="noopener noreferrer">{{ $copy['cta'] }} <span aria-hidden="true">↗</span></a><p class="appointment-note">{{ $copy['appointment'] }}</p>
+    <section class="hero container"><div class="hero-copy"><span class="eyebrow"><span class="little-line"></span> {{ $copy['practice_label'] }}</span><h1><span class="sr-only">{{ $clinic['name'] }}: </span>{{ $copy['hero'] }}</h1><p class="hero-intro">{{ $copy['intro'] }}</p><a class="button" href="{{ $clinic['whatsapp'] }}" target="_blank" rel="noopener noreferrer"><x-site-icon name="message" /> {{ $copy['cta'] }}</a><p class="appointment-note">{{ $copy['appointment'] }}</p>
         <nav class="visit-shortcuts" aria-label="{{ $locale === 'es' ? 'Planea tu visita' : 'Plan your visit' }}">
-            <a href="#hours">{{ $locale === 'es' ? 'Ver horarios' : 'View office hours' }} <span aria-hidden="true">↓</span></a>
-            <a href="{{ $clinic['maps'] }}" target="_blank" rel="noopener noreferrer">{{ $copy['directions'] }} <span aria-hidden="true">↗</span></a>
+            <a href="#hours"><span class="shortcut-icon"><x-site-icon name="clock" /></span> {{ $locale === 'es' ? 'Ver horarios' : 'View office hours' }}</a>
+            <a href="{{ $clinic['maps'] }}" target="_blank" rel="noopener noreferrer"><span class="shortcut-icon"><x-site-icon name="pin" /></span> {{ $copy['directions'] }}</a>
         </nav>
-        <a class="explore-link" href="#services"><span aria-hidden="true">↓</span> {{ $copy['explore'] }}</a></div><div class="hero-image"><img src="{{ asset('images/doctor.webp') }}" alt="{{ $copy['doctor_alt'] }}" width="709" height="1536" fetchpriority="high"><div class="portrait-caption"><strong>{{ $clinic['physician'] }}</strong><span>{{ $copy['designation'] }}</span></div><span class="photo-index" aria-hidden="true">01 / MEDICINA RESPIRATORIA</span></div></section>
+        <a class="explore-link" href="#services"><x-site-icon name="grid" /> {{ $copy['explore'] }}</a></div><div class="hero-image"><img src="{{ asset('images/doctor.webp') }}" alt="{{ $copy['doctor_alt'] }}" width="709" height="1536" fetchpriority="high"><div class="portrait-caption"><strong>{{ $clinic['physician'] }}</strong><span>{{ $copy['designation'] }}</span></div><span class="photo-index" aria-hidden="true">01 / MEDICINA RESPIRATORIA</span></div></section>
     <section class="care-section"><div class="container care-inner"><h2>{{ $copy['care_title'] }}</h2><p>{{ $copy['care_copy'] }}</p></div></section>
     <section class="section container" id="services"><div class="section-heading"><div><span class="eyebrow">{{ $copy['services_label'] }}</span><h2>{{ $copy['services_title'] }}</h2></div><p>{{ $copy['services_copy'] }}</p></div>
         @if($services->isNotEmpty())@include('public.service-search')@endif
@@ -39,9 +39,9 @@
                     <div class="service-items">
                         @foreach($services[$category->id] as $service)
                             <details data-service-item>
-                                <summary>{{ $service[$locale]['name'] }}<span aria-hidden="true">+</span></summary>
+                                <summary>{{ $service[$locale]['name'] }}<x-site-icon name="chevron-down" class="service-chevron" /></summary>
                                 <div class="service-description"><p>{{ $service[$locale]['description'] }}</p>
-                                    <a href="{{ $clinic['whatsapp'].'?text='.rawurlencode(($locale === 'es' ? 'Hola, quisiera información sobre el servicio: ' : 'Hello, I would like information about this service: ').$service[$locale]['name'].'.') }}" target="_blank" rel="noopener noreferrer">{{ $copy['ask_service'] }} ↗</a>
+                                    <a href="{{ $clinic['whatsapp'].'?text='.rawurlencode(($locale === 'es' ? 'Hola, quisiera información sobre el servicio: ' : 'Hello, I would like information about this service: ').$service[$locale]['name'].'.') }}" target="_blank" rel="noopener noreferrer"><x-site-icon name="message" /> {{ $copy['ask_service'] }}</a>
                                 </div>
                             </details>
                         @endforeach
@@ -50,7 +50,7 @@
             @endif
         @endforeach
         </div>
-        @if($services->isEmpty())<div class="availability"><p>{{ $copy['availability'] }}</p><a class="button" href="{{ $clinic['whatsapp'] }}" target="_blank" rel="noopener noreferrer">{{ $locale === 'es' ? 'Consultar servicios por WhatsApp' : 'Ask about services on WhatsApp' }} ↗</a></div>@endif
+        @if($services->isEmpty())<div class="availability"><p>{{ $copy['availability'] }}</p><a class="button" href="{{ $clinic['whatsapp'] }}" target="_blank" rel="noopener noreferrer"><x-site-icon name="message" /> {{ $locale === 'es' ? 'Consultar servicios por WhatsApp' : 'Ask about services on WhatsApp' }}</a></div>@endif
         <p class="procedure-note">{{ $copy['procedure_note'] }}</p>
     </section>
     <section class="physician-section" id="physician"><div class="container physician-inner"><div class="physician-image"><img src="{{ asset('images/doctor.webp') }}" alt="{{ $copy['doctor_alt'] }}" width="709" height="1536" loading="lazy"></div><div><span class="eyebrow">{{ $copy['doctor_label'] }}</span><h2>{{ $clinic['physician'] }}</h2><p class="designation">{{ $copy['designation'] }}</p><p>{{ $copy['bio'] }}</p><p>{{ $copy['bio_second'] }}</p><div class="license"><span>{{ $copy['license_label'] }}</span><strong>{{ $clinic['license'] }}</strong></div></div></div></section>
@@ -58,17 +58,17 @@
     <section class="contact-section" id="location">
         <div class="container"><span class="eyebrow">{{ $copy['contact_label'] }}</span><h2>{{ $copy['contact_title'] }}</h2>
             <div class="contact-grid">
-                <div><h3>{{ $copy['address_label'] }}</h3><address>{{ $clinic['address'] }}<br>{{ $clinic['city'] }}</address><a class="light-link" href="{{ $clinic['maps'] }}" target="_blank" rel="noopener noreferrer">{{ $copy['directions'] }} ↗</a><p class="payment">{{ $copy['payment'] }}</p></div>
-                <div id="hours" tabindex="-1"><h3>{{ $copy['hours_label'] }}</h3>@include('public.hours')</div>
-                <div class="contact-action"><p>{{ $copy['appointment'] }}</p><a class="button light" href="{{ $clinic['whatsapp'] }}" target="_blank" rel="noopener noreferrer">{{ $copy['short_cta'] }} ↗</a><a class="light-link" href="tel:{{ $clinic['phone'] }}">{{ $copy['call'] }}</a>@if(filled($clinic['email'] ?? null))<a class="light-link" href="mailto:{{ $clinic['email'] }}">{{ $clinic['email'] }}</a>@endif</div>
+                <div><h3><x-site-icon name="pin" /> {{ $copy['address_label'] }}</h3><address>{{ $clinic['address'] }}<br>{{ $clinic['city'] }}</address><a class="light-link" href="{{ $clinic['maps'] }}" target="_blank" rel="noopener noreferrer"><x-site-icon name="pin" /> {{ $copy['directions'] }}</a><p class="payment">{{ $copy['payment'] }}</p></div>
+                <div id="hours" tabindex="-1"><h3><x-site-icon name="clock" /> {{ $copy['hours_label'] }}</h3>@include('public.hours')</div>
+                <div class="contact-action"><p>{{ $copy['appointment'] }}</p><a class="button light" href="{{ $clinic['whatsapp'] }}" target="_blank" rel="noopener noreferrer"><x-site-icon name="message" /> {{ $copy['short_cta'] }}</a><a class="light-link" href="tel:{{ $clinic['phone'] }}"><x-site-icon name="phone" /> {{ $copy['call'] }}</a>@if(filled($clinic['email'] ?? null))<a class="light-link" href="mailto:{{ $clinic['email'] }}"><x-site-icon name="mail" /> {{ $clinic['email'] }}</a>@endif</div>
             </div>
         </div>
     </section>
 </main>
-<footer class="site-footer"><div class="container"><div class="footer-top"><span>© {{ now()->year }} Medicina Respiratoria</span><div class="footer-links">@include('public.privacylink')<a href="{{ $clinic['facebook'] }}" target="_blank" rel="noopener noreferrer">Facebook ↗</a></div></div><p>{{ $copy['disclaimer'] }}</p></div></footer>
+<footer class="site-footer"><div class="container"><div class="footer-top"><span>© {{ now()->year }} Medicina Respiratoria</span><div class="footer-links">@include('public.privacylink')<a href="{{ $clinic['facebook'] }}" target="_blank" rel="noopener noreferrer">Facebook</a></div></div><p>{{ $copy['disclaimer'] }}</p></div></footer>
 <nav class="mobile-contact" aria-label="{{ $locale === 'es' ? 'Contactar al consultorio' : 'Contact the office' }}">
-    <a class="button secondary" href="tel:{{ $clinic['phone'] }}">{{ $locale === 'es' ? 'Llamar' : 'Call' }}</a>
-    <a class="button" href="{{ $clinic['whatsapp'] }}" target="_blank" rel="noopener noreferrer">WhatsApp <span aria-hidden="true">↗</span></a>
+    <a class="button secondary" href="tel:{{ $clinic['phone'] }}"><x-site-icon name="phone" /> {{ $locale === 'es' ? 'Llamar' : 'Call' }}</a>
+    <a class="button" href="{{ $clinic['whatsapp'] }}" target="_blank" rel="noopener noreferrer"><x-site-icon name="message" /> WhatsApp</a>
 </nav>
 </body>
 </html>
