@@ -3,6 +3,7 @@
     <div class="page-heading"><div><a class="small-link" href="{{ route('admin.content.index') }}"><x-site-icon name="document" /> Contenido y horarios</a><h1 style="margin-top:18px">{{ $block->label() }}</h1><p>{{ $schema['description'] }}</p></div><span class="badge {{ $block->hasDraft() ? 'draft' : 'published' }}">{{ $block->hasDraft() ? 'Borrador' : 'Publicado' }}</span></div>
     @if($block->key === 'legal')<div class="notice">Incorpora el aviso validado para los tratamientos de datos reales del sitio. Puedes guardar un borrador incompleto; para publicar necesitas el texto en ambos idiomas.</div>@endif
     @if($block->key === 'physician')<div class="notice">Conserva la denominación pública y las credenciales autorizadas. Los cambios requieren revisión y publicación por el propietario.</div>@endif
+    @if($block->key === 'media')<div class="notice">Elige las fotografías y ajusta sus descripciones en español e inglés. Guarda, revisa ambas vistas previas y publica con la cuenta propietaria. <a class="small-link" href="{{ route('admin.media.index') }}">Abrir biblioteca de imágenes</a></div>@endif
     <x-editor-toolbar form="content-editor" />
     <div class="editor-grid">
         <form id="content-editor" data-editor data-recovered-input="{{ session()->hasOldInput('payload') ? 'true' : 'false' }}" method="post" action="{{ route('admin.content.update', $block) }}" class="editor-fields">

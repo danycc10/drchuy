@@ -6,6 +6,7 @@ use App\Models\AuditEvent;
 use App\Models\ContentBlock;
 use App\Models\ContentRevision;
 use App\Models\User;
+use App\Models\MediaAsset;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Validation\ValidationException;
@@ -24,7 +25,12 @@ class ContentPublisher
         $payload = $this->validator->validate($block->key, $payload);
         DB::transaction(function () use ($block, $payload, $expectedRevision, $user, $restored) {
             $locked = $this->lock($block, $expectedRevision);
+            $mediaIds = $block->key === 'media' ? array_values(array_unique(array_filter($payload['shared']))) : [];
+            if ($mediaIds && MediaAsset::whereIn('id', $mediaIds)->orderBy('id')->lockForUpdate()->get()->count() !== count($mediaIds)) {
+                throw ValidationException::withMessages(['shared' => 'Una fotografía dejó de estar disponible. Selecciona otra de la biblioteca.']);
+            }
             $revision = $locked->revisions()->create(['payload' => $payload, 'created_by' => $user->id]);
+            $revision->mediaAssets()->attach($mediaIds);
             $locked->current_revision_id = $revision->id;
             $locked->save();
             AuditEvent::create([

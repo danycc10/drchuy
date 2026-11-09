@@ -15,6 +15,10 @@ class ContentValidator
         foreach (['shared' => $schema['shared'], 'es' => $schema['translated'], 'en' => $schema['translated']] as $group => $fields) {
             $rules[$group] = empty($fields) ? 'sometimes|array|size:0' : 'required|array:'.implode(',', array_keys($fields));
             foreach ($fields as $field => $definition) {
+                if ($definition['type'] === 'media') {
+                    $rules[$group.'.'.$field] = ['present', 'nullable', 'integer', 'exists:media_assets,id'];
+                    continue;
+                }
                 $required = ! ($definition['optional'] ?? false) && ! (($definition['draft_optional'] ?? false) && ! $publishing);
                 $rules[$group.'.'.$field] = [$required ? 'required' : 'nullable', 'string', 'max:'.$definition['max']];
                 if ($definition['type'] === 'email') {
@@ -62,6 +66,7 @@ class ContentValidator
             'regex' => 'El formato no es válido.',
             'date_format' => 'El formato debe ser :format.',
             'distinct' => 'No repitas la misma fecha.',
+            'exists' => 'Esta fotografía ya no está disponible. Elige otra de la biblioteca.',
         ]);
         $validator->after(function (ValidationValidator $validator) use ($key, $payload) {
             if ($validator->errors()->isNotEmpty()) {
@@ -93,6 +98,12 @@ class ContentValidator
         });
         $data = $validator->validate();
         $data['shared'] ??= [];
+        if ($key === 'media') {
+            foreach ($data['shared'] as &$imageId) {
+                $imageId = filled($imageId) ? (int) $imageId : null;
+            }
+            unset($imageId);
+        }
         if ($key === 'hours') {
             foreach ($data['week'] as &$day) {
                 $day = $this->normalizeDay($day);

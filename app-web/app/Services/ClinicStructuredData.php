@@ -37,7 +37,7 @@ class ClinicStructuredData
             'name' => $clinic['name'], 'url' => $base.'/',
             'description' => $clinic[$locale]['intro'],
             'telephone' => $clinic['phone'], 'address' => $clinic['address'].', '.$clinic['city'],
-            'image' => $base.'/images/fachada.webp', 'logo' => $base.'/images/logo.png',
+            'image' => $clinic['images']['fachada']['url'] ?? $base.'/images/fachada.webp', 'logo' => $base.'/images/logo.png',
             'hasMap' => $clinic['maps'], 'sameAs' => [$clinic['facebook']],
             'openingHoursSpecification' => $openingHours,
             'employee' => ['@type' => 'Person', 'name' => $clinic['physician'], 'jobTitle' => $clinic[$locale]['designation']],

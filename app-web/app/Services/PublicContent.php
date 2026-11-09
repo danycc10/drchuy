@@ -13,12 +13,17 @@ class PublicContent
         $hours = ContentSchema::initial('hours');
         $relation = $preview ? 'currentRevision' : 'publishedRevision';
         $privacyUpdated = null;
+        $mediaPayload = null;
         foreach (ContentBlock::with($relation)->get() as $block) {
             $revision = $block->{$relation};
             if (! $revision) {
                 continue;
             }
             $payload = $revision->payload;
+            if ($block->key === 'media') {
+                $mediaPayload = $payload;
+                continue;
+            }
             $clinic = array_replace($clinic, $payload['shared'] ?? []);
             foreach (['es', 'en'] as $locale) {
                 $clinic[$locale] = array_replace($clinic[$locale], $payload[$locale] ?? []);
@@ -35,6 +40,7 @@ class PublicContent
             ? '+52 '.$parts[1].' '.$parts[2].' '.$parts[3] : $clinic['phone'];
         $clinic['has_privacy'] = filled($clinic['es']['privacy_content'] ?? null) && filled($clinic['en']['privacy_content'] ?? null);
         $clinic['privacy_updated_at'] = $privacyUpdated;
+        $clinic['images'] = app(PublicMedia::class)->resolve($clinic, $mediaPayload, $preview);
 
         return ['clinic' => $clinic, 'hours' => $hours];
     }

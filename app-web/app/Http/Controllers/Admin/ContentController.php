@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\ContentBlock;
 use App\Models\ContentRevision;
+use App\Models\MediaAsset;
 use App\Services\ContentPublisher;
 use App\Support\ContentSchema;
 use Illuminate\Http\Request;
@@ -25,6 +26,7 @@ class ContentController extends Controller
         return view('admin.content.edit', [
             'block' => $block, 'schema' => ContentSchema::definitions()[$block->key],
             'revisions' => $block->revisions()->with('author')->latest('id')->paginate(6),
+            'mediaOptions' => $block->key === 'media' ? MediaAsset::orderBy('title')->get() : collect(),
         ]);
     }
 
@@ -53,7 +55,7 @@ class ContentController extends Controller
         Gate::authorize('update', $block);
         abort_unless($revision->content_block_id === $block->id, 404);
 
-        return view('admin.content.revision', ['block' => $block, 'revision' => $revision, 'schema' => ContentSchema::definitions()[$block->key]]);
+        return view('admin.content.revision', ['block' => $block, 'revision' => $revision, 'schema' => ContentSchema::definitions()[$block->key], 'mediaOptions' => $revision->mediaAssets->keyBy('id')]);
     }
 
     public function restore(Request $request, ContentBlock $block, ContentRevision $revision, ContentPublisher $publisher)

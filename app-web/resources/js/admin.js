@@ -1,8 +1,10 @@
 import { initEditor } from './editor';
 import { initNavigation } from './navigation';
+import { initMedia } from './media';
 
 initEditor(document);
 initNavigation(document);
+initMedia(document);
 const editor = document.querySelector('[data-editor]');
 
 document.addEventListener('change', (event) => {
