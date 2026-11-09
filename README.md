@@ -17,6 +17,8 @@ Con el servidor iniciado:
 - Idioma: selector ES/EN en el encabezado; conserva la misma URL y recuerda la selección durante la sesión.
 - Panel: http://127.0.0.1:8085/admin
 - Biblioteca de imágenes: http://127.0.0.1:8085/admin/media (requiere acceso al panel).
+- Usuarios: http://127.0.0.1:8085/admin/users (solo propietario).
+- Verificación en dos pasos: http://127.0.0.1:8085/admin/security (cada usuario configura su cuenta).
 
 Para crear tu cuenta, abre otra terminal en `app-web` y ejecuta:
 
@@ -24,7 +26,7 @@ Para crear tu cuenta, abre otra terminal en `app-web` y ejecuta:
 php artisan app:create-admin
 ```
 
-El comando solicita nombre, correo, rol y contraseña oculta. Elige `owner` para la cuenta propietaria. No hay cuentas ni contraseñas predeterminadas. La creación de cuentas por navegador se incorporará en una etapa posterior.
+El comando solicita nombre, correo, rol y contraseña oculta. Elige `owner` para la primera cuenta propietaria. No hay cuentas ni contraseñas predeterminadas. Después, el propietario puede crear y administrar las cuentas desde **Usuarios**.
 
 El catálogo se importa como borrador. Para verlo completo, inicia sesión y usa **Vista previa**. En **Servicios**, guarda, revisa y publica cada versión cuando corresponda. Esta publicación modifica solo el entorno donde se ejecuta la aplicación; no despliega cambios en HostGator.
 

@@ -1,6 +1,6 @@
 # Estado de implementación
 
-Fecha: 9 de noviembre de 2026. Entrega local con preguntas frecuentes editables, biblioteca de imágenes, publicación editorial y mejoras de UX del panel y del sitio público. El plan completo sigue en desarrollo.
+Fecha: 9 de noviembre de 2026. Entrega local con administración de usuarios, verificación en dos pasos, preguntas frecuentes editables, biblioteca de imágenes y publicación editorial. El plan completo sigue en desarrollo.
 
 ## Implementado
 
@@ -8,7 +8,8 @@ Fecha: 9 de noviembre de 2026. Entrega local con preguntas frecuentes editables,
 - Laravel 13.40.0 sobre PHP 8.3.28; MySQL local 8.4.3, base exclusiva `drchuy_web`.
 - Catálogo de 14 servicios ES/EN en cinco categorías, importación repetible y estado inicial de borrador.
 - Panel propio en Blade/Tailwind: acceso, recuperación de contraseña, tablero, servicios, filtros, paginación, revisión de versiones y actividad.
-- Roles propietario, administrador y editor; creación de cuentas mediante comando interactivo. Sesión bloqueada si la cuenta está inactiva.
+- Roles propietario, administrador y editor; creación inicial mediante comando interactivo y administración del equipo por navegador, exclusiva del propietario. Búsqueda, creación, nombre/rol/estado, enlaces privados de contraseña y bitácora; protección del propietario y cierre de sesiones/tokens al cambiar permisos o estado.
+- Verificación TOTP optativa por cuenta, con RobThree/TwoFactorAuth 3.0.3 y QR SVG local con BaconQrCode 3.1.1. Activación confirmada, clave cifrada, diez códigos de recuperación de un uso almacenados como hashes, renovación y desactivación con contraseña y segundo factor. Acceso pendiente sin autenticar, caducidad, límites de intentos, rechazo de códigos reutilizados y comprobación de versión de seguridad en cada petición privada. Recuperación excepcional por consola con confirmación y auditoría.
 - Borradores separados de la versión pública; publicación explícita, recuperación como nuevo borrador, bitácora y rechazo de ediciones desactualizadas.
 - Restricción de publicación de procedimientos al propietario.
 - Sitio ES/EN con fotografías reales, identidad original, contacto, horarios, instalaciones y aviso de urgencias. El catálogo público lee únicamente versiones publicadas y visibles.
@@ -38,8 +39,8 @@ Fecha: 9 de noviembre de 2026. Entrega local con preguntas frecuentes editables,
 
 ## Comprobaciones
 
-- 52 pruebas Laravel (512 aserciones): importaciones repetibles, acceso, cuentas inactivas, límite de intentos, recuperación y uso único de tokens, roles, revisiones, conflictos de edición, traducciones, escape de contenido, visibilidad pública, vistas privadas, enlaces oficiales, privacidad, horarios/excepciones, coherencia del JSON-LD, selección de idioma, cargas inválidas, optimización/orientación/transparencia, fallos de almacenamiento y ciclo privado/publicado/recuperado de fotografías y preguntas frecuentes.
-- 21 pruebas JavaScript de interacción con DOM: cambios/reversiones, validación entre idiomas, navegación por teclado, enlaces de error, envíos duplicados, regreso con el navegador, cierre/adaptación de menús, selector de idioma con anclas, búsqueda pública, selección de imágenes/carga, alta/eliminación/orden/límite de preguntas y comportamiento del movimiento. Estas últimas verifican entrada única, cancelación al cambiar preferencias/enfocar/navegar y disponibilidad sin APIs de animación mediante dobles de prueba; no sustituyen una revisión visual de fluidez. Ejecutar con `npm.cmd test` dentro de `app-web`.
+- 64 pruebas Laravel (671 aserciones): importaciones, autenticación, cuentas/roles, cierre de sesiones, enlaces privados, activación/caducidad/reutilización/límites de TOTP y recuperación, revisiones, conflictos, traducciones, escape de contenido, vistas privadas/públicas, enlaces oficiales, privacidad, horarios, JSON-LD, idioma, cargas y optimización de imágenes, fallos de almacenamiento y publicación/recuperación de fotografías y preguntas frecuentes.
+- 22 pruebas JavaScript de interacción con DOM: cambios/reversiones, validación entre idiomas, navegación por teclado, enlaces de error y apertura del formulario de seguridad correcto, envíos duplicados, regreso con el navegador, cierre/adaptación de menús, selector de idioma con anclas, búsqueda pública, selección de imágenes/carga, alta/eliminación/orden/límite de preguntas y comportamiento del movimiento. Estas últimas verifican entrada única, cancelación al cambiar preferencias/enfocar/navegar y disponibilidad sin APIs de animación mediante dobles de prueba; no sustituyen una revisión visual de fluidez. Ejecutar con `npm.cmd test` dentro de `app-web`.
 - Pruebas aisladas en SQLite en memoria; migración e importación ejecutadas también sobre MySQL local.
 - Compilación de recursos para producción correcta.
 - Composer válido, requisitos de plataforma local satisfechos y auditoría PHP sin avisos de vulnerabilidad al comprobarla. Auditoría npm de dependencias de producción sin vulnerabilidades reportadas.
@@ -50,7 +51,7 @@ Fecha: 9 de noviembre de 2026. Entrega local con preguntas frecuentes editables,
 
 1. Revisar visualmente el sitio y el panel en escritorio y móvil, y ajustar el patrón de diseño.
 2. Revisar con el médico las preguntas frecuentes iniciales y publicar las respuestas aprobadas.
-3. Incorporar administración de usuarios por navegador y segundo factor con un componente mantenido.
+3. Probar el escaneo QR con una aplicación autenticadora, recuperación y sesiones en dos navegadores; activar dos pasos en las cuentas reales.
 4. Añadir solicitudes explícitas de revisión. Los servicios y bloques actuales permiten guardar, revisar, publicar y recuperar, sin una bandeja de solicitudes separada.
 5. Revisar contenido legal, validar el marcado en herramientas externas y completar accesibilidad/rendimiento.
 6. Respaldos automatizados y restauración ensayada, medición de clics si se aprueba y revisión final de publicación.

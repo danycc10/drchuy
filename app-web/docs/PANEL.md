@@ -2,13 +2,36 @@
 
 ## Acceso
 
-Crear la cuenta desde una terminal en la carpeta de la aplicación con `php artisan app:create-admin`. El comando pide contraseña de al menos 12 caracteres con letras y números, sin mostrarla. No pasar contraseñas como argumentos ni guardarlas en el repositorio.
+Crear la primera cuenta propietaria desde una terminal en la carpeta de la aplicación con `php artisan app:create-admin`. El comando pide contraseña de al menos 12 caracteres con letras y números, sin mostrarla. No pasar contraseñas como argumentos ni guardarlas en el repositorio. Las cuentas del equipo se administran después en **Usuarios**.
 
 Entrar a `/admin` con el correo y la contraseña elegidos. El rol `owner` publica todos los servicios; `administrator` publica servicios ordinarios; `editor` prepara borradores. Los procedimientos necesitan al propietario.
 
 La recuperación usa enlaces de Laravel. En desarrollo, `MAIL_MAILER=log` guarda el mensaje en el log privado en lugar de enviarlo. En producción se necesita correo configurado y probado. El log puede contener el enlace de recuperación: no compartirlo ni subirlo a Git.
 
 En móvil, **Menú** abre la navegación. Puedes cerrarla con **Cerrar menú**, la tecla Escape o pulsando fuera. El foco del teclado permanece dentro mientras está abierta y vuelve al botón al cerrar. La sección actual se identifica también para lectores de pantalla.
+
+## Usuarios
+
+Solo el propietario ve este módulo y puede acceder a sus acciones. Puede buscar por nombre/correo, crear cuentas, cambiar nombre/rol y activar o desactivar acceso. Cada cambio requiere su contraseña actual y se registra en Actividad. El correo de una cuenta existente no se cambia desde este módulo.
+
+Al crear una cuenta se genera una contraseña aleatoria que no se muestra. Abrir la cuenta y usar **Generar enlace privado**: copiarlo y compartirlo directamente con su titular para que elija una contraseña. El enlace usa el dominio de `APP_URL`, vence según la configuración de Laravel (60 minutos inicialmente), reemplaza los anteriores y funciona una sola vez. El panel muestra el enlace únicamente tras generarlo; no envía correo con esta acción. La recuperación por correo sigue disponible desde el acceso cuando SMTP está configurado.
+
+Cambiar el rol o desactivar/reactivar una cuenta invalida sus sesiones anteriores y los enlaces de contraseña pendientes. La desactivación conserva su historial. No se permite quitarse el rol de propietario ni desactivar la cuenta propia, y debe quedar un propietario activo. Crear otro propietario concede control completo del equipo.
+
+## Mi seguridad: verificación en dos pasos
+
+1. Abrir **Mi seguridad** e introducir la contraseña actual.
+2. Agregar una cuenta en una aplicación autenticadora compatible con TOTP. Escanear el QR o introducir la clave manual; elegir códigos basados en tiempo. El QR se genera dentro del sitio.
+3. Introducir el código de seis dígitos. La configuración vence en diez minutos y la protección no se activa hasta confirmar un código correcto.
+4. Copiar los diez códigos de recuperación en un gestor de contraseñas o guardarlos fuera de este dispositivo. Se muestran una sola vez; cada uno sirve para un único acceso o cambio de seguridad.
+
+En el siguiente acceso se pedirá primero correo/contraseña y después el código de la aplicación o uno de recuperación. El segundo paso vence en cinco minutos. Un código TOTP aceptado no puede reutilizarse: esperar al siguiente si se acaba de usar. Existen límites de intentos por cuenta y por ruta. Mantener la hora automática del teléfono y del servidor.
+
+Para renovar códigos de recuperación o desactivar la protección, se necesitan contraseña y un código nuevo. Estas acciones cierran las otras sesiones; renovar anula todos los códigos anteriores. Recuperar la contraseña no desactiva el segundo factor. El propietario puede ver qué cuentas lo activaron, pero no consultar sus claves ni desactivarlo desde Usuarios.
+
+Si se pierden tanto el teléfono como todos los códigos, un operador con acceso al servidor puede ejecutar `php artisan app:reset-two-factor`, verificar la identidad del titular por un medio independiente y confirmar la cuenta. Es una recuperación excepcional que queda en Actividad, cierra todas las sesiones y anula los enlaces de contraseña pendientes. El titular debe configurar otra vez la protección. No existe un enlace público para omitirla.
+
+La implementación utiliza [RobThree/TwoFactorAuth](https://github.com/RobThree/TwoFactorAuth) y [BaconQrCode](https://github.com/Bacon/BaconQrCode). Las claves TOTP se cifran con `APP_KEY`; los códigos de recuperación se guardan como hashes. No se registran claves o códigos en la bitácora. Respaldar y conservar `APP_KEY` de forma privada junto con los procedimientos de restauración.
 
 ## Editar un servicio
 
@@ -87,4 +110,4 @@ La opción **Fotografía original del sitio** conserva la imagen inicial del paq
 
 Las cargas se guardan fuera de la raíz pública. Las imágenes de borradores y los originales requieren acceso al panel. Solo los derivados asociados a la versión publicada están disponibles mediante la ruta pública; pueden permanecer en la caché del navegador hasta cinco minutos después de un reemplazo.
 
-Los módulos de usuarios por navegador y segundo factor siguen pendientes. Consultar `ESTADO_IMPLEMENTACION.md` en la raíz del repositorio.
+Consultar `ESTADO_IMPLEMENTACION.md` en la raíz del repositorio para los siguientes módulos y la revisión pendiente de lanzamiento.
