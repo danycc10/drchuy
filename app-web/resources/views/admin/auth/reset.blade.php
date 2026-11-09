@@ -5,6 +5,6 @@
         <label>Correo<input type="email" name="email" value="{{ old('email', request('email')) }}" required autocomplete="username"></label>
         <label>Contraseña<input type="password" name="password" required minlength="12" autocomplete="new-password"></label>
         <label>Repite la contraseña<input type="password" name="password_confirmation" required minlength="12" autocomplete="new-password"></label>
-        <button class="button primary">Guardar contraseña</button>
+        <button class="button primary"><x-site-icon name="lock" /> Guardar contraseña</button>
     </form>
 </x-admin-layout>

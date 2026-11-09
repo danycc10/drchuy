@@ -1,6 +1,6 @@
 <x-admin-layout :title="$block->label()">
     @php($payload = $block->currentRevision->payload)
-    <div class="page-heading"><div><a class="small-link" href="{{ route('admin.content.index') }}">← Contenido y horarios</a><h1 style="margin-top:18px">{{ $block->label() }}</h1><p>{{ $schema['description'] }}</p></div><span class="badge {{ $block->hasDraft() ? 'draft' : 'published' }}">{{ $block->hasDraft() ? 'Borrador' : 'Publicado' }}</span></div>
+    <div class="page-heading"><div><a class="small-link" href="{{ route('admin.content.index') }}"><x-site-icon name="document" /> Contenido y horarios</a><h1 style="margin-top:18px">{{ $block->label() }}</h1><p>{{ $schema['description'] }}</p></div><span class="badge {{ $block->hasDraft() ? 'draft' : 'published' }}">{{ $block->hasDraft() ? 'Borrador' : 'Publicado' }}</span></div>
     @if($block->key === 'legal')<div class="notice">Incorpora el aviso validado para los tratamientos de datos reales del sitio. Puedes guardar un borrador incompleto; para publicar necesitas el texto en ambos idiomas.</div>@endif
     @if($block->key === 'physician')<div class="notice">Conserva la denominación pública y las credenciales autorizadas. Los cambios requieren revisión y publicación por el propietario.</div>@endif
     <x-editor-toolbar form="content-editor" />
@@ -22,12 +22,12 @@
             @else
             <div class="preview-links" aria-label="Vista previa">
                 @foreach(['es' => 'Español', 'en' => 'Inglés'] as $locale => $language)
-                    <a class="small-link" href="{{ route($block->key === 'legal' ? 'admin.preview.privacy' : 'admin.preview', $locale) }}" target="_blank" rel="noopener noreferrer">{{ $language }} ↗</a>
+                    <a class="small-link" href="{{ route($block->key === 'legal' ? 'admin.preview.privacy' : 'admin.preview', $locale) }}" target="_blank" rel="noopener noreferrer"><x-site-icon name="eye" /> {{ $language }}</a>
                 @endforeach
             </div>
             @endif
             <p data-dirty-note class="dirty-note" id="publish-help" hidden>Guarda tus cambios antes de revisarlos o publicarlos.</p>
-            @can('publish', $block)<form method="post" action="{{ route('admin.content.publish', $block) }}" data-confirm="¿Publicar la última versión guardada de este contenido?">@csrf<input type="hidden" name="revision_id" value="{{ $block->current_revision_id }}"><button data-publish-button aria-describedby="publish-help" class="button secondary" @disabled(!$block->hasDraft())>Publicar versión guardada</button></form>@else<p class="field-help" style="margin-top:16px">{{ ($schema['owner_only'] ?? false) ? 'Solo el propietario puede publicar este bloque.' : 'Un administrador o el propietario debe publicar los cambios.' }}</p>@endcan
+            @can('publish', $block)<form method="post" action="{{ route('admin.content.publish', $block) }}" data-confirm="¿Publicar la última versión guardada de este contenido?">@csrf<input type="hidden" name="revision_id" value="{{ $block->current_revision_id }}"><button data-publish-button aria-describedby="publish-help" class="button secondary" @disabled(!$block->hasDraft())><x-site-icon name="publish" /> Publicar versión guardada</button></form>@else<p class="field-help" style="margin-top:16px">{{ ($schema['owner_only'] ?? false) ? 'Solo el propietario puede publicar este bloque.' : 'Un administrador o el propietario debe publicar los cambios.' }}</p>@endcan
         </section><section class="panel"><h2>Historial</h2>@foreach($revisions as $revision)<div class="revision-row"><a class="small-link" href="{{ route('admin.content.revision', [$block, $revision]) }}">Versión #{{ $revision->id }}</a><small>{{ $revision->author?->name ?? 'Importación inicial' }}</small><small>{{ $revision->created_at->timezone('America/Matamoros')->format('d/m/Y H:i') }}</small>@if($revision->id === $block->published_revision_id)<span class="badge published">Versión pública</span>@endif</div>@endforeach<div class="pagination">{{ $revisions->links('pagination::simple-tailwind') }}</div></section></aside>
     </div>
 </x-admin-layout>

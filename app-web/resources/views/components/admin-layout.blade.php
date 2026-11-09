@@ -12,24 +12,24 @@
 @if($guest)
     <div class="auth-shell">
         <aside class="auth-story"><span class="eyebrow">MEDICINA RESPIRATORIA</span><h1>El cuidado empieza<br>en los detalles.</h1><p>Un espacio para mantener la información de tu consultorio clara, cercana y al día.</p><div class="story-line"></div><small>Dr. Jesús García Espinoza<br>Piedras Negras, Coahuila</small></aside>
-        <main id="main" class="auth-form"><span class="eyebrow">ADMINISTRACIÓN</span><h2>{{ $title }}</h2><x-feedback />{{ $slot }}<p class="auth-foot">Acceso exclusivo para el equipo del consultorio.</p></main>
+        <main id="main" class="auth-form"><a class="auth-brand" href="{{ route('home', 'es') }}"><img src="{{ asset('images/logo.png') }}" alt="Medicina Respiratoria" width="4140" height="1314"></a><span class="eyebrow">ADMINISTRACIÓN</span><h2>{{ $title }}</h2><x-feedback />{{ $slot }}<p class="auth-foot">Acceso exclusivo para el equipo del consultorio.</p></main>
     </div>
 @else
     <button type="button" class="nav-backdrop" data-nav-backdrop tabindex="-1" aria-label="Cerrar menú" hidden></button>
     <aside class="sidebar" id="admin-navigation" aria-label="Menú de administración">
-        <button type="button" class="nav-close" data-menu-close>Cerrar menú <span aria-hidden="true">×</span></button>
+        <button type="button" class="nav-close" data-menu-close>Cerrar menú <x-site-icon name="close" /></button>
         <a class="admin-brand" href="{{ route('admin.dashboard') }}"><img src="{{ asset('images/logo-white.png') }}" alt="Medicina Respiratoria · Dr. Jesús García Espinoza" style="width:100%;height:auto"></a>
         <span class="nav-caption">ESPACIO DE TRABAJO</span>
         <nav aria-label="Administración">
-            <a class="{{ request()->routeIs('admin.dashboard') ? 'active' : '' }}" aria-current="{{ request()->routeIs('admin.dashboard') ? 'page' : 'false' }}" href="{{ route('admin.dashboard') }}"><span aria-hidden="true">◫</span> Resumen</a>
-            @if(Route::has('admin.services.index'))<a class="{{ request()->routeIs('admin.services.*') ? 'active' : '' }}" aria-current="{{ request()->routeIs('admin.services.*') ? 'page' : 'false' }}" href="{{ route('admin.services.index') }}"><span aria-hidden="true">☷</span> Servicios</a>@endif
-            <a class="{{ request()->routeIs('admin.content.*') ? 'active' : '' }}" aria-current="{{ request()->routeIs('admin.content.*') ? 'page' : 'false' }}" href="{{ route('admin.content.index') }}"><span aria-hidden="true">▤</span> Contenido y horarios</a>
-            @if(Route::has('admin.activity'))<a class="{{ request()->routeIs('admin.activity') ? 'active' : '' }}" aria-current="{{ request()->routeIs('admin.activity') ? 'page' : 'false' }}" href="{{ route('admin.activity') }}"><span aria-hidden="true">↺</span> Actividad</a>@endif
+            <a class="{{ request()->routeIs('admin.dashboard') ? 'active' : '' }}" aria-current="{{ request()->routeIs('admin.dashboard') ? 'page' : 'false' }}" href="{{ route('admin.dashboard') }}"><x-site-icon name="grid" /> Resumen</a>
+            @if(Route::has('admin.services.index'))<a class="{{ request()->routeIs('admin.services.*') ? 'active' : '' }}" aria-current="{{ request()->routeIs('admin.services.*') ? 'page' : 'false' }}" href="{{ route('admin.services.index') }}"><x-site-icon name="list" /> Servicios</a>@endif
+            <a class="{{ request()->routeIs('admin.content.*') ? 'active' : '' }}" aria-current="{{ request()->routeIs('admin.content.*') ? 'page' : 'false' }}" href="{{ route('admin.content.index') }}"><x-site-icon name="document" /> Contenido y horarios</a>
+            @if(Route::has('admin.activity'))<a class="{{ request()->routeIs('admin.activity') ? 'active' : '' }}" aria-current="{{ request()->routeIs('admin.activity') ? 'page' : 'false' }}" href="{{ route('admin.activity') }}"><x-site-icon name="history" /> Actividad</a>@endif
         </nav>
         <div class="sidebar-bottom"><span class="status-dot"></span> Panel del consultorio<p>Contenido claro.<br>Atención cercana.</p></div>
     </aside>
     <div class="admin-workspace">
-        <header class="admin-topbar"><button type="button" class="menu-toggle" data-menu-toggle aria-controls="admin-navigation" aria-expanded="false">Menú</button><span class="breadcrumb">Consultorio <span>/</span> {{ $title }}</span><div class="account"><span class="avatar">{{ mb_substr(auth()->user()->name, 0, 1) }}</span><span>{{ auth()->user()->name }}<small>{{ auth()->user()->role->label() }}</small></span><form method="post" action="{{ route('logout') }}">@csrf<button class="text-button">Salir</button></form></div></header>
+        <header class="admin-topbar"><button type="button" class="menu-toggle" data-menu-toggle aria-controls="admin-navigation" aria-expanded="false"><x-site-icon name="menu" /> Menú</button><span class="breadcrumb">Consultorio <span>/</span> {{ $title }}</span><div class="account"><span class="avatar">{{ mb_substr(auth()->user()->name, 0, 1) }}</span><span class="account-name">{{ auth()->user()->name }}<small>{{ auth()->user()->role->label() }}</small></span><form method="post" action="{{ route('logout') }}">@csrf<button class="text-button"><x-site-icon name="power" /> Salir</button></form></div></header>
         <main id="main" class="admin-main"><x-feedback />{{ $slot }}</main>
         <footer class="admin-footer">Medicina Respiratoria <span>Administración del sitio</span></footer>
     </div>

@@ -5,6 +5,6 @@
         <label>Correo electrónico<input type="email" name="email" value="{{ old('email') }}" required autofocus autocomplete="username" maxlength="254"></label>
         <label>Contraseña<input type="password" name="password" required autocomplete="current-password" maxlength="255"></label>
         <a class="small-link" href="{{ route('password.request') }}">Olvidé mi contraseña</a>
-        <button class="button primary">Iniciar sesión <span aria-hidden="true">→</span></button>
+        <button class="button primary"><x-site-icon name="lock" /> Iniciar sesión</button>
     </form>
 </x-admin-layout>

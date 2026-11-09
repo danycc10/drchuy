@@ -5,7 +5,7 @@ import { initEditor } from '../../resources/js/editor.js';
 
 function setup({ recovered = false, published = false, errors = '' } = {}) {
     const dom = new JSDOM(`<!doctype html><body>${errors}
-        <p data-save-state role="status"></p><button data-save-button form="editor">Guardar borrador</button>
+        <p data-save-state role="status"></p><button data-save-button form="editor"><svg aria-hidden="true"></svg><span data-save-label>Guardar borrador</span></button>
         <form id="editor" data-editor data-recovered-input="${recovered}">
             <div data-language-tabs hidden><button type="button" id="tab-es" role="tab" aria-controls="language-es">Español</button><button type="button" id="tab-en" role="tab" aria-controls="language-en">Inglés</button></div>
             <section id="language-es" data-language-panel><label>Nombre<input id="name-es" name="payload[es][name]" value="Consulta" required></label></section>
@@ -99,4 +99,5 @@ test('saving blocks double submits and restores controls when returning with bro
     window.dispatchEvent(new window.Event('pageshow'));
     assert.equal(find('[data-save-button]').disabled, false);
     assert.equal(find('[data-save-button]').textContent, 'Guardar borrador');
+    assert.ok(find('[data-save-button] svg'), 'The icon survives saving and browser Back');
 });

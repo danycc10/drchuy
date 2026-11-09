@@ -84,6 +84,7 @@ export function initEditor(document) {
     const initial = editor ? snapshot() : null;
     const recovered = editor?.dataset.recoveredInput === 'true';
     const saveButton = document.querySelector('[data-save-button]');
+    const saveLabel = saveButton?.querySelector('[data-save-label]') ?? saveButton;
     const publishButtons = [...document.querySelectorAll('[data-publish-button]')].map((button) => ({ button, disabled: button.disabled }));
     let dirty = false;
     let submitting = false;
@@ -107,7 +108,7 @@ export function initEditor(document) {
         submitting = true;
         dirty = false;
         editor.setAttribute('aria-busy', 'true');
-        if (saveButton) { saveButton.disabled = true; saveButton.textContent = 'Guardando…'; }
+        if (saveButton) { saveButton.disabled = true; saveLabel.textContent = 'Guardando…'; }
     });
     window.addEventListener('beforeunload', (event) => {
         if (dirty) { event.preventDefault(); event.returnValue = ''; }
@@ -115,7 +116,7 @@ export function initEditor(document) {
     window.addEventListener('pageshow', () => {
         submitting = false;
         editor?.removeAttribute('aria-busy');
-        if (saveButton) saveButton.textContent = 'Guardar borrador';
+        if (saveLabel) saveLabel.textContent = 'Guardar borrador';
         updateState();
     });
     document.querySelectorAll('[data-confirm]').forEach((form) => {
