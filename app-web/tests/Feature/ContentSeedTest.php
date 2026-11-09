@@ -21,8 +21,8 @@ class ContentSeedTest extends TestCase
         $block->current_revision_id = $revision->id;
         $block->save();
         $this->seed(ContentSeeder::class);
-        $this->assertDatabaseCount('content_blocks', 8);
-        $this->assertDatabaseCount('content_revisions', 9);
+        $this->assertDatabaseCount('content_blocks', 9);
+        $this->assertDatabaseCount('content_revisions', 10);
         $this->assertSame('Cambio editorial', $block->fresh()->currentRevision->payload['es']['hero']);
         $this->assertSame(0, ContentBlock::whereNotNull('published_revision_id')->count());
         $this->assertSame('', ContentBlock::where('key', 'legal')->firstOrFail()->currentRevision->payload['es']['privacy_content']);

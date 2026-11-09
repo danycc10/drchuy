@@ -1,7 +1,9 @@
 import { initEditor } from './editor';
 import { initNavigation } from './navigation';
 import { initMedia } from './media';
+import { initFaq } from './faq';
 
+initFaq(document);
 initEditor(document);
 initNavigation(document);
 initMedia(document);

@@ -37,6 +37,9 @@ class ContentController extends Controller
         if ($block->key === 'hours') {
             $data['payload']['exceptions'] ??= [];
         }
+        if ($block->key === 'faq') {
+            $data['payload']['items'] ??= [];
+        }
         $publisher->draft($block, $data['payload'], (int) $data['revision_id'], $request->user());
 
         return to_route('admin.content.edit', $block)->with('status', 'Borrador guardado. Revísalo antes de publicar.');

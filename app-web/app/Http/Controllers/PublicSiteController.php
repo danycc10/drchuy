@@ -34,7 +34,7 @@ class PublicSiteController extends Controller
         $data = $request->validate([
             'locale' => 'required|string|in:es,en',
             'page' => 'required|string|in:home,privacy',
-            'anchor' => 'nullable|string|in:services,physician,office,location,hours',
+            'anchor' => 'nullable|string|in:services,physician,office,location,hours,faq',
         ]);
         $request->session()->put('public_locale', $data['locale']);
         $anchor = $data['page'] === 'home' && filled($data['anchor'] ?? null) ? '#'.$data['anchor'] : '';

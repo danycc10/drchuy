@@ -47,7 +47,7 @@ export function initPublicNavigation(document) {
     if (languageForm) {
         const syncAnchor = () => {
             const anchor = window.location.hash.slice(1);
-            languageForm.elements.anchor.value = ['services', 'physician', 'office', 'location', 'hours'].includes(anchor) ? anchor : '';
+            languageForm.elements.anchor.value = ['services', 'physician', 'office', 'location', 'hours', 'faq'].includes(anchor) ? anchor : '';
         };
         syncAnchor();
         window.addEventListener('hashchange', syncAnchor);

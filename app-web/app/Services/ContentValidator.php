@@ -29,6 +29,16 @@ class ContentValidator
                 }
             }
         }
+        if ($key === 'faq') {
+            $rules['items'] = 'present|array|list|max:12';
+            $rules['items.*'] = 'required|array:visible,es,en';
+            $rules['items.*.visible'] = 'required|boolean';
+            foreach (['es', 'en'] as $locale) {
+                $rules['items.*.'.$locale] = 'required|array:question,answer';
+                $rules['items.*.'.$locale.'.question'] = 'required|string|max:200';
+                $rules['items.*.'.$locale.'.answer'] = 'required|string|max:1500';
+            }
+        }
         if ($key === 'contact') {
             $rules['shared.phone'][] = 'regex:/^\+[1-9][0-9]{7,14}$/';
         }
@@ -98,6 +108,13 @@ class ContentValidator
         });
         $data = $validator->validate();
         $data['shared'] ??= [];
+        if ($key === 'faq') {
+            $data['items'] = array_map(function ($item) {
+                $item['visible'] = (bool) $item['visible'];
+
+                return $item;
+            }, $data['items']);
+        }
         if ($key === 'media') {
             foreach ($data['shared'] as &$imageId) {
                 $imageId = filled($imageId) ? (int) $imageId : null;

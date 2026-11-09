@@ -14,6 +14,7 @@ class PublicContent
         $relation = $preview ? 'currentRevision' : 'publishedRevision';
         $privacyUpdated = null;
         $mediaPayload = null;
+        $clinic['faq'] = [];
         foreach (ContentBlock::with($relation)->get() as $block) {
             $revision = $block->{$relation};
             if (! $revision) {
@@ -30,6 +31,9 @@ class PublicContent
             }
             if ($block->key === 'hours') {
                 $hours = $payload;
+            }
+            if ($block->key === 'faq') {
+                $clinic['faq'] = array_values(array_filter($payload['items'], fn ($item) => $item['visible']));
             }
             if ($block->key === 'legal') {
                 $privacyUpdated = $preview ? $revision->created_at : $block->published_at;

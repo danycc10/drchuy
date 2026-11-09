@@ -1,6 +1,7 @@
 <x-admin-layout title="Revisar contenido">
     <div class="page-heading"><div><a class="small-link" href="{{ route('admin.content.edit', $block) }}"><x-site-icon name="edit" /> {{ $block->label() }}</a><h1 style="margin-top:18px">Versión #{{ $revision->id }}</h1><p>{{ $revision->author?->name ?? 'Importación inicial' }} · {{ $revision->created_at->timezone('America/Matamoros')->format('d/m/Y H:i') }}</p></div></div>
     <div class="editor-fields">
+        @if($block->key === 'faq')@include('admin.content.faq-revision')@endif
         @foreach(['shared' => 'Datos compartidos', 'es' => 'Español', 'en' => 'English'] as $group => $label)
             @php($fields = $group === 'shared' ? $schema['shared'] : $schema['translated'])
             @if($fields)<section class="panel"><h2>{{ $label }}</h2><dl class="revision-fields">@foreach($fields as $field => $definition)<dt>{{ $definition['label'] }}</dt><dd>@if($definition['type'] === 'media')@include('admin.content.media-revision')@else{{ $revision->payload[$group][$field] ?? '—' }}@endif</dd>@endforeach</dl></section>@endif

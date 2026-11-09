@@ -15,6 +15,12 @@ class ContentSchema
         }
 
         return [
+            'faq' => [
+                'label' => 'Preguntas frecuentes', 'description' => 'Resuelve dudas prácticas antes de la cita. Ordena, oculta y revisa las respuestas en ambos idiomas.',
+                'shared' => [], 'translated' => [
+                    'faq_title' => $text('Título de la sección'), 'faq_intro' => $area('Introducción', 600),
+                ],
+            ],
             'media' => [
                 'label' => 'Fotografías del sitio', 'description' => 'Selecciona fotografías del médico e instalaciones y describe cada imagen en español e inglés.',
                 'owner_only' => true, 'shared' => $imageFields, 'translated' => $altFields,
@@ -100,6 +106,22 @@ class ContentSchema
             foreach ($schema['translated'] as $field => $definition) {
                 $payload[$locale][$field] = config('clinic.'.$locale.'.'.$field)
                     ?? ($field === 'privacy_title' ? ($locale === 'es' ? 'Aviso de privacidad' : 'Privacy notice') : '');
+            }
+        }
+        if ($key === 'faq') {
+            $payload['es'] = ['faq_title' => 'Antes de tu visita', 'faq_intro' => 'Respuestas a las dudas más comunes sobre las citas y la atención en el consultorio.'];
+            $payload['en'] = ['faq_title' => 'Before your visit', 'faq_intro' => 'Answers to common questions about appointments and visiting the office.'];
+            $payload['items'] = [];
+            foreach ([
+                ['es' => '¿Cómo solicito una cita?', 'en' => 'How do I request an appointment?', 'answer' => 'appointment'],
+                ['es' => '¿Qué medios de pago aceptan?', 'en' => 'Which payment methods are accepted?', 'answer' => 'payment'],
+                ['es' => '¿Cómo se confirma la disponibilidad de un procedimiento?', 'en' => 'How is availability for a procedure confirmed?', 'answer' => 'procedure_note'],
+            ] as $question) {
+                $item = ['visible' => true];
+                foreach (['es', 'en'] as $locale) {
+                    $item[$locale] = ['question' => $question[$locale], 'answer' => config('clinic.'.$locale.'.'.$question['answer'])];
+                }
+                $payload['items'][] = $item;
             }
         }
         if ($key === 'media') {

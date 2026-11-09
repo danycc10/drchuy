@@ -16,6 +16,7 @@
                     <section class="panel" id="language-{{ $group }}" data-language-panel><h2 class="language-label">{{ $label }}</h2>@include('admin.content.fields', ['fields' => $schema['translated'], 'group' => $group])</section>
                 @endforeach
             @endif
+            @if($block->key === 'faq')@include('admin.content.faq')@endif
         </form>
         <aside class="editor-aside"><section class="panel"><h2>Revisar y publicar</h2><p class="muted small">La vista previa abre la última versión guardada en una pestaña nueva.</p>
             @if($block->key === 'legal' && (!filled($payload['es']['privacy_content'] ?? '') || !filled($payload['en']['privacy_content'] ?? '')))
@@ -23,7 +24,7 @@
             @else
             <div class="preview-links" aria-label="Vista previa">
                 @foreach(['es' => 'Español', 'en' => 'Inglés'] as $locale => $language)
-                    <a class="small-link" href="{{ route($block->key === 'legal' ? 'admin.preview.privacy' : 'admin.preview', $locale) }}" target="_blank" rel="noopener noreferrer"><x-site-icon name="eye" /> {{ $language }}</a>
+                    <a class="small-link" href="{{ route($block->key === 'legal' ? 'admin.preview.privacy' : 'admin.preview', $locale).($block->key === 'faq' ? '#faq' : '') }}" target="_blank" rel="noopener noreferrer"><x-site-icon name="eye" /> {{ $language }}</a>
                 @endforeach
             </div>
             @endif
