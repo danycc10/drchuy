@@ -39,11 +39,24 @@ La preferencia pública se guarda en la sesión y comienza en español para una 
 
 ## Contenido y horarios
 
-Desde **Contenido y horarios** puedes editar inicio, perfil profesional, instalaciones, contacto, SEO, privacidad, horarios y fotografías. Todos usan el mismo flujo: guardar borrador, revisar, publicar y recuperar versiones. Los datos compartidos se editan una vez; los textos tienen campos ES/EN.
+Desde **Contenido y horarios** puedes editar inicio, perfil profesional, instalaciones, contacto, SEO, privacidad, horarios, fotografías y preguntas frecuentes. Todos usan el mismo flujo: guardar borrador, revisar, publicar y recuperar versiones. Los datos compartidos se editan una vez; los textos tienen campos ES/EN.
 
 El propietario publica perfil profesional, avisos legales y fotografías. Los administradores pueden publicar los demás bloques. El editor prepara borradores. El tablero cuenta los borradores de servicios y de contenido.
 
 Para contacto, introduce el teléfono con `+` y código de país. Ese único valor genera teléfono visible, enlace de llamada y WhatsApp. Los enlaces de ubicación y Facebook deben usar HTTPS y sus dominios oficiales. El correo público es opcional; no es el correo privado de acceso al panel.
+
+## Preguntas frecuentes
+
+Abrir **Contenido y horarios → Preguntas frecuentes**. Se incluyen tres preguntas iniciales sobre citas, pagos y disponibilidad de procedimientos, con respuestas tomadas de los textos del consultorio. Llegan como borrador; revisarlas con el médico antes de publicar.
+
+1. Editar el título y la introducción en las pestañas ES/EN.
+2. Completar cada pregunta y respuesta en ambos idiomas. Se permiten hasta 12 preguntas, con 200 caracteres por pregunta y 1,500 por respuesta.
+3. Usar **Subir**, **Bajar** o **Quitar** para organizar la lista. Desmarcar **Mostrar en el sitio** para conservar una pregunta oculta. Estas acciones requieren JavaScript; editar preguntas existentes sigue siendo posible sin él.
+4. Guardar y abrir las vistas previas, que llevan directamente a la sección. Publicar con una cuenta propietaria o administradora; el editor puede preparar el borrador.
+
+La sección pública usa respuestas desplegables accesibles sin JavaScript, respeta la preferencia de movimiento reducido y conserva `#faq` al cambiar de idioma. Solo muestra preguntas visibles de la versión publicada. Publicar una lista vacía o sin preguntas visibles oculta la sección y su acceso desde la portada. Recuperar una versión crea otro borrador y conserva intacta la versión pública hasta volver a publicar.
+
+Las respuestas admiten texto simple y saltos de línea. No introducir indicaciones clínicas ni instrucciones de preparación sin revisión del médico. Si cambian las condiciones de citas o pagos en otros bloques, revisar también las respuestas relacionadas: cada bloque conserva su propio historial.
 
 ## Horarios y fechas especiales
 
