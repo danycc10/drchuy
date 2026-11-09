@@ -12,7 +12,7 @@
 @if($guest)
     <div class="auth-shell">
         <aside class="auth-story"><span class="eyebrow">MEDICINA RESPIRATORIA</span><h1>El cuidado empieza<br>en los detalles.</h1><p>Un espacio para mantener la información de tu consultorio clara, cercana y al día.</p><div class="story-line"></div><small>Dr. Jesús García Espinoza<br>Piedras Negras, Coahuila</small></aside>
-        <main id="main" class="auth-form"><a class="auth-brand" href="{{ route('home', 'es') }}"><img src="{{ asset('images/logo.png') }}" alt="Medicina Respiratoria" width="4140" height="1314"></a><span class="eyebrow">ADMINISTRACIÓN</span><h2>{{ $title }}</h2><x-feedback />{{ $slot }}<p class="auth-foot">Acceso exclusivo para el equipo del consultorio.</p></main>
+        <main id="main" class="auth-form"><a class="auth-brand" href="{{ route('home') }}"><img src="{{ asset('images/logo.png') }}" alt="Medicina Respiratoria" width="4140" height="1314"></a><span class="eyebrow">ADMINISTRACIÓN</span><h2>{{ $title }}</h2><x-feedback />{{ $slot }}<p class="auth-foot">Acceso exclusivo para el equipo del consultorio.</p></main>
     </div>
 @else
     <button type="button" class="nav-backdrop" data-nav-backdrop tabindex="-1" aria-label="Cerrar menú" hidden></button>

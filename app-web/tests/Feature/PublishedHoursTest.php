@@ -26,12 +26,12 @@ class PublishedHoursTest extends TestCase
         $payload['exceptions'] = [['date' => '2026-12-25', 'closed' => true, 'sessions' => [], 'es_note' => 'Cierre especial', 'en_note' => 'Special closure']];
         $publisher = app(ContentPublisher::class);
         $publisher->draft($block, $payload, $block->current_revision_id, $owner);
-        $this->get('/es')->assertDontSee('09:30')->assertDontSee('Cierre especial');
+        $this->withSession(['public_locale' => 'es'])->get('/')->assertDontSee('09:30')->assertDontSee('Cierre especial');
         $this->actingAs($owner)->get('/admin/preview/es')->assertSee('09:30')->assertSee('Cierre especial');
         $block->refresh();
         $publisher->publish($block, $block->current_revision_id, $owner);
-        $response = $this->get('/es')->assertSee('09:30')->assertSee('11:30')->assertSee('Cierre especial');
-        $this->get('/en')->assertSee('9:30 a.m.')->assertSee('11:30 a.m.')->assertSee('Special closure');
+        $response = $this->withSession(['public_locale' => 'es'])->get('/')->assertSee('09:30')->assertSee('11:30')->assertSee('Cierre especial');
+        $this->withSession(['public_locale' => 'en'])->get('/')->assertSee('9:30 a.m.')->assertSee('11:30 a.m.')->assertSee('Special closure');
         preg_match('~<script type="application/ld\+json">(.*?)</script>~s', $response->getContent(), $matches);
         $data = json_decode($matches[1], true, 512, JSON_THROW_ON_ERROR);
         $this->assertSame('MedicalClinic', $data['@type']);
@@ -55,6 +55,6 @@ class PublishedHoursTest extends TestCase
         $publisher->draft($block, $payload, $block->current_revision_id, $owner);
         $block->refresh();
         $publisher->publish($block, $block->current_revision_id, $owner);
-        $this->get('/es')->assertOk()->assertDontSee('</script><script>alert(1)</script>', false)->assertSee('\\u003C', false);
+        $this->withSession(['public_locale' => 'es'])->get('/')->assertOk()->assertDontSee('</script><script>alert(1)</script>', false)->assertSee('\\u003C', false);
     }
 }

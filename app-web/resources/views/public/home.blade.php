@@ -4,10 +4,8 @@
     <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
     <title>{{ $copy['title'] }}</title><meta name="description" content="{{ $copy['description'] }}">
     <meta name="robots" content="{{ !$clinic['indexable'] || $preview ? 'noindex, nofollow' : 'index, follow' }}">
-    <link rel="canonical" href="{{ rtrim(config('app.url'), '/') }}/{{ $locale }}">
-    @foreach(['es' => 'es-MX', 'en' => 'en-US'] as $code => $tag)<link rel="alternate" hreflang="{{ $tag }}" href="{{ rtrim(config('app.url'), '/') }}/{{ $code }}">@endforeach
-    <link rel="alternate" hreflang="x-default" href="{{ rtrim(config('app.url'), '/') }}/es">
-    <meta property="og:type" content="website"><meta property="og:title" content="{{ $copy['title'] }}"><meta property="og:description" content="{{ $copy['description'] }}"><meta property="og:url" content="{{ rtrim(config('app.url'), '/') }}/{{ $locale }}"><meta property="og:image" content="{{ rtrim(config('app.url'), '/') }}/images/doctor.webp"><meta property="og:locale" content="{{ $locale === 'es' ? 'es_MX' : 'en_US' }}">
+    <link rel="canonical" href="{{ rtrim(config('app.url'), '/') }}/">
+    <meta property="og:type" content="website"><meta property="og:title" content="{{ $copy['title'] }}"><meta property="og:description" content="{{ $copy['description'] }}"><meta property="og:url" content="{{ rtrim(config('app.url'), '/') }}/"><meta property="og:image" content="{{ rtrim(config('app.url'), '/') }}/images/doctor.webp"><meta property="og:locale" content="{{ $locale === 'es' ? 'es_MX' : 'en_US' }}">
     @if(!$preview)<script type="application/ld+json">{!! $structuredData !!}</script>@endif
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
@@ -16,10 +14,10 @@
 @if($preview)<div class="preview-banner">Vista previa privada · incluye borradores sin publicar <a href="{{ route('admin.dashboard') }}"><x-site-icon name="grid" /> Volver al panel</a></div>@endif
 <div class="location-bar"><div class="container"><span>{{ $copy['location'] }} <span class="location-separator">/</span> <span class="appointment-top">{{ $locale === 'es' ? 'Atención con cita previa' : 'By appointment' }}</span></span><a href="tel:{{ $clinic['phone'] }}"><x-site-icon name="phone" /> {{ $clinic['phone_display'] }}</a></div></div>
 <header class="site-header"><div class="container header-inner">
-    <a class="site-brand" href="{{ route($preview ? 'admin.preview' : 'home', $locale) }}"><img src="{{ asset('images/logo.png') }}" alt="Medicina Respiratoria · Dr. Jesús García Espinoza" width="1400" height="445"></a>
+    <a class="site-brand" href="{{ ($preview ? route('admin.preview', $locale) : route('home')) }}"><img src="{{ asset('images/logo.png') }}" alt="Medicina Respiratoria · Dr. Jesús García Espinoza" width="1400" height="445"></a>
     <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-navigation"><x-site-icon name="menu" class="menu-open-icon" /><x-site-icon name="close" class="menu-close-icon" /> {{ $locale === 'es' ? 'Menú' : 'Menu' }}</button>
     <nav id="site-navigation" aria-label="{{ $locale === 'es' ? 'Principal' : 'Main navigation' }}">@foreach(['services', 'physician', 'office', 'location'] as $i => $anchor)<a href="#{{ $anchor }}">{{ $copy['nav'][$i] }}</a>@endforeach<a href="#hours">{{ $locale === 'es' ? 'Horarios' : 'Hours' }}</a></nav>
-    <div class="header-actions"><a class="language-switch" data-language-switch href="{{ route($preview ? 'admin.preview' : 'home', $locale === 'es' ? 'en' : 'es') }}" lang="{{ $locale === 'es' ? 'en' : 'es' }}" aria-label="{{ $locale === 'es' ? 'Read in English' : 'Leer en español' }}">{{ $locale === 'es' ? 'EN' : 'ES' }}</a><a class="button compact" href="{{ $clinic['whatsapp'] }}" target="_blank" rel="noopener noreferrer"><x-site-icon name="message" /> {{ $copy['short_cta'] }}</a></div>
+    <div class="header-actions"><x-public-language-switch :locale="$locale" :preview="$preview" /><a class="button compact" href="{{ $clinic['whatsapp'] }}" target="_blank" rel="noopener noreferrer"><x-site-icon name="message" /> {{ $copy['short_cta'] }}</a></div>
 </div></header>
 <main id="main">
     <section class="hero container"><div class="hero-copy"><span class="eyebrow"><span class="little-line"></span> {{ $copy['practice_label'] }}</span><h1><span class="sr-only">{{ $clinic['name'] }}: </span>{{ $copy['hero'] }}</h1><p class="hero-intro">{{ $copy['intro'] }}</p><a class="button" href="{{ $clinic['whatsapp'] }}" target="_blank" rel="noopener noreferrer"><x-site-icon name="message" /> {{ $copy['cta'] }}</a><p class="appointment-note">{{ $copy['appointment'] }}</p>

@@ -23,14 +23,14 @@ class PublicSiteTest extends TestCase
 
     public function test_both_languages_and_contact_details_are_present_without_private_claims(): void
     {
-        $this->get('/es')->assertOk()->assertSee('Atención personalizada')->assertSee('12731500')
+        $this->withSession(['public_locale' => 'es'])->get('/')->assertOk()->assertSee('Atención personalizada')->assertSee('12731500')
             ->assertSee('Ver horarios')->assertSee('id="hours"', false)->assertSee('class="mobile-contact"', false)
             ->assertSee('Consultar servicios por WhatsApp')->assertDontSee('data-service-query', false)
             ->assertSee('https://wa.me/528781146336', false)->assertSee('14:00 y 18:00')
             ->assertDontSee('CNN-1956')->assertDontSee('RETMEDE')->assertHeader('X-Robots-Tag', 'noindex, nofollow');
-        $this->get('/en')->assertOk()->assertSee('Personalized care')->assertSee('2:00 p.m. and 6:00 p.m.')
+        $this->withSession(['public_locale' => 'en'])->get('/')->assertOk()->assertSee('Personalized care')->assertSee('2:00 p.m. and 6:00 p.m.')
             ->assertSee('View office hours')->assertSee('Contact the office')
-            ->assertSee('hreflang="es-MX"', false);
+            ->assertSee('lang="en-US"', false)->assertDontSee('hreflang=', false);
         $this->get('/fr')->assertNotFound();
         $this->get('/robots.txt')->assertOk()->assertSee('Disallow: /');
         $this->get('/sitemap.xml')->assertOk()->assertDontSee('/admin');
@@ -40,23 +40,23 @@ class PublicSiteTest extends TestCase
     {
         $service = Service::where('source_id', 10)->firstOrFail();
         $name = $service->currentRevision->payload['es']['name'];
-        $this->get('/es')->assertDontSee($name);
+        $this->withSession(['public_locale' => 'es'])->get('/')->assertDontSee($name);
         $this->get('/admin/preview/es')->assertRedirect('/admin/login');
         $owner = User::factory()->create(['role' => Role::Owner]);
         $this->actingAs($owner)->get('/admin/preview/es')->assertOk()->assertSee($name)
             ->assertHeader('X-Robots-Tag', 'noindex, nofollow, noarchive');
         app(ServicePublisher::class)->publish($service, $service->current_revision_id, $owner);
-        $this->get('/es')->assertSee($name)->assertSee('data-service-query', false)
+        $this->withSession(['public_locale' => 'es'])->get('/')->assertSee($name)->assertSee('data-service-query', false)
             ->assertSee('https://wa.me/528781146336?text='.rawurlencode('Hola, quisiera información sobre el servicio: '.$name.'.'), false);
-        $this->get('/en')->assertOk()->assertSee('Which service are you looking for?')
+        $this->withSession(['public_locale' => 'en'])->get('/')->assertOk()->assertSee('Which service are you looking for?')
             ->assertSee('https://wa.me/528781146336?text='.rawurlencode('Hello, I would like information about this service: '.$service->currentRevision->payload['en']['name'].'.'), false);
         $payload = $service->currentRevision->payload;
         $payload['es']['name'] = 'BORRADOR NO PUBLICADO';
         $payload['visible'] = false;
         app(ServicePublisher::class)->draft($service, $payload, $service->current_revision_id, $owner);
-        $this->get('/es')->assertSee($name)->assertDontSee('BORRADOR NO PUBLICADO');
+        $this->withSession(['public_locale' => 'es'])->get('/')->assertSee($name)->assertDontSee('BORRADOR NO PUBLICADO');
         $service->refresh();
         app(ServicePublisher::class)->publish($service, $service->current_revision_id, $owner);
-        $this->get('/es')->assertDontSee($name)->assertDontSee('BORRADOR NO PUBLICADO');
+        $this->withSession(['public_locale' => 'es'])->get('/')->assertDontSee($name)->assertDontSee('BORRADOR NO PUBLICADO');
     }
 }

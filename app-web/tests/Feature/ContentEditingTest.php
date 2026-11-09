@@ -34,13 +34,13 @@ class ContentEditingTest extends TestCase
         $payload['es']['hero'] = 'TÍTULO NUEVO';
         $payload['en']['hero'] = 'NEW TITLE';
         $this->put(route('admin.content.update', $block), ['revision_id' => $block->current_revision_id, 'payload' => $payload])->assertRedirect(route('admin.content.edit', $block));
-        $this->get('/es')->assertOk()->assertDontSee('TÍTULO NUEVO');
+        $this->withSession(['public_locale' => 'es'])->get('/')->assertOk()->assertDontSee('TÍTULO NUEVO');
         $this->get('/admin/preview/es')->assertOk()->assertSee('TÍTULO NUEVO');
         $this->get('/admin/preview/en')->assertOk()->assertSee('NEW TITLE');
         $block->refresh();
         $this->post(route('admin.content.publish', $block), ['revision_id' => $block->current_revision_id])->assertSessionHasNoErrors();
-        $this->get('/es')->assertSee('TÍTULO NUEVO');
-        $this->get('/en')->assertSee('NEW TITLE');
+        $this->withSession(['public_locale' => 'es'])->get('/')->assertSee('TÍTULO NUEVO');
+        $this->withSession(['public_locale' => 'en'])->get('/')->assertSee('NEW TITLE');
         $this->get('/admin/activity')->assertOk()->assertSee('Contenido publicado')->assertSee('Inicio y presentación');
     }
 
@@ -73,14 +73,14 @@ class ContentEditingTest extends TestCase
         $payload['shared']['phone'] = '+528781110000';
         $this->put(route('admin.content.update', $block), ['revision_id' => $block->current_revision_id, 'payload' => $payload])->assertSessionHasNoErrors();
         $this->post(route('admin.content.publish', $block), ['revision_id' => $block->fresh()->current_revision_id])->assertSessionHasNoErrors();
-        $this->get('/es')->assertSee('https://wa.me/528781110000', false)->assertSee('tel:+528781110000', false)->assertSee('+52 878 111 0000');
+        $this->withSession(['public_locale' => 'es'])->get('/')->assertSee('https://wa.me/528781110000', false)->assertSee('tel:+528781110000', false)->assertSee('+52 878 111 0000');
     }
 
     public function test_privacy_requires_both_languages_and_owner_publication(): void
     {
         $this->actingAs(User::factory()->create(['role' => Role::Owner]));
         $block = $this->block('legal');
-        $this->get('/es/aviso-de-privacidad')->assertNotFound();
+        $this->withSession(['public_locale' => 'es'])->get('/aviso-de-privacidad')->assertNotFound();
         $this->get(route('admin.content.edit', $block))->assertOk()
             ->assertSee('Guarda el aviso en español e inglés')
             ->assertDontSee(route('admin.preview.privacy', 'es'));
@@ -89,15 +89,15 @@ class ContentEditingTest extends TestCase
         $payload['es']['privacy_content'] = 'Texto de prueba aprobado. <script>alert(1)</script>';
         $payload['en']['privacy_content'] = 'Approved test copy.';
         $this->put(route('admin.content.update', $block), ['revision_id' => $block->current_revision_id, 'payload' => $payload])->assertSessionHasNoErrors();
-        $this->get('/es/aviso-de-privacidad')->assertNotFound();
+        $this->withSession(['public_locale' => 'es'])->get('/aviso-de-privacidad')->assertNotFound();
         $this->get('/admin/preview/es/privacy')->assertOk()->assertSee('Texto de prueba aprobado');
         $this->get(route('admin.content.edit', $block))->assertOk()
             ->assertSee(route('admin.preview.privacy', 'es'))
             ->assertSee(route('admin.preview.privacy', 'en'));
         $this->post(route('admin.content.publish', $block), ['revision_id' => $block->fresh()->current_revision_id])->assertSessionHasNoErrors();
-        $this->get('/es/aviso-de-privacidad')->assertOk()->assertDontSee('<script>alert(1)</script>', false)->assertSee('&lt;script&gt;', false);
-        $this->get('/en/privacy-policy')->assertOk()->assertSee('Approved test copy.');
-        $this->get('/es')->assertSee('Aviso de privacidad');
+        $this->withSession(['public_locale' => 'es'])->get('/aviso-de-privacidad')->assertOk()->assertDontSee('<script>alert(1)</script>', false)->assertSee('&lt;script&gt;', false);
+        $this->withSession(['public_locale' => 'en'])->get('/aviso-de-privacidad')->assertOk()->assertSee('Approved test copy.');
+        $this->withSession(['public_locale' => 'es'])->get('/')->assertSee('Aviso de privacidad');
     }
 
     public function test_all_editors_render_and_restore_keeps_public_version(): void

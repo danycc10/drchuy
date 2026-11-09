@@ -34,7 +34,7 @@ class ClinicStructuredData
         }
         $data = [
             '@context' => 'https://schema.org', '@type' => 'MedicalClinic', '@id' => $base.'/#clinic',
-            'name' => $clinic['name'], 'url' => $base.'/'.$locale,
+            'name' => $clinic['name'], 'url' => $base.'/',
             'description' => $clinic[$locale]['intro'],
             'telephone' => $clinic['phone'], 'address' => $clinic['address'].', '.$clinic['city'],
             'image' => $base.'/images/fachada.webp', 'logo' => $base.'/images/logo.png',

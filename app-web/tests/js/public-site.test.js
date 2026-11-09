@@ -27,6 +27,22 @@ test('public menu closes with Escape, outside clicks and section navigation', ()
     assert.equal(menu.classList.contains('open'), false);
 });
 
+test('language selection submits a known section without adding the language to the URL', () => {
+    const { window } = new JSDOM(`<form method="post" action="/idioma" data-language-form>
+        <input name="locale" value="en"><input name="page" value="home"><input name="anchor" value="">
+        <button>EN</button></form>`, { url: 'https://clinic.test/#hours' });
+    const { document } = window;
+    initPublicNavigation(document);
+    const form = document.querySelector('form');
+    assert.equal(form.elements.anchor.value, 'hours');
+    assert.equal(window.location.pathname, '/');
+    assert.equal(window.location.search, '');
+    window.location.hash = '#unknown';
+    form.dispatchEvent(new window.Event('submit'));
+    assert.equal(form.elements.anchor.value, '');
+    assert.equal(form.elements.locale.value, 'en');
+});
+
 function searchableCatalog() {
     const { window } = new JSDOM(`<body><div data-service-search hidden>
         <input type="search" data-service-query><button data-clear-service-search>Clear</button>

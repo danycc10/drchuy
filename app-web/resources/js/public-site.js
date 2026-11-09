@@ -43,6 +43,16 @@ export function initPublicNavigation(document) {
         syncAnchor();
         window.addEventListener('hashchange', syncAnchor);
     }
+    const languageForm = document.querySelector('[data-language-form]');
+    if (languageForm) {
+        const syncAnchor = () => {
+            const anchor = window.location.hash.slice(1);
+            languageForm.elements.anchor.value = ['services', 'physician', 'office', 'location', 'hours'].includes(anchor) ? anchor : '';
+        };
+        syncAnchor();
+        window.addEventListener('hashchange', syncAnchor);
+        languageForm.addEventListener('submit', syncAnchor);
+    }
 }
 
 export function initServiceSearch(document) {
