@@ -9,6 +9,8 @@ use App\Services\MediaLibrary;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Validation\ValidationException;
+use Throwable;
 
 class MediaController extends Controller
 {
@@ -44,7 +46,17 @@ class MediaController extends Controller
             'image.mimetypes' => 'Utiliza una fotografía JPG, PNG o WebP.',
             'image.max' => 'La fotografía debe pesar como máximo 8 MB.',
         ]);
-        $library->upload($request->file('image'), $data['title'], $request->user());
+        try {
+            $library->upload($request->file('image'), $data['title'], $request->user());
+        } catch (ValidationException $exception) {
+            throw $exception;
+        } catch (Throwable $exception) {
+            report($exception);
+
+            return back()->withInput($request->only('title'))->withErrors([
+                'image' => 'No se pudo guardar la fotografía. Inténtalo de nuevo; si continúa, revisa el espacio disponible y los permisos del servidor.',
+            ]);
+        }
 
         return to_route('admin.media.index')->with('status', 'Fotografía guardada en la biblioteca. Elige dónde usarla en «Fotografías del sitio» antes de publicar.');
     }

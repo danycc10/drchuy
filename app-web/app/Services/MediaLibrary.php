@@ -28,6 +28,9 @@ class MediaLibrary
             $this->invalid('Selecciona una imagen JPG, PNG o WebP válida de hasta 8 MB.');
         }
         [$width, $height] = $info;
+        if ($width < 1 || $height < 1) {
+            $this->invalid('La fotografía no tiene dimensiones válidas.');
+        }
         if ($width * $height > config('media.max_pixels') || max($width, $height) > config('media.max_dimension')) {
             $this->invalid('La imagen excede 12 megapíxeles u 8,000 píxeles por lado. Reduce sus dimensiones antes de subirla.');
         }

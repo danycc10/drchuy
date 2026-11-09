@@ -96,4 +96,37 @@ class MediaLibraryTest extends TestCase
         Storage::disk('local')->assertMissing($unused->path('original'));
         Storage::disk('local')->assertExists($media->path('original'));
     }
+
+    public function test_transparent_png_keeps_transparency_in_the_optimized_copy(): void
+    {
+        $this->actingAs(User::factory()->create());
+        $image = imagecreatetruecolor(20, 20);
+        imagealphablending($image, false);
+        imagesavealpha($image, true);
+        imagefill($image, 0, 0, imagecolorallocatealpha($image, 0, 0, 0, 127));
+        imagefilledrectangle($image, 5, 5, 15, 15, imagecolorallocate($image, 10, 120, 120));
+        ob_start();
+        imagepng($image);
+        $png = ob_get_clean();
+        imagedestroy($image);
+        $this->post(route('admin.media.store'), ['title' => 'Imagen transparente', 'image' => UploadedFile::fake()->createWithContent('transparent.png', $png)])->assertSessionHasNoErrors();
+        $asset = MediaAsset::firstOrFail();
+        $webp = imagecreatefromwebp(Storage::disk('local')->path($asset->path()));
+        $this->assertSame(127, (imagecolorat($webp, 0, 0) >> 24) & 0x7f);
+        imagedestroy($webp);
+    }
+
+    public function test_failed_storage_keeps_the_title_and_does_not_create_an_asset(): void
+    {
+        $this->actingAs(User::factory()->create());
+        $disk = \Mockery::mock(\Illuminate\Filesystem\FilesystemAdapter::class);
+        $disk->shouldReceive('putFileAs')->once()->andReturn(false);
+        $disk->shouldReceive('deleteDirectory')->once()->andReturn(true);
+        Storage::shouldReceive('disk')->with('local')->andReturn($disk);
+        $this->from(route('admin.media.index'))->post(route('admin.media.store'), [
+            'title' => 'Conservar este nombre', 'image' => UploadedFile::fake()->image('photo.jpg', 20, 20),
+        ])->assertRedirect(route('admin.media.index'))->assertSessionHasErrors('image')->assertSessionHasInput('title', 'Conservar este nombre');
+        $this->assertDatabaseCount('media_assets', 0);
+        $this->assertDatabaseMissing('audit_events', ['action' => 'media.uploaded']);
+    }
 }
