@@ -11,7 +11,10 @@ class ActiveAdministrator
 {
     public function handle(Request $request, Closure $next): Response
     {
-        if (! $request->user()?->is_active) {
+        $user = $request->user();
+        if (! $user?->is_active
+            || (int) $request->session()->get('auth.version', 0) !== $user->auth_version
+            || ($user->two_factor_confirmed_at && $request->session()->get('auth.2fa_version') !== $user->auth_version)) {
             Auth::logout();
             $request->session()->invalidate();
             $request->session()->regenerateToken();

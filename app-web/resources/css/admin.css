@@ -991,6 +991,18 @@ td .small-link {
 }
 
 .content-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 22px; }
+.security-layout { max-width: 850px; }
+.security-layout .panel > p { margin-top: 14px; }
+.security-enrollment { display: grid; grid-template-columns: 240px minmax(0, 1fr); gap: 28px; align-items: center; margin-top: 28px; }
+.security-enrollment img { max-width: 100%; height: auto; background: white; border-radius: 8px; }
+.security-enrollment label { margin-top: 18px; }
+.private-value { font-family: ui-monospace, monospace; font-size: 14px!important; overflow-wrap: anywhere; }
+.security-cancel { margin-top: 22px; }
+.security-details summary { display: flex; justify-content: space-between; align-items: center; gap: 16px; cursor: pointer; min-height: 44px; list-style: none; font-weight: 600; }
+.security-details summary::-webkit-details-marker { display: none; }
+.security-details[open] summary .site-icon { transform: rotate(180deg); }
+.account-toggle { display: flex; align-items: center; gap: 10px; min-height: 44px; }
+@media(max-width:650px) { .security-enrollment { grid-template-columns: minmax(0, 1fr); } }
 .faq-editor > p { margin-top: 12px; }
 .faq-editor-item { min-width: 0; border: 1px solid var(--line); border-radius: 10px; padding: 20px; margin: 28px 0; }
 .faq-editor-item > legend { padding: 0 8px; font-weight: 600; }

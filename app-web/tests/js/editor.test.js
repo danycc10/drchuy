@@ -3,6 +3,16 @@ import assert from 'node:assert/strict';
 import { JSDOM } from 'jsdom';
 import { initEditor } from '../../resources/js/editor.js';
 
+test('security errors reveal and focus the submitted form when fields share names', () => {
+    const { window } = new JSDOM(`<div data-error-summary tabindex="-1"><span data-error-field="code">Código inválido</span></div>
+        <details><form><input name="code" id="first-code"></form></details>
+        <details id="submitted"><form data-error-target="true"><input name="code" id="submitted-code"></form></details>`);
+    initEditor(window.document);
+    window.document.querySelector('[data-error-field] a').click();
+    assert.equal(window.document.getElementById('submitted').open, true);
+    assert.equal(window.document.activeElement.id, 'submitted-code');
+});
+
 function setup({ recovered = false, published = false, errors = '' } = {}) {
     const dom = new JSDOM(`<!doctype html><body>${errors}
         <p data-save-state role="status"></p><button data-save-button form="editor"><svg aria-hidden="true"></svg><span data-save-label>Guardar borrador</span></button>

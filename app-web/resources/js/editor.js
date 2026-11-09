@@ -15,6 +15,8 @@ export function initEditor(document) {
     }
 
     function reveal(field) {
+        let disclosure = field.closest('details');
+        while (disclosure) { disclosure.open = true; disclosure = disclosure.parentElement.closest('details'); }
         const panel = field.closest('[data-language-panel]');
         if (panel) selectTab(tabs.find((tab) => tab.getAttribute('aria-controls') === panel.id));
         const times = field.closest('[data-hours-times]');
@@ -41,7 +43,8 @@ export function initEditor(document) {
         const parts = message.dataset.errorField.split('.');
         const name = parts[0] + parts.slice(1).map((part) => `[${part}]`).join('');
         const names = [name, `payload[${parts[0]}]` + parts.slice(1).map((part) => `[${part}]`).join('')];
-        const fields = [...document.querySelectorAll('input:not([type=hidden]), textarea, select')];
+        const errorScope = document.querySelector('[data-error-target="true"]') ?? document;
+        const fields = [...errorScope.querySelectorAll('input:not([type=hidden]), textarea, select')];
         const field = fields.find((input) => names.includes(input.name))
             ?? fields.find((input) => names.some((prefix) => input.name.startsWith(`${prefix}[`)));
         if (!field) return;
