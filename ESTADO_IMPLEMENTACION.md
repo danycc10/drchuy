@@ -1,6 +1,6 @@
 # Estado de implementación
 
-Fecha: 8 de noviembre de 2026. Segunda entrega funcional local con mejoras de UX del panel y del sitio público. El plan completo sigue en desarrollo.
+Fecha: 9 de noviembre de 2026. Segunda entrega funcional local con mejoras de UX del panel y del sitio público. El plan completo sigue en desarrollo.
 
 ## Implementado
 
@@ -27,6 +27,7 @@ Fecha: 8 de noviembre de 2026. Segunda entrega funcional local con mejoras de UX
 - Menú público con cierre por Escape/clic exterior, foco en la sección elegida y navegación disponible sin JavaScript. Cambiar de idioma conserva el ancla de la sección.
 - Buscador local de servicios por nombre, descripción o categoría, tolerante a mayúsculas y acentos; contador de resultados, expansión de coincidencias y recuperación cuando no hay resultados. Aparece solo cuando existen servicios visibles en el catálogo consultado: publicados en público, borradores en la vista previa. Sin JavaScript el catálogo completo permanece disponible.
 - Cada consulta de servicio abre WhatsApp con su nombre en un mensaje editable. El sitio no envía mensajes automáticamente. Cuando no hay catálogo publicado, muestra una acción directa para consultar disponibilidad.
+- Iconos SVG locales con trazo, tamaño y alineación comunes para contacto, ubicación, horarios, búsqueda y menú. Reemplazan flechas tipográficas; los servicios usan un indicador que gira al abrirse. Botones, accesos rápidos y selector de idioma tienen bordes, espaciado y estados visuales unificados. Los iconos son decorativos para lectores de pantalla y conservan etiquetas de texto; no requieren fuentes de iconos ni servicios externos.
 
 ## Comprobaciones
 
