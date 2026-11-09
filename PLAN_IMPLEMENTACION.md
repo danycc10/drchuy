@@ -39,7 +39,7 @@ No se requieren Node activo, Redis, WebSockets ni workers permanentes en producc
 
 ## 3. Sitio público
 
-Primera versión: página principal por idioma con secciones navegables y páginas independientes para privacidad. Propuesta de rutas: `/es`, `/en`, `/es/aviso-de-privacidad`, `/en/privacy-policy`; `/` redirigirá a español. El selector de idioma conservará la sección equivalente cuando exista. No se dependerá de geolocalización para elegir idioma.
+Primera versión: página principal bilingüe en `/`, con secciones navegables, y aviso en `/aviso-de-privacidad`. Por decisión del titular, el idioma no se incorpora a la URL: el selector guarda ES/EN en la sesión y conserva la sección equivalente cuando exista. La visita nueva comienza en español. Los enlaces antiguos con prefijo redirigen a las rutas limpias. No se dependerá de geolocalización para elegir idioma.
 
 | Sección | Contenido y comportamiento |
 |---|---|
@@ -57,7 +57,7 @@ Datos de control: WhatsApp `+528781146336`; cédula de licenciatura `12731500`; 
 
 Diseño móvil primero, basado en el logo azul/gris original y fotografías auténticas. Menú accesible, contraste AA, foco visible, navegación por teclado, respeto a movimiento reducido y textos alternativos en ambos idiomas. Se crearán derivados WebP y, cuando convenga, AVIF sin alterar identidad, rostro ni arquitectura. Los originales se conservarán.
 
-SEO: títulos y descripciones por idioma, canonical, hreflang es-MX/en-US, Open Graph, sitemap y robots. El marcado MedicalClinic/Physician se construirá exclusivamente con información pública aprobada y horarios divididos. No se incluirán certificaciones pendientes ni puntuaciones inventadas. La configuración del dominio definitivo completará las URLs canónicas y Search Console.
+SEO: títulos y descripciones por idioma, canonical único, Open Graph, sitemap y robots. Al compartir URL, no se generan alternates hreflang para versiones sin dirección propia. El marcado MedicalClinic/Physician se construirá exclusivamente con información pública aprobada y horarios divididos. No se incluirán certificaciones pendientes ni puntuaciones inventadas. La configuración del dominio definitivo completará las URLs canónicas y Search Console.
 
 Maps comenzará como enlace con dirección visible; un mapa incrustado se añadirá solo después de revisar su carga, privacidad y necesidad de consentimiento. La política de cookies dependerá de los servicios realmente incorporados.
 
@@ -135,7 +135,7 @@ Total orientativo: 22–34 días hábiles, aproximadamente 5–7 semanas de trab
 
 ## 8. Pruebas y aceptación
 
-- Rutas ES/EN, idioma inválido, selector, canonical, hreflang y sitemap correctos; vistas previas y panel fuera de indexación.
+- URL pública sin prefijo, selector ES/EN con sesión, idioma inválido, redirecciones antiguas, canonical y sitemap correctos; vistas previas y panel fuera de indexación.
 - Catálogo inicial con 14 servicios únicos y cinco categorías; enlaces oficiales y horarios coherentes en ambos idiomas.
 - Pruebas de permisos: un editor no publica, modifica usuarios ni accede a recursos ajenos por URL directa.
 - Borradores invisibles al público; publicación y recuperación consistentes; invalidación de caché comprobada.

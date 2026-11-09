@@ -33,7 +33,9 @@ Abrir una versión desde el historial del servicio. **Recuperar como borrador** 
 
 ## Vista previa
 
-**Vista previa** muestra los últimos borradores visibles en ES/EN y requiere autenticación. Las páginas públicas `/es` y `/en` muestran solo las versiones publicadas. Los 14 servicios iniciales llegan como borradores.
+**Vista previa** muestra los últimos borradores visibles en ES/EN y requiere autenticación. El sitio público `/` muestra solo las versiones publicadas; el selector del encabezado cambia el idioma sin agregar prefijos ni parámetros a la URL. Los 14 servicios iniciales llegan como borradores.
+
+La preferencia pública se guarda en la sesión y comienza en español para una visita nueva. El aviso usa `/aviso-de-privacidad` en ambos idiomas. Los enlaces públicos antiguos con `/es` o `/en` redirigen a las direcciones limpias conservando el idioma solicitado. La vista previa privada mantiene rutas por idioma para poder revisar ambos borradores de forma independiente.
 
 ## Contenido y horarios
 

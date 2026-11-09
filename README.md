@@ -13,8 +13,8 @@ composer dev
 
 Con el servidor iniciado:
 
-- Sitio: http://127.0.0.1:8085/es
-- Inglés: http://127.0.0.1:8085/en
+- Sitio: http://127.0.0.1:8085/
+- Idioma: selector ES/EN en el encabezado; conserva la misma URL y recuerda la selección durante la sesión.
 - Panel: http://127.0.0.1:8085/admin
 
 Para crear tu cuenta, abre otra terminal en `app-web` y ejecuta:
