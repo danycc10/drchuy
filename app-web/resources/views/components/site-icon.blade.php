@@ -1,6 +1,9 @@
 @props(['name'])
 <svg {{ $attributes->class(['site-icon']) }} width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
     @switch($name)
+        @case('image')
+            <rect x="3" y="3" width="18" height="18" rx="3" /><circle cx="8" cy="8" r="1.5" /><path d="m3 17 5-5 4 4 4-6 5 7" />
+            @break
         @case('list')
             <rect x="3" y="3" width="18" height="18" rx="3" /><path d="M9 8h7M9 12h7M9 16h7M6.5 8h.01M6.5 12h.01M6.5 16h.01" />
             @break

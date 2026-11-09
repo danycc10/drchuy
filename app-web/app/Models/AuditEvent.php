@@ -36,12 +36,17 @@ class AuditEvent extends Model
             'content.published' => 'Contenido publicado',
             'content.restored' => 'Contenido recuperado como borrador',
             'user.created' => 'Cuenta creada',
+            'media.uploaded' => 'Fotografía añadida',
+            'media.deleted' => 'Fotografía eliminada',
             default => $this->action,
         };
     }
 
     public function subjectLabel(): string
     {
+        if (isset($this->metadata['media_title'])) {
+            return $this->metadata['media_title'];
+        }
         return isset($this->metadata['block'])
             ? (\App\Support\ContentSchema::definitions()[$this->metadata['block']]['label'] ?? 'Contenido')
             : ($this->service?->currentRevision?->payload['es']['name'] ?? 'Administración');

@@ -999,6 +999,26 @@ td .small-link {
 .module-icon { display: grid; place-items: center; width: 44px; height: 44px; border: 1px solid #d7e6e2; border-radius: 10px; background: #eef5f2; color: var(--teal); }
 .module-icon .site-icon { width: 22px; height: 22px; }
 .content-card .small { font-size: 14px; margin-bottom: 10px; }
+.media-upload { margin-bottom: 24px; }
+.media-upload > summary { display: flex; align-items: center; gap: 12px; font-size: 16px; font-weight: 600; cursor: pointer; list-style: none; min-height: 44px; }
+.media-upload > summary::-webkit-details-marker { display: none; }
+.media-upload > summary > .site-icon:last-child { margin-left: auto; }
+.media-upload[open] > summary > .site-icon:last-child { transform: rotate(180deg); }
+.media-upload-form { display: grid; gap: 16px; margin-top: 20px; max-width: 700px; }
+.media-upload-form .button { justify-self: start; }
+input[type=file]::file-selector-button { border: 1px solid var(--line); padding: 8px 12px; margin-right: 12px; border-radius: 6px; background: #edf4f2; color: var(--navy); cursor: pointer; }
+.media-count { margin-bottom: 18px; }
+.media-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(230px, 100%), 1fr)); gap: 20px; }
+.media-card { border: 1px solid var(--line); border-radius: 10px; overflow: hidden; min-width: 0; }
+.media-thumbnail { display: block; aspect-ratio: 4/3; background: #eef2f3; }
+.media-thumbnail img { width: 100%; height: 100%; object-fit: contain; }
+.media-card-body { padding: 18px; display: grid; gap: 10px; }
+.media-card h2 { font-size: 16px; overflow-wrap: anywhere; }
+.media-filename { color: var(--muted); font-size: 12px; overflow-wrap: anywhere; }
+.media-card .badge { justify-self: start; white-space: normal; }
+.media-card-actions { display: flex; flex-wrap: wrap; gap: 8px 14px; }
+.media-selection-preview { display: block; width: 160px; height: 120px; object-fit: contain; background: #edf2f2; border: 1px solid var(--line); border-radius: 8px; margin-top: 12px; }
+.media-selection { margin-top: 22px; }
 .content-card .section-heading { align-items: start; }
 .content-card .button { align-self: start; margin-top: auto; }
 .weekday { padding-top: 22px; margin-top: 24px; border-top: 1px solid var(--line); }

@@ -6,6 +6,7 @@ use App\Http\Controllers\PublicSiteController;
 require __DIR__.'/admin.php';
 
 Route::get('/', [PublicSiteController::class, 'show'])->name('home');
+Route::get('/media/{media}/{variant}', [\App\Http\Controllers\Admin\MediaController::class, 'publicImage'])->whereIn('variant', ['display', 'thumb'])->name('media.image');
 Route::post('/idioma', [PublicSiteController::class, 'changeLanguage'])->name('language.update');
 Route::get('/aviso-de-privacidad', [PublicSiteController::class, 'showPrivacy'])->name('privacy');
 Route::get('/{locale}', [PublicSiteController::class, 'legacy'])->whereIn('locale', ['es', 'en']);

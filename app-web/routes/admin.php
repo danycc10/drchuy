@@ -4,6 +4,7 @@ use App\Http\Controllers\Admin\AuthController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\ServiceController;
 use App\Http\Controllers\Admin\ContentController;
+use App\Http\Controllers\Admin\MediaController;
 use App\Models\AuditEvent;
 use App\Http\Controllers\PublicSiteController;
 use Illuminate\Support\Facades\Route;
@@ -19,6 +20,11 @@ Route::prefix('admin')->middleware('admin.headers')->group(function () {
     });
     Route::middleware(['auth', 'admin.active'])->group(function () {
         Route::get('/', DashboardController::class)->name('admin.dashboard');
+        Route::get('/media', [MediaController::class, 'index'])->name('admin.media.index');
+        Route::post('/media', [MediaController::class, 'store'])->middleware('throttle:20,1')->name('admin.media.store');
+        Route::get('/media/{media}/image/{variant}', [MediaController::class, 'image'])->whereIn('variant', ['display', 'thumb'])->name('admin.media.image');
+        Route::get('/media/{media}/original', [MediaController::class, 'original'])->name('admin.media.original');
+        Route::delete('/media/{media}', [MediaController::class, 'destroy'])->name('admin.media.destroy');
         Route::get('/preview/{locale}', [PublicSiteController::class, 'preview'])->whereIn('locale', ['es', 'en'])->name('admin.preview');
         Route::get('/preview/{locale}/privacy', [PublicSiteController::class, 'previewPrivacy'])->whereIn('locale', ['es', 'en'])->name('admin.preview.privacy');
         Route::get('/services', [ServiceController::class, 'index'])->name('admin.services.index');

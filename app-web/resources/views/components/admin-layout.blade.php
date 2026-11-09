@@ -24,6 +24,7 @@
             <a class="{{ request()->routeIs('admin.dashboard') ? 'active' : '' }}" aria-current="{{ request()->routeIs('admin.dashboard') ? 'page' : 'false' }}" href="{{ route('admin.dashboard') }}"><x-site-icon name="grid" /> Resumen</a>
             @if(Route::has('admin.services.index'))<a class="{{ request()->routeIs('admin.services.*') ? 'active' : '' }}" aria-current="{{ request()->routeIs('admin.services.*') ? 'page' : 'false' }}" href="{{ route('admin.services.index') }}"><x-site-icon name="list" /> Servicios</a>@endif
             <a class="{{ request()->routeIs('admin.content.*') ? 'active' : '' }}" aria-current="{{ request()->routeIs('admin.content.*') ? 'page' : 'false' }}" href="{{ route('admin.content.index') }}"><x-site-icon name="document" /> Contenido y horarios</a>
+            <a class="{{ request()->routeIs('admin.media.*') ? 'active' : '' }}" aria-current="{{ request()->routeIs('admin.media.*') ? 'page' : 'false' }}" href="{{ route('admin.media.index') }}"><x-site-icon name="image" /> Imágenes</a>
             @if(Route::has('admin.activity'))<a class="{{ request()->routeIs('admin.activity') ? 'active' : '' }}" aria-current="{{ request()->routeIs('admin.activity') ? 'page' : 'false' }}" href="{{ route('admin.activity') }}"><x-site-icon name="history" /> Actividad</a>@endif
         </nav>
         <div class="sidebar-bottom"><span class="status-dot"></span> Panel del consultorio<p>Contenido claro.<br>Atención cercana.</p></div>

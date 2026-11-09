@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class ContentRevision extends Model
 {
@@ -19,5 +20,10 @@ class ContentRevision extends Model
     public function author(): BelongsTo
     {
         return $this->belongsTo(User::class, 'created_by');
+    }
+
+    public function mediaAssets(): BelongsToMany
+    {
+        return $this->belongsToMany(MediaAsset::class, 'content_revision_media');
     }
 }
