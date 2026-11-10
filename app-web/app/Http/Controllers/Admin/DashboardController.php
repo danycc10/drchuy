@@ -9,7 +9,7 @@ use App\Models\ContentBlock;
 
 class DashboardController extends Controller
 {
-    public function __invoke()
+    public function __invoke(\Illuminate\Http\Request $request, \App\Services\DashboardTasks $tasks)
     {
         $serviceDrafts = Service::where(fn ($query) => $query->whereNull('published_revision_id')->orWhereColumn('current_revision_id', '!=', 'published_revision_id'))->count();
         $contentDrafts = ContentBlock::where(fn ($query) => $query->whereNull('published_revision_id')->orWhereColumn('current_revision_id', '!=', 'published_revision_id'))->count();
@@ -18,6 +18,7 @@ class DashboardController extends Controller
             'published' => Service::whereNotNull('published_revision_id')->count(),
             'drafts' => $serviceDrafts + $contentDrafts,
             'pendingReviews' => \App\Models\ReviewRequest::where('status', 'pending')->count(),
+            'tasks' => $tasks->forUser($request->user()),
             'events' => AuditEvent::with(['user', 'service.currentRevision'])->latest('id')->limit(8)->get(),
         ]);
     }

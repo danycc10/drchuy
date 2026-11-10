@@ -991,6 +991,18 @@ td .small-link {
 }
 
 .content-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 22px; }
+.dashboard-tasks { margin-bottom: 24px; }
+.task-group + .task-group { margin-top: 28px; padding-top: 24px; border-top: 1px solid var(--line); }
+.task-group h3 { display: flex; align-items: center; gap: 12px; font-size: 16px; margin-bottom: 8px; }
+.task-list { list-style: none; margin-top: 16px; padding: 0; }
+.task-list li { display: flex; gap: 16px; align-items: center; padding: 18px 0; }
+.task-list li + li { border-top: 1px solid var(--line); }
+.task-copy { flex: 1; min-width: 0; }
+.task-copy h4 { font-size: 15px; overflow-wrap: anywhere; }
+.task-copy p { font-size: 13px; line-height: 1.6; color: var(--muted); margin-top: 6px; overflow-wrap: anywhere; }
+.task-list .module-icon { flex-shrink: 0; }
+.task-waiting { margin: 20px 0 0; }
+@media(max-width:700px) { .task-list li { flex-wrap: wrap; } .task-list .task-copy { flex-basis: calc(100% - 60px); } .task-list .button { margin-left: 60px; } }
 .review-change { margin-top: 24px; padding-top: 24px; border-top: 1px solid var(--line); }
 .review-change h3 { margin-bottom: 16px; font-size: 16px; }
 .review-comparison { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; }
