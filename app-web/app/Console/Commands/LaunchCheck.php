@@ -27,7 +27,7 @@ class LaunchCheck extends Command
             'outgoing_mail' => ['Transporte de correo configurado', ! in_array(config('mail.default'), ['log', 'array'], true)],
             'owner_two_factor' => ['Todos los propietarios activos con dos pasos', User::where('role', Role::Owner)->where('is_active', true)->exists() && ! User::where('role', Role::Owner)->where('is_active', true)->whereNull('two_factor_confirmed_at')->exists()],
             'privacy_published' => ['Aviso de privacidad publicado en ambos idiomas', filled($privacy['es']['privacy_content'] ?? null) && filled($privacy['en']['privacy_content'] ?? null)],
-            'services_published' => ['Catálogo revisado y publicado', Service::whereNotNull('published_revision_id')->exists()],
+            'services_published' => ['Catálogo con versiones publicadas', Service::whereNotNull('published_revision_id')->exists()],
             'backup_recent' => ['Respaldo verificado en las últimas 48 horas', $backup?->verified_at?->greaterThan(now()->subHours(48)) ?? false],
             'restore_tested' => ['Ensayo de restauración registrado', BackupRun::whereNotNull('restore_checked_at')->exists()],
             'backup_schedule' => ['Programación de respaldos habilitada', (bool) config('backup.enabled')],
