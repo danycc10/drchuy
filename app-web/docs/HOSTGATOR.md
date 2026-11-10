@@ -7,6 +7,7 @@ Guía inicial; no se ha conectado a la cuenta ni realizado un despliegue. Comple
 - PHP web y CLI compatibles con `composer.lock` y las extensiones requeridas por `composer check-platform-reqs`.
 - Para la biblioteca: extensiones GD y EXIF; GD debe incluir lectura JPEG/PNG/WebP y escritura WebP. Comprobar `gd_info()` en el servidor real. Configurar `upload_max_filesize` de al menos 8M y `post_max_size` mayor (por ejemplo, 12M). La aplicación limita cada carga a 8 MB y comprueba dimensiones y memoria antes de decodificar.
 - Para dos pasos: XMLWriter e iconv para generar el QR SVG localmente; no necesita Imagick, servicios externos ni procesos permanentes. Comprobar la sincronización del reloj del servidor y usar caché persistente para los límites de intentos (no `array` en producción).
+- Para respaldos: extensión ZIP/libzip con soporte AES-256, espacio para temporales y copias, cron y destino externo definido. La guía [RESPALDOS.md](RESPALDOS.md) describe creación, retención, verificación y restauración en una base separada.
 - MySQL, base y usuario exclusivos; SSH y Composer disponibles o un proceso de empaquetado compatible.
 - HTTPS, raíz pública configurable, permisos sobre `storage` y `bootstrap/cache`, SMTP, cron, cuotas y respaldos.
 - Dominio y subdominio de pruebas bajo control del titular.
@@ -34,8 +35,10 @@ La biblioteca guarda originales y derivados en `storage/app/private/media`. Incl
 
 ## Aceptación y reversión
 
+Ejecutar `php artisan app:launch-check` después de configurar el destino. Informa los requisitos verificables sin mostrar credenciales, cambiar contenido ni enviar mensajes; termina con código 1 si quedan pendientes. `--json` permite guardar un informe automatizado. Un resultado correcto no sustituye la aprobación médica/legal, probar correo, cron, copia externa, dispositivos y rendimiento.
+
 Verificar HTTPS, ambos idiomas, acceso y permisos, recuperación por correo, guardado/publicación, imágenes, enlaces, horarios y restricciones de documentos privados. Revisar la restauración de base y archivos en pruebas. La reversión debe restaurar código y datos compatibles; no ejecutar automáticamente migraciones destructivas.
 
-Antes del lanzamiento falta probar dos pasos con una aplicación autenticadora y el servidor real, completar módulos administrativos restantes, respaldo operativo, texto del aviso de privacidad aprobado y revisión editorial/visual. Probar también la recuperación y el cierre de sesiones con dos navegadores. La no indexación no protege un staging: restringir su acceso mediante los mecanismos del hosting. Al lanzar, actualizar URLs, habilitar indexación y registrar Search Console con cuentas del titular.
+Antes del lanzamiento falta probar dos pasos con una aplicación autenticadora y el servidor real, activar y comprobar cron/copia externa, incorporar el aviso de privacidad aprobado y completar la revisión editorial/visual. Los módulos de usuarios, revisiones y mantenimiento ya están implementados localmente. Probar también la recuperación y el cierre de sesiones con dos navegadores. La no indexación no protege un staging: restringir su acceso mediante los mecanismos del hosting. Al lanzar, actualizar URLs, habilitar indexación y registrar Search Console con cuentas del titular.
 
 El JSON-LD utiliza [MedicalClinic](https://schema.org/MedicalClinic), [OpeningHoursSpecification](https://schema.org/OpeningHoursSpecification) y [specialOpeningHoursSpecification](https://schema.org/specialOpeningHoursSpecification) para reflejar los datos visibles publicados. Las pruebas comprueban JSON válido, coherencia de turnos/excepciones y escape de texto. La validación externa y cualquier elegibilidad para resultados enriquecidos siguen pendientes; no se garantizan resultados de búsqueda.

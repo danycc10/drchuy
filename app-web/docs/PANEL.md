@@ -50,7 +50,15 @@ Estas ayudas se activan con JavaScript. Sin él, ambos idiomas y los botones sig
 
 Si otra persona guardó cambios desde que se abrió el editor, se rechaza la edición antigua. Copiar los cambios pendientes y recargar antes de continuar.
 
-## Historial
+## Solicitudes de revisión
+
+Después de guardar un servicio o bloque, usar **Solicitar revisión** y agregar un comentario opcional. La bandeja **Revisiones** permite consultar pendientes, cambios solicitados, publicaciones y versiones reemplazadas. El resumen muestra cuántas solicitudes están pendientes. Los comentarios permanecen dentro del panel; no se envían correos automáticamente.
+
+Cada solicitud queda vinculada a la versión guardada y a la versión pública que existía al enviarla. La pantalla compara sus valores, muestra la versión solicitada y enlaza al editor. Una cuenta con permiso de publicación puede **Solicitar cambios** —con comentario obligatorio— o **Aprobar y publicar**. Los límites del propietario para procedimientos y bloques sensibles siguen aplicándose. La vista previa se ofrece solo cuando la versión solicitada continúa siendo el borrador actual; muestra el conjunto de borradores guardados del sitio.
+
+Guardar o recuperar otro borrador marca las solicitudes pendientes anteriores como **Versión reemplazada**. Ya no pueden aprobar contenido posterior por accidente. Después de una solicitud de cambios, guardar un nuevo borrador y enviarlo otra vez; se conserva la conversación de la versión anterior. La publicación directa, cuando el rol la permite, también actualiza el estado de su solicitud. Este flujo no obliga a que soliciten y publiquen dos personas diferentes.
+
+## Historial de versiones
 
 Abrir una versión desde el historial del servicio. **Recuperar como borrador** crea una copia nueva para revisar; no cambia la web hasta publicarla. La actividad conserva quién hizo cada cambio.
 
@@ -111,3 +119,9 @@ La opción **Fotografía original del sitio** conserva la imagen inicial del paq
 Las cargas se guardan fuera de la raíz pública. Las imágenes de borradores y los originales requieren acceso al panel. Solo los derivados asociados a la versión publicada están disponibles mediante la ruta pública; pueden permanecer en la caché del navegador hasta cinco minutos después de un reemplazo.
 
 Consultar `ESTADO_IMPLEMENTACION.md` en la raíz del repositorio para los siguientes módulos y la revisión pendiente de lanzamiento.
+
+## Mantenimiento
+
+Disponible solo para el propietario. Muestra el último respaldo completado, las verificaciones de integridad, los ensayos de restauración y el historial de fallas/retención. **Descargar contenido** exporta textos y versiones de servicios/bloques y referencias de imágenes; incluye borradores, pero no cuentas, contraseñas ni archivos de fotografías. Es un documento privado de consulta, no una copia completa para restaurar.
+
+Los respaldos cifrados y la recuperación se operan desde consola. Consultar [RESPALDOS.md](RESPALDOS.md). La programación necesita cron y la copia externa sigue pendiente de configurar.

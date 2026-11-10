@@ -1,6 +1,6 @@
 # Estado de implementación
 
-Fecha: 9 de noviembre de 2026. Entrega local con administración de usuarios, verificación en dos pasos, preguntas frecuentes editables, biblioteca de imágenes y publicación editorial. El plan completo sigue en desarrollo.
+Fecha: 10 de noviembre de 2026. Módulos locales de contenido, usuarios, seguridad, revisiones y mantenimiento implementados. La aceptación final y el despliegue siguen pendientes de comprobaciones y datos externos.
 
 ## Implementado
 
@@ -36,25 +36,32 @@ Fecha: 9 de noviembre de 2026. Entrega local con administración de usuarios, ve
 - Selección del retrato e imágenes de interior/fachada/entrada, descripciones alternativas ES/EN, vistas previas y publicación exclusiva del propietario. Los derivados de borradores requieren autenticación; los originales permanecen privados. El contenido publicado alimenta fotos, imagen social y foto del marcado estructurado. Se mantiene la opción de las fotografías iniciales y los logos originales.
 
 - Preguntas frecuentes: hasta 12 entradas bilingües, orden, visibilidad, recuperación de formularios tras errores e historial. Tres preguntas prácticas iniciales como borradores para revisión médica. Sección pública desplegable sin dependencia de JavaScript, con acceso desde portada, enlace de contacto y ancla conservada al cambiar idioma. Solo aparece al publicar preguntas visibles; propietario y administradores pueden publicar.
+- Bandeja de solicitudes de revisión para servicios y bloques, comentarios, comparación de la versión solicitada contra la versión pública al enviarla, correcciones y aprobación/publicación según permisos. Guardar otro borrador invalida las solicitudes pendientes anteriores; la publicación directa actualiza la bandeja. Conserva historial por versión y muestra pendientes en el resumen.
+- Mantenimiento exclusivo del propietario: estado e historial de respaldos, verificación y ensayo de restauración, exportación privada de contenidos sin cuentas. Respaldos ZIP/AES-256 con clave derivada de APP_KEY, manifiesto, hashes y archivos de medios privados. Programación diaria configurable, sin solapamiento y con retención; desactivada hasta configurar cron, cuotas y copia externa.
+- Restauración por consola únicamente a una base vacía separada y una carpeta privada vacía; valida versión de migraciones, tablas, referencias y medios. No restaura sesiones ni enlaces de contraseña y revoca sesiones recordadas. Procedimiento en `app-web/docs/RESPALDOS.md`.
+- Comando `app:launch-check` para requisitos técnicos/editoriales verificables, con salida JSON opcional y sin efectos sobre cuentas, mensajes o contenido. La revisión no sustituye la aprobación del médico, la validación legal ni pruebas reales del servidor.
 
 ## Comprobaciones
 
-- 64 pruebas Laravel (671 aserciones): importaciones, autenticación, cuentas/roles, cierre de sesiones, enlaces privados, activación/caducidad/reutilización/límites de TOTP y recuperación, revisiones, conflictos, traducciones, escape de contenido, vistas privadas/públicas, enlaces oficiales, privacidad, horarios, JSON-LD, idioma, cargas y optimización de imágenes, fallos de almacenamiento y publicación/recuperación de fotografías y preguntas frecuentes.
+- 74 pruebas Laravel (926 aserciones): importaciones, autenticación, cuentas/roles, sesiones, TOTP/recuperación, revisiones y solicitudes, permisos, conflictos, traducciones, escape, vistas privadas/públicas, enlaces, privacidad, horarios, JSON-LD, idioma, medios, preguntas frecuentes, respaldos/restauración/retención/exportación y requisitos de lanzamiento. Se verifica estructura pública en ambos idiomas: idioma declarado, encabezado principal, IDs/anclas únicos y existentes, nombres de controles, dimensiones/textos alternativos de imágenes y enlaces externos protegidos. No equivale a una auditoría visual de accesibilidad.
 - 22 pruebas JavaScript de interacción con DOM: cambios/reversiones, validación entre idiomas, navegación por teclado, enlaces de error y apertura del formulario de seguridad correcto, envíos duplicados, regreso con el navegador, cierre/adaptación de menús, selector de idioma con anclas, búsqueda pública, selección de imágenes/carga, alta/eliminación/orden/límite de preguntas y comportamiento del movimiento. Estas últimas verifican entrada única, cancelación al cambiar preferencias/enfocar/navegar y disponibilidad sin APIs de animación mediante dobles de prueba; no sustituyen una revisión visual de fluidez. Ejecutar con `npm.cmd test` dentro de `app-web`.
 - Pruebas aisladas en SQLite en memoria; migración e importación ejecutadas también sobre MySQL local.
+- Respaldo real cifrado y restauración local MySQL a MySQL comprobados el 10 de noviembre: 10 tablas y 53 registros, con conteos de origen intactos. La base separada y el informe privado del ensayo se conservan para revisión. La biblioteca real estaba vacía; recuperación de fotografías comprobada con archivos de prueba aislados. No se ha ensayado en HostGator.
 - Compilación de recursos para producción correcta.
 - Composer válido, requisitos de plataforma local satisfechos y auditoría PHP sin avisos de vulnerabilidad al comprobarla. Auditoría npm de dependencias de producción sin vulnerabilidades reportadas.
 - Sitio ES/EN y formulario de acceso comprobados por HTTP local con respuesta 200. Las páginas públicas incluyen los accesos y la barra de contacto nuevos; se mantiene la no indexación.
+- Acceso HTTP a `.env` y `.git/config` rechazado con 404; respaldo privado rechazado con 403; Mantenimiento redirige al acceso si no hay sesión. El comando de lanzamiento identifica correctamente los pendientes locales de producción, dominio, correo, activación 2FA, publicación editorial y programación de respaldos.
 - Revisión visual interactiva, Android/iPhone y mediciones Lighthouse pendientes: el control de navegador disponible en esta sesión informó que no hay navegador conectado. No se ha verificado visualmente el resultado renderizado.
 
-## Siguiente bloque
+## Pendientes de lanzamiento
 
 1. Revisar visualmente el sitio y el panel en escritorio y móvil, y ajustar el patrón de diseño.
 2. Revisar con el médico las preguntas frecuentes iniciales y publicar las respuestas aprobadas.
 3. Probar el escaneo QR con una aplicación autenticadora, recuperación y sesiones en dos navegadores; activar dos pasos en las cuentas reales.
-4. Añadir solicitudes explícitas de revisión. Los servicios y bloques actuales permiten guardar, revisar, publicar y recuperar, sin una bandeja de solicitudes separada.
-5. Revisar contenido legal, validar el marcado en herramientas externas y completar accesibilidad/rendimiento.
-6. Respaldos automatizados y restauración ensayada, medición de clics si se aprueba y revisión final de publicación.
+4. Confirmar dominio y acceso técnico a HostGator Turbo, comprobar extensiones y límites, preparar entorno de pruebas protegido, HTTPS y SMTP; probar correo real cuando se autorice su envío.
+5. Incorporar el aviso de privacidad aprobado, revisar traducción y procedimientos, validar el marcado en herramientas externas y completar accesibilidad/rendimiento con navegador y dispositivos reales.
+6. Definir destino externo de copias y retención; activar cron, comprobar ejecuciones reales y ensayar restauración en un entorno compatible con HostGator. El motor de respaldo/restauración ya está implementado y ensayado localmente.
+7. Medición de clics solo si se define y aprueba su política; por ahora no se recopilan eventos de visitantes. Completar revisión final antes de activar indexación y desplegar.
 
 `config/clinic.php` conserva los valores iniciales del brief y textos de interfaz. La web aplica encima las revisiones publicadas de cada bloque; los borradores nunca sustituyen la versión pública. Editar el archivo de configuración no es el flujo habitual de actualización del contenido.
 

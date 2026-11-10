@@ -19,6 +19,8 @@ Con el servidor iniciado:
 - Biblioteca de imágenes: http://127.0.0.1:8085/admin/media (requiere acceso al panel).
 - Usuarios: http://127.0.0.1:8085/admin/users (solo propietario).
 - Verificación en dos pasos: http://127.0.0.1:8085/admin/security (cada usuario configura su cuenta).
+- Revisiones: http://127.0.0.1:8085/admin/reviews.
+- Mantenimiento: http://127.0.0.1:8085/admin/maintenance (solo propietario; estado de respaldos y exportación).
 
 Para crear tu cuenta, abre otra terminal en `app-web` y ejecuta:
 

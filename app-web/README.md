@@ -4,7 +4,7 @@ Panel propio en Laravel, Blade y Tailwind; MySQL en desarrollo y producción. El
 
 ## Instalación local
 
-Requisitos: PHP 8.3 compatible con las dependencias, GD con WebP, EXIF, XMLWriter e iconv, Composer 2, MySQL y Node para compilar recursos. Comprobar las extensiones con `composer check-platform-reqs`.
+Requisitos: PHP 8.3 compatible con las dependencias, GD con WebP, EXIF, XMLWriter, iconv y ZIP con AES-256, Composer 2, MySQL y Node para compilar recursos. Comprobar las extensiones con `composer check-platform-reqs`.
 
 1. Ejecutar `composer install` en esta carpeta.
 2. Copiar `.env.example` a `.env`, configurar una base exclusiva y ejecutar `php artisan key:generate`.
@@ -28,5 +28,7 @@ Las fotografías nuevas se gestionan desde **Imágenes** en el panel. Se almacen
 El propietario administra el equipo en **Usuarios**. Cada cuenta activa la verificación TOTP desde **Mi seguridad**, con QR local y códigos de recuperación. La migración de seguridad agrega los campos sin activar 2FA automáticamente ni cambiar contraseñas existentes. Conservar `APP_KEY`: protege las claves de autenticación cifradas.
 
 Consultar `docs/PANEL.md` y `docs/HOSTGATOR.md`. La base de datos local no contiene cuentas predeterminadas. Los servicios se revisan desde la vista previa privada y se publican explícitamente desde el panel.
+
+La bandeja **Revisiones** compara versiones y permite solicitar correcciones o publicar con los permisos existentes. **Mantenimiento** muestra respaldos y exporta contenido. Consultar `docs/RESPALDOS.md` antes de activar la programación o preparar una restauración. `php artisan app:launch-check` informa los pendientes verificables de lanzamiento sin modificar el sitio.
 
 El proyecto se encuentra en desarrollo. Consultar el estado de implementación antes de preparar una publicación.
