@@ -1,3 +1,5 @@
+import { confirmAction } from './confirmations.js';
+
 export function initFaq(document) {
     const root = document.querySelector('[data-faq-editor]');
     if (!root) return;
@@ -38,12 +40,17 @@ export function initFaq(document) {
         editor.dispatchEvent(new window.Event('input', { bubbles: true }));
     });
 
-    list.addEventListener('click', (event) => {
+    list.addEventListener('click', async (event) => {
         const button = event.target.closest('[data-faq-up], [data-faq-down], [data-faq-remove]');
         if (!button || button.disabled) return;
         const row = button.closest('[data-faq-item]');
         if (button.hasAttribute('data-faq-remove')) {
-            if (!window.confirm('¿Quitar esta pregunta del borrador? El cambio se aplicará al guardar.')) return;
+            const confirmed = await confirmAction(document, {
+                title: 'Quitar pregunta', label: 'Quitar del borrador',
+                message: 'El cambio se aplicará al guardar el borrador. La versión pública se conserva hasta publicar.',
+                detail: row.querySelector('input:not([type])')?.value || row.querySelector('[data-faq-number]').textContent,
+            }, button);
+            if (!confirmed || !row.isConnected) return;
             const neighbor = row.nextElementSibling ?? row.previousElementSibling;
             row.remove();
             refresh('Pregunta quitada.');

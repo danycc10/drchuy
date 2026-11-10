@@ -39,13 +39,15 @@ test('reordering keeps translations paired, submits sequential positions and mar
     assert.equal(find('[data-save-button]').disabled, true);
 });
 
-test('removal supports cancellation, focuses a neighbor and adding reuses no existing field identifiers', () => {
+test('removal supports cancellation, focuses a neighbor and adding reuses no existing field identifiers', async () => {
     const { window, find, rows, document } = setup();
     window.confirm = () => false;
     rows()[0].querySelector('[data-faq-remove]').click();
+    await Promise.resolve();
     assert.equal(rows().length, 2);
     window.confirm = () => true;
     rows()[0].querySelector('[data-faq-remove]').click();
+    await Promise.resolve();
     assert.equal(rows().length, 1);
     assert.equal(document.activeElement.value, 'Question 1');
     find('[data-faq-add]').click();
@@ -53,18 +55,19 @@ test('removal supports cancellation, focuses a neighbor and adding reuses no exi
     assert.equal(document.activeElement.id, 'q-2');
     assert.equal(rows()[1].querySelector('label').htmlFor, 'q-2');
     assert.ok(new window.FormData(find('form')).has('payload[items][1][es][question]'));
-    while (rows().length) rows()[0].querySelector('[data-faq-remove]').click();
+    while (rows().length) { rows()[0].querySelector('[data-faq-remove]').click(); await Promise.resolve(); }
     assert.equal(find('[data-faq-empty]').hidden, false);
     assert.equal(document.activeElement, find('[data-faq-add]'));
     assert.equal(new window.FormData(find('form')).has('payload[items][0][es][question]'), false);
 });
 
-test('the twelve question limit recovers after removing a question', () => {
+test('the twelve question limit recovers after removing a question', async () => {
     const { find, rows } = setup(12);
     assert.equal(find('[data-faq-add]').disabled, true);
     find('[data-faq-add]').click();
     assert.equal(rows().length, 12);
     rows()[5].querySelector('[data-faq-remove]').click();
+    await Promise.resolve();
     assert.equal(find('[data-faq-add]').disabled, false);
     find('[data-faq-add]').click();
     assert.equal(rows().length, 12);

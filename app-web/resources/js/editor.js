@@ -126,13 +126,11 @@ export function initEditor(document) {
         if (saveLabel) saveLabel.textContent = 'Guardar borrador';
         updateState();
     });
-    document.querySelectorAll('[data-confirm]').forEach((form) => {
+    document.querySelectorAll('form[data-confirm]').forEach((form) => {
         form.addEventListener('submit', (event) => {
             if (dirty) {
                 event.preventDefault();
                 saveButton?.focus();
-            } else if (!window.confirm(form.dataset.confirm)) {
-                event.preventDefault();
             }
         });
     });

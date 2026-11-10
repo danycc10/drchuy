@@ -39,5 +39,6 @@
         <footer class="admin-footer">Medicina Respiratoria <span>Administración del sitio</span></footer>
     </div>
 @endif
+<x-confirmation-dialog />
 </body>
 </html>

@@ -2,9 +2,11 @@ import { initEditor } from './editor';
 import { initNavigation } from './navigation';
 import { initMedia } from './media';
 import { initFaq } from './faq';
+import { initConfirmations } from './confirmations';
 
 initFaq(document);
 initEditor(document);
+initConfirmations(document);
 initNavigation(document);
 initMedia(document);
 const editor = document.querySelector('[data-editor]');

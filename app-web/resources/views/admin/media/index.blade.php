@@ -30,7 +30,7 @@
                         <span class="badge {{ $asset->revisions_count ? 'published' : '' }}">{{ $asset->revisions_count ? 'Conservada en contenido o historial' : 'Sin usar' }}</span>
                         <div class="media-card-actions">
                             @can('download', $asset)<a class="small-link" href="{{ route('admin.media.original', $asset) }}">Descargar original</a>@endcan
-                            @can('delete', $asset)@if(!$asset->revisions_count)<form method="post" action="{{ route('admin.media.destroy', $asset) }}" data-confirm="¿Eliminar esta fotografía sin usar y sus archivos? Esta acción no se puede deshacer.">@csrf @method('DELETE')<button class="small-link danger"><x-site-icon name="close" /> Eliminar</button></form>@endif @endcan
+                            @can('delete', $asset)@if(!$asset->revisions_count)<form method="post" action="{{ route('admin.media.destroy', $asset) }}" data-confirm-detail="{{ $asset->title }}" data-confirm="¿Eliminar esta fotografía sin usar y sus archivos? Esta acción no se puede deshacer.">@csrf @method('DELETE')<button class="small-link danger"><x-site-icon name="close" /> Eliminar</button></form>@endif @endcan
                         </div>
                     </div>
                 </article>
