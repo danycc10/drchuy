@@ -35,20 +35,16 @@
             @if($services->has($category->id))
                 <div class="service-group" data-service-group>
                     <div class="category-heading"><span class="category-number">0{{ $loop->iteration }}</span><h3>{{ $category->name[$locale] }}</h3></div>
-                    <div class="service-items">
+                    <ul class="service-items service-catalog-list">
                         @foreach($services[$category->id] as $service)
-                            <details data-service-item>
-                                <summary>{{ $service[$locale]['name'] }}<x-site-icon name="chevron-down" class="service-chevron" /></summary>
-                                <div class="service-description"><p>{{ $service[$locale]['description'] }}</p>
-                                    <a href="{{ $clinic['whatsapp'].'?text='.rawurlencode(($locale === 'es' ? 'Hola, quisiera información sobre el servicio: ' : 'Hello, I would like information about this service: ').$service[$locale]['name'].'.') }}" target="_blank" rel="noopener noreferrer"><x-site-icon name="message" /> {{ $copy['ask_service'] }}</a>
-                                </div>
-                            </details>
+                            @include('public.service-item')
                         @endforeach
-                    </div>
+                    </ul>
                 </div>
             @endif
         @endforeach
         </div>
+        @if($services->isNotEmpty())<p class="service-request-help">{{ $locale === 'es' ? 'Elige «Solicitar servicio» para abrir WhatsApp con su nombre en un mensaje que puedes editar antes de enviarlo.' : 'Choose “Request service” to open WhatsApp with the service name in a message you can edit before sending.' }}</p>@endif
         @if($services->isEmpty())<div class="availability"><p>{{ $copy['availability'] }}</p><a class="button" href="{{ $clinic['whatsapp'] }}" target="_blank" rel="noopener noreferrer"><x-site-icon name="message" /> {{ $locale === 'es' ? 'Consultar servicios por WhatsApp' : 'Ask about services on WhatsApp' }}</a></div>@endif
         <p class="procedure-note">{{ $copy['procedure_note'] }}</p>
     </section>

@@ -74,7 +74,9 @@ Abrir una versión desde el historial del servicio. **Recuperar como borrador** 
 
 ## Vista previa
 
-**Vista previa** muestra los últimos borradores visibles en ES/EN y requiere autenticación. El sitio público `/` muestra solo las versiones publicadas; el selector del encabezado cambia el idioma sin agregar prefijos ni parámetros a la URL. Los 14 servicios iniciales llegan como borradores.
+**Vista previa** muestra los últimos borradores visibles en ES/EN y requiere autenticación. El sitio público `/` muestra solo las versiones publicadas; el selector del encabezado cambia el idioma sin agregar prefijos ni parámetros a la URL. La importación inicial crea borradores. En este entorno local, los 14 servicios del catálogo original se publicaron por solicitud del titular para mostrarlos en la página; eso no despliega el sitio a HostGator.
+
+Los servicios se listan por categoría. Cada nombre tiene un botón **Solicitar servicio**, visible sin abrir la descripción, que abre WhatsApp con el nombre del servicio y una solicitud de disponibilidad y cómo agendar. El mensaje usa el idioma elegido y el teléfono del contenido público; el visitante puede editarlo antes de enviarlo. La descripción se despliega por separado. El buscador filtra nombre, descripción y categoría sin perder el botón de solicitud. Ocultar un servicio requiere guardar y publicar su visibilidad desde el panel.
 
 La preferencia pública se guarda en la sesión y comienza en español para una visita nueva. El aviso usa `/aviso-de-privacidad` en ambos idiomas. Los enlaces públicos antiguos con `/es` o `/en` redirigen a las direcciones limpias conservando el idioma solicitado. La vista previa privada mantiene rutas por idioma para poder revisar ambos borradores de forma independiente.
 

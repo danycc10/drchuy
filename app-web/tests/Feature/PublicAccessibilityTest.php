@@ -47,6 +47,19 @@ class PublicAccessibilityTest extends TestCase
                 $this->assertNotSame('', trim($control->textContent.$control->getAttribute('aria-label').implode('', array_map(fn ($img) => $img->getAttribute('alt'), iterator_to_array($control->getElementsByTagName('img'))))));
             }
             $this->assertGreaterThan(0, $xpath->query('//section[@id="faq"]//details/summary')->length);
+            $items = $xpath->query('//li[@data-service-item]');
+            $this->assertSame(14, $items->length);
+            foreach ($items as $item) {
+                $name = trim($xpath->query('.//h4', $item)->item(0)->textContent);
+                $link = $xpath->query('./a[@data-service-request]', $item)->item(0);
+                $this->assertNotNull($link, 'The request action must remain visible outside the description');
+                parse_str(parse_url($link->getAttribute('href'), PHP_URL_QUERY), $query);
+                $expected = $locale === 'es'
+                    ? 'Hola, quisiera solicitar el siguiente servicio: '.$name.'. ¿Me pueden confirmar la disponibilidad y cómo agendar?'
+                    : 'Hello, I would like to request the following service: '.$name.'. Could you confirm availability and how to book an appointment?';
+                $this->assertSame($expected, $query['text']);
+                $this->assertStringContainsString($name, $link->getAttribute('aria-label'));
+            }
         }
     }
 }

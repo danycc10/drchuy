@@ -52,8 +52,8 @@ function searchableCatalog() {
         <input type="search" data-service-query><button data-clear-service-search>Clear</button>
         <p data-service-count data-template="Services found: {count} of {total}"></p></div>
         <div data-service-empty hidden><button data-clear-service-search>Show all</button></div>
-        <div data-service-group><h3>Estudios respiratorios</h3><details data-service-item id="spirometry"><summary>Espirometría</summary><div class="service-description"><p>Medición de la función pulmonar.</p></div></details></div>
-        <div data-service-group><h3>Consultas</h3><details data-service-item id="consultation" open><summary>Consulta médica</summary><div class="service-description"><p>Valoración individual.</p></div></details></div></body>`);
+        <div data-service-group><h3>Estudios respiratorios</h3><article data-service-item id="spirometry"><details><summary>Espirometría</summary><div class="service-description"><p>Medición de la función pulmonar.</p></div></details><a data-service-request href="https://wa.me/528781146336?text=request">Request</a></article></div>
+        <div data-service-group><h3>Consultas</h3><article data-service-item id="consultation"><details open><summary>Consulta médica</summary><div class="service-description"><p>Valoración individual.</p></div></details><a data-service-request href="https://wa.me/528781146336?text=request">Request</a></article></div></body>`);
     const { document } = window;
     initServiceSearch(document);
     return { window, document, find: (selector) => document.querySelector(selector), search: (value) => {
@@ -68,15 +68,16 @@ test('service search matches accents, case, description and category without los
     assert.equal(find('[data-service-search]').hidden, false);
     search('  ESPIROMETRIA  ');
     assert.equal(find('#spirometry').hidden, false);
-    assert.equal(find('#spirometry').open, true);
+    assert.equal(find('#spirometry details').open, true);
     assert.equal(find('#consultation').hidden, true);
     assert.equal(find('#consultation').closest('[data-service-group]').hidden, true);
+    assert.ok(find('#spirometry > [data-service-request]'), 'The request link stays outside the expandable description');
     assert.equal(find('[data-service-count]').textContent, 'Services found: 1 of 2');
     search('respiratorios funcion');
     assert.equal(find('#spirometry').hidden, false);
     find('[data-clear-service-search]').click();
-    assert.equal(find('#spirometry').open, false);
-    assert.equal(find('#consultation').open, true);
+    assert.equal(find('#spirometry details').open, false);
+    assert.equal(find('#consultation details').open, true);
     assert.equal(find('#consultation').hidden, false);
     assert.equal(find('#consultation').closest('[data-service-group]').hidden, false);
 });

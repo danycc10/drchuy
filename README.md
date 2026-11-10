@@ -30,7 +30,7 @@ php artisan app:create-admin
 
 El comando solicita nombre, correo, rol y contraseña oculta. Elige `owner` para la primera cuenta propietaria. No hay cuentas ni contraseñas predeterminadas. Después, el propietario puede crear y administrar las cuentas desde **Usuarios**.
 
-El catálogo se importa como borrador. Para verlo completo, inicia sesión y usa **Vista previa**. En **Servicios**, guarda, revisa y publica cada versión cuando corresponda. Esta publicación modifica solo el entorno donde se ejecuta la aplicación; no despliega cambios en HostGator.
+El catálogo se importa como borrador. En el entorno local actual, los 14 servicios originales ya están publicados por solicitud del titular y aparecen con **Solicitar servicio**, que prepara un mensaje de WhatsApp con el nombre elegido. En nuevas instalaciones, inicia sesión y usa **Vista previa** para revisar los borradores; en **Servicios**, guarda, revisa y publica cada versión cuando corresponda. Esta publicación modifica solo el entorno donde se ejecuta la aplicación; no despliega cambios en HostGator.
 
 ## Organización
 

@@ -66,21 +66,22 @@ export function initServiceSearch(document) {
     const groups = [...document.querySelectorAll('[data-service-group]')];
     const services = [...document.querySelectorAll('[data-service-item]')].map((item) => ({
         item,
+        details: item.querySelector('details'),
         text: normalize(`${item.querySelector('summary').textContent} ${item.querySelector('.service-description p').textContent} ${item.closest('[data-service-group]').querySelector('h3').textContent}`),
-        wasOpen: item.open,
+        wasOpen: item.querySelector('details').open,
     }));
     let filtering = false;
 
     function filter() {
         const terms = normalize(query.value).split(/\s+/).filter(Boolean);
         const active = terms.length > 0;
-        if (active && !filtering) services.forEach((service) => { service.wasOpen = service.item.open; });
+        if (active && !filtering) services.forEach((service) => { service.wasOpen = service.details.open; });
         let count = 0;
         services.forEach((service) => {
             const matches = terms.every((term) => service.text.includes(term));
             service.item.hidden = !matches;
-            if (active) service.item.open = matches;
-            else if (filtering) service.item.open = service.wasOpen;
+            if (active) service.details.open = matches;
+            else if (filtering) service.details.open = service.wasOpen;
             if (matches) count++;
         });
         groups.forEach((group) => { group.hidden = !group.querySelector('[data-service-item]:not([hidden])'); });
