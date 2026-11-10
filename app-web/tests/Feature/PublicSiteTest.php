@@ -66,7 +66,7 @@ class PublicSiteTest extends TestCase
         foreach (['es' => 'Hola, quisiera solicitar una cita', 'en' => 'Hello, I would like to request an appointment'] as $locale => $message) {
             $html = $this->withSession(['public_locale' => $locale])->get('/')->assertOk()->getContent();
             preg_match_all('/href="([^"]+)" data-appointment-link/', $html, $matches);
-            $this->assertCount(4, $matches[1]);
+            $this->assertCount(5, $matches[1]);
             $this->assertCount(1, array_unique($matches[1]));
             $this->assertStringContainsString(rawurlencode($message), $matches[1][0]);
             $this->assertStringStartsWith(config('clinic.whatsapp', 'https://wa.me/'.ltrim(config('clinic.phone'), '+')), $matches[1][0]);

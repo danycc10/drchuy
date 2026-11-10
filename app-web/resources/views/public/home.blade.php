@@ -60,7 +60,7 @@
         </div>
     </section>
 </main>
-<footer class="site-footer"><div class="container"><div class="footer-top"><span>© {{ now()->year }} Medicina Respiratoria</span><div class="footer-links">@include('public.privacylink')<a href="{{ $clinic['facebook'] }}" target="_blank" rel="noopener noreferrer">Facebook</a></div></div><p>{{ $copy['disclaimer'] }}</p></div></footer>
+@include('public.footer')
 <nav class="mobile-contact" aria-label="{{ $locale === 'es' ? 'Contactar al consultorio' : 'Contact the office' }}">
     <a class="button secondary" href="tel:{{ $clinic['phone'] }}"><x-site-icon name="phone" /> {{ $locale === 'es' ? 'Llamar' : 'Call' }}</a>
     <x-appointment-link :clinic="$clinic" :copy="$copy" :locale="$locale" :compact="true" />

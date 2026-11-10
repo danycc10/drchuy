@@ -1,6 +1,12 @@
 @props(['name'])
 <svg {{ $attributes->class(['site-icon']) }} width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
     @switch($name)
+        @case('facebook')
+            <path fill="currentColor" stroke="none" d="M14.2 22v-9.1h3.1l.5-3.6h-3.6V7c0-1 .3-1.8 1.8-1.8H18V2.1c-.3 0-1.5-.1-2.9-.1-2.9 0-4.9 1.8-4.9 5.1v2.2H7v3.6h3.2V22Z" />
+            @break
+        @case('whatsapp')
+            <path d="M21 11.7a9 9 0 0 1-13.3 7.9L3 21l1.4-4.5A9 9 0 1 1 21 11.7Z" /><path fill="currentColor" stroke="none" d="M8 6.8c-.3 0-.6.1-.8.4-.3.3-1 1-1 2.3s1 2.5 1.1 2.7c.2.2 1.9 2.9 4.6 4 .7.3 1.2.4 1.6.5.7.2 1.3.2 1.8.1.5-.1 1.6-.7 1.8-1.3.2-.6.2-1.1.1-1.2-.1-.1-.3-.2-.6-.3l-1.9-.9c-.2-.1-.4-.1-.5.1l-.9 1.1c-.2.2-.3.2-.6.1-.2-.1-1-.4-1.9-1.2-.7-.6-1.2-1.3-1.4-1.6-.1-.2 0-.4.1-.5l.4-.5.3-.4c.1-.2 0-.4 0-.5l-.9-2.1c-.2-.5-.4-.5-.6-.5Z" />
+            @break
         @case('copy')
             <rect x="8" y="8" width="12" height="13" rx="2" /><path d="M16 8V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h3" />
             @break
