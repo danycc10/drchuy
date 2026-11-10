@@ -28,6 +28,7 @@
             <a class="{{ request()->routeIs('admin.reviews.*') ? 'active' : '' }}" aria-current="{{ request()->routeIs('admin.reviews.*') ? 'page' : 'false' }}" href="{{ route('admin.reviews.index') }}"><x-site-icon name="document" /> Revisiones</a>
             @can('viewAny', \App\Models\User::class)<a class="{{ request()->routeIs('admin.users.*') ? 'active' : '' }}" aria-current="{{ request()->routeIs('admin.users.*') ? 'page' : 'false' }}" href="{{ route('admin.users.index') }}"><x-site-icon name="user" /> Usuarios</a>@endcan
             <a class="{{ request()->routeIs('admin.security*') ? 'active' : '' }}" aria-current="{{ request()->routeIs('admin.security*') ? 'page' : 'false' }}" href="{{ route('admin.security') }}"><x-site-icon name="lock" /> Mi seguridad</a>
+            @can('viewAny', \App\Models\User::class)<a class="{{ request()->routeIs('admin.maintenance*') ? 'active' : '' }}" aria-current="{{ request()->routeIs('admin.maintenance*') ? 'page' : 'false' }}" href="{{ route('admin.maintenance') }}"><x-site-icon name="history" /> Mantenimiento</a>@endcan
             @if(Route::has('admin.activity'))<a class="{{ request()->routeIs('admin.activity') ? 'active' : '' }}" aria-current="{{ request()->routeIs('admin.activity') ? 'page' : 'false' }}" href="{{ route('admin.activity') }}"><x-site-icon name="history" /> Actividad</a>@endif
         </nav>
         <div class="sidebar-bottom"><span class="status-dot"></span> Panel del consultorio<p>Contenido claro.<br>Atención cercana.</p></div>

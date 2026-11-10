@@ -10,6 +10,7 @@
         "ext-exif": "*",
         "ext-gd": "*",
         "ext-xmlwriter": "*",
+        "ext-zip": "*",
         "bacon/bacon-qr-code": "^3.0",
         "laravel/framework": "^13.0",
         "laravel/tinker": "^3.0",

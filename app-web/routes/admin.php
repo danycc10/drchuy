@@ -8,6 +8,7 @@ use App\Http\Controllers\Admin\MediaController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\TwoFactorController;
 use App\Http\Controllers\Admin\ReviewController;
+use App\Http\Controllers\Admin\MaintenanceController;
 use App\Models\AuditEvent;
 use App\Http\Controllers\PublicSiteController;
 use Illuminate\Support\Facades\Route;
@@ -25,6 +26,8 @@ Route::prefix('admin')->middleware('admin.headers')->group(function () {
         Route::post('/reset-password', [AuthController::class, 'reset'])->middleware('throttle:6,1')->name('password.update');
     });
     Route::middleware(['auth', 'admin.active'])->group(function () {
+        Route::get('/maintenance', [MaintenanceController::class, 'index'])->name('admin.maintenance');
+        Route::get('/maintenance/export', [MaintenanceController::class, 'export'])->middleware('throttle:3,1,export:')->name('admin.maintenance.export');
         Route::get('/reviews', [ReviewController::class, 'index'])->name('admin.reviews.index');
         Route::post('/reviews', [ReviewController::class, 'store'])->middleware('throttle:20,1,reviews:')->name('admin.reviews.store');
         Route::get('/reviews/{review}', [ReviewController::class, 'show'])->name('admin.reviews.show');
