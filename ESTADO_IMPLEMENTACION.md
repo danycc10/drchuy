@@ -49,6 +49,8 @@ Mejoras UX de esta entrega: recorrido público de solicitud de cita con mensaje 
 
 ## Comprobaciones
 
+- Filtro obligatorio por categoría: eliminada la opción Todos, primera categoría disponible seleccionada y limpieza de texto sin perder la selección. Contador limitado a la categoría activa. Comprobado con 5 pruebas públicas Laravel (450 aserciones), 5 pruebas JavaScript dirigidas y compilación correcta.
+
 - Tarjetas ilustradas: 5 pruebas públicas Laravel (449 aserciones), 36 pruebas JavaScript y compilación correctas. Comprobados por HTTP los 14 servicios, sus 14 solicitudes, los seis filtros y las diez variantes de imagen; imágenes generadas inspeccionadas visualmente. El navegador volvió a informar que no hay superficies conectadas: falta revisión visual de las tarjetas renderizadas en escritorio y móvil.
 
 - Listado y solicitudes de servicios: 5 pruebas Laravel dirigidas (349 aserciones), las 35 pruebas JavaScript y compilación correctas. Verificados por HTTP local los 14 enlaces con el nombre correcto en su mensaje preparado. La presentación visual queda pendiente de revisión en navegador.

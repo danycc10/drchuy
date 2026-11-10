@@ -65,7 +65,8 @@ export function initServiceSearch(document) {
     const normalize = (text) => text.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLocaleLowerCase().trim();
     const groups = [...document.querySelectorAll('[data-service-group]')];
     const categoryButtons = [...search.querySelectorAll('[data-service-filter]')];
-    let category = 'all';
+    if (!categoryButtons.length) return;
+    let category = (categoryButtons.find((button) => button.getAttribute('aria-pressed') === 'true') ?? categoryButtons[0]).dataset.serviceFilter;
     const services = [...document.querySelectorAll('[data-service-item]')].map((item) => ({
         item,
         details: item.querySelector('details'),
@@ -81,24 +82,24 @@ export function initServiceSearch(document) {
         if (active && !filtering) services.forEach((service) => { service.wasOpen = service.details.open; });
         let count = 0;
         services.forEach((service) => {
-            const matches = (category === 'all' || service.category === category) && terms.every((term) => service.text.includes(term));
+            const matches = service.category === category && terms.every((term) => service.text.includes(term));
             service.item.hidden = !matches;
             if (active) service.details.open = matches;
             else if (filtering) service.details.open = service.wasOpen;
             if (matches) count++;
         });
         groups.forEach((group) => { group.hidden = !group.querySelector('[data-service-item]:not([hidden])'); });
-        counter.textContent = counter.dataset.template.replace('{count}', count).replace('{total}', services.length);
+        counter.textContent = counter.dataset.template.replace('{count}', count).replace('{total}', services.filter((service) => service.category === category).length);
         empty.hidden = count > 0;
-        search.querySelector('[data-clear-service-search]').disabled = query.value.length === 0 && category === 'all';
+        search.querySelector('[data-clear-service-search]').disabled = query.value.length === 0;
         categoryButtons.forEach((button) => button.setAttribute('aria-pressed', String(button.dataset.serviceFilter === category)));
         filtering = active;
     }
-    const clear = () => { query.value = ''; category = 'all'; filter(); query.focus(); };
+    const clear = () => { query.value = ''; filter(); query.focus(); };
     categoryButtons.forEach((button) => button.addEventListener('click', () => { category = button.dataset.serviceFilter; filter(); }));
     query.addEventListener('input', filter);
     query.addEventListener('keydown', (event) => {
-        if (event.key === 'Escape' && (query.value || category !== 'all')) { event.preventDefault(); clear(); }
+        if (event.key === 'Escape' && query.value) { event.preventDefault(); clear(); }
     });
     document.querySelectorAll('[data-clear-service-search]').forEach((button) => button.addEventListener('click', clear));
     document.defaultView.addEventListener('pageshow', filter);

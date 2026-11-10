@@ -47,6 +47,7 @@ class PublicSiteTest extends TestCase
             ->assertHeader('X-Robots-Tag', 'noindex, nofollow, noarchive');
         app(ServicePublisher::class)->publish($service, $service->current_revision_id, $owner);
         $this->withSession(['public_locale' => 'es'])->get('/')->assertSee($name)->assertSee('data-service-query', false)
+            ->assertSee('data-service-filter="procedures" aria-pressed="true"', false)
             ->assertSee('https://wa.me/528781146336?text='.rawurlencode('Hola, quisiera solicitar el siguiente servicio: '.$name.'. ¿Me pueden confirmar la disponibilidad y cómo agendar?'), false);
         $this->withSession(['public_locale' => 'en'])->get('/')->assertOk()->assertSee('Which service are you looking for?')
             ->assertSee('https://wa.me/528781146336?text='.rawurlencode('Hello, I would like to request the following service: '.$service->currentRevision->payload['en']['name'].'. Could you confirm availability and how to book an appointment?'), false);

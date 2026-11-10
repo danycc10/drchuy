@@ -49,7 +49,8 @@ class PublicAccessibilityTest extends TestCase
             $this->assertGreaterThan(0, $xpath->query('//section[@id="faq"]//details/summary')->length);
             $items = $xpath->query('//li[@data-service-item]');
             $this->assertSame(14, $items->length);
-            $this->assertSame(6, $xpath->query('//button[@data-service-filter]')->length);
+            $this->assertSame(5, $xpath->query('//button[@data-service-filter]')->length);
+            $this->assertSame(0, $xpath->query('//button[@data-service-filter="all"]')->length);
             $this->assertSame(1, $xpath->query('//button[@data-service-filter and @aria-pressed="true"]')->length);
             foreach ($items as $item) {
                 $name = trim($xpath->query('.//h4', $item)->item(0)->textContent);
