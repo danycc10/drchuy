@@ -17,10 +17,10 @@
     <a class="site-brand" href="{{ ($preview ? route('admin.preview', $locale) : route('home')) }}"><img src="{{ asset('images/logo.png') }}" alt="Medicina Respiratoria · Dr. Jesús García Espinoza" width="1400" height="445"></a>
     <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-navigation"><x-site-icon name="menu" class="menu-open-icon" /><x-site-icon name="close" class="menu-close-icon" /> {{ $locale === 'es' ? 'Menú' : 'Menu' }}</button>
     <nav id="site-navigation" aria-label="{{ $locale === 'es' ? 'Principal' : 'Main navigation' }}">@foreach(['services', 'physician', 'office', 'location'] as $i => $anchor)<a href="#{{ $anchor }}">{{ $copy['nav'][$i] }}</a>@endforeach<a href="#hours">{{ $locale === 'es' ? 'Horarios' : 'Hours' }}</a></nav>
-    <div class="header-actions"><x-public-language-switch :locale="$locale" :preview="$preview" /><a class="button compact" href="{{ $clinic['whatsapp'] }}" target="_blank" rel="noopener noreferrer"><x-site-icon name="message" /> {{ $copy['short_cta'] }}</a></div>
+    <div class="header-actions"><x-public-language-switch :locale="$locale" :preview="$preview" /><x-appointment-link :clinic="$clinic" :copy="$copy" :locale="$locale" class="button compact" :compact="true" /></div>
 </div></header>
 <main id="main">
-    <section class="hero container"><div class="hero-copy"><span class="eyebrow"><span class="little-line"></span> {{ $copy['practice_label'] }}</span><h1><span class="sr-only">{{ $clinic['name'] }}: </span>{{ $copy['hero'] }}</h1><p class="hero-intro">{{ $copy['intro'] }}</p><a class="button" href="{{ $clinic['whatsapp'] }}" target="_blank" rel="noopener noreferrer"><x-site-icon name="message" /> {{ $copy['cta'] }}</a><p class="appointment-note">{{ $copy['appointment'] }}</p>
+    <section class="hero container"><div class="hero-copy"><span class="eyebrow"><span class="little-line"></span> {{ $copy['practice_label'] }}</span><h1><span class="sr-only">{{ $clinic['name'] }}: </span>{{ $copy['hero'] }}</h1><p class="hero-intro">{{ $copy['intro'] }}</p><x-appointment-link :clinic="$clinic" :copy="$copy" :locale="$locale" class="button" /><p class="appointment-note">{{ $copy['appointment'] }}</p>
         <nav class="visit-shortcuts" aria-label="{{ $locale === 'es' ? 'Planea tu visita' : 'Plan your visit' }}">
             <a href="#hours"><span class="shortcut-icon"><x-site-icon name="clock" /></span> {{ $locale === 'es' ? 'Ver horarios' : 'View office hours' }}</a>
             @if($clinic['faq'])<a href="#faq"><span class="shortcut-icon"><x-site-icon name="message" /></span> {{ $locale === 'es' ? 'Preguntas frecuentes' : 'Common questions' }}</a>@endif
@@ -60,7 +60,7 @@
             <div class="contact-grid">
                 <div><h3><x-site-icon name="pin" /> {{ $copy['address_label'] }}</h3><address>{{ $clinic['address'] }}<br>{{ $clinic['city'] }}</address><a class="light-link" href="{{ $clinic['maps'] }}" target="_blank" rel="noopener noreferrer"><x-site-icon name="pin" /> {{ $copy['directions'] }}</a><p class="payment">{{ $copy['payment'] }}</p></div>
                 <div id="hours" tabindex="-1"><h3><x-site-icon name="clock" /> {{ $copy['hours_label'] }}</h3>@include('public.hours')</div>
-                <div class="contact-action"><p>{{ $copy['appointment'] }}</p><a class="button light" href="{{ $clinic['whatsapp'] }}" target="_blank" rel="noopener noreferrer"><x-site-icon name="message" /> {{ $copy['short_cta'] }}</a><a class="light-link" href="tel:{{ $clinic['phone'] }}"><x-site-icon name="phone" /> {{ $copy['call'] }}</a>@if(filled($clinic['email'] ?? null))<a class="light-link" href="mailto:{{ $clinic['email'] }}"><x-site-icon name="mail" /> {{ $clinic['email'] }}</a>@endif</div>
+                <div class="contact-action">@include('public.appointment-steps')<p>{{ $copy['appointment'] }}</p><x-appointment-link :clinic="$clinic" :copy="$copy" :locale="$locale" class="button light" :compact="true" /><a class="light-link" href="tel:{{ $clinic['phone'] }}"><x-site-icon name="phone" /> {{ $copy['call'] }}</a>@if(filled($clinic['email'] ?? null))<a class="light-link" href="mailto:{{ $clinic['email'] }}"><x-site-icon name="mail" /> {{ $clinic['email'] }}</a>@endif</div>
             </div>
         </div>
     </section>
@@ -68,7 +68,7 @@
 <footer class="site-footer"><div class="container"><div class="footer-top"><span>© {{ now()->year }} Medicina Respiratoria</span><div class="footer-links">@include('public.privacylink')<a href="{{ $clinic['facebook'] }}" target="_blank" rel="noopener noreferrer">Facebook</a></div></div><p>{{ $copy['disclaimer'] }}</p></div></footer>
 <nav class="mobile-contact" aria-label="{{ $locale === 'es' ? 'Contactar al consultorio' : 'Contact the office' }}">
     <a class="button secondary" href="tel:{{ $clinic['phone'] }}"><x-site-icon name="phone" /> {{ $locale === 'es' ? 'Llamar' : 'Call' }}</a>
-    <a class="button" href="{{ $clinic['whatsapp'] }}" target="_blank" rel="noopener noreferrer"><x-site-icon name="message" /> WhatsApp</a>
+    <x-appointment-link :clinic="$clinic" :copy="$copy" :locale="$locale" :compact="true" />
 </nav>
 </body>
 </html>

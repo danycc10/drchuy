@@ -40,6 +40,12 @@ class PublicContent
             }
         }
         $clinic['whatsapp'] = 'https://wa.me/'.ltrim($clinic['phone'], '+');
+        foreach (['es', 'en'] as $locale) {
+            $message = $locale === 'es'
+                ? 'Hola, quisiera solicitar una cita con '.$clinic['physician'].'. ¿Qué horarios tienen disponibles?'
+                : 'Hello, I would like to request an appointment with '.$clinic['physician'].'. What appointment times are available?';
+            $clinic['appointment_url'][$locale] = $clinic['whatsapp'].'?text='.rawurlencode($message);
+        }
         $clinic['phone_display'] = preg_match('/^\+52(\d{3})(\d{3})(\d{4})$/', $clinic['phone'], $parts)
             ? '+52 '.$parts[1].' '.$parts[2].' '.$parts[3] : $clinic['phone'];
         $clinic['has_privacy'] = filled($clinic['es']['privacy_content'] ?? null) && filled($clinic['en']['privacy_content'] ?? null);

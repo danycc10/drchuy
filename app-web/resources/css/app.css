@@ -1135,6 +1135,12 @@ h1, h2, h3 {
 .privacy-document h1 { font-size: clamp(36px, 5vw, 54px); margin: 30px 0 20px; }
 .privacy-date { font-size: 13px; color: var(--muted); }
 .privacy-text { white-space: pre-wrap; line-height: 1.85; margin-top: 34px; font-size: 16px; overflow-wrap: anywhere; }
+.appointment-steps { margin-bottom: 24px; }
+.appointment-steps ol { display: grid; gap: 14px; list-style: none; margin: 20px 0; padding: 0; }
+.appointment-steps li { display: flex; gap: 12px; align-items: flex-start; }
+.appointment-steps li > span { flex: 0 0 26px; height: 26px; display: grid; place-items: center; border: 1px solid #66818b; border-radius: 50%; font-size: 13px; color: #fff; }
+.contact-grid .appointment-steps li p { margin: 0; font-size: 14px; }
+.contact-grid .appointment-channel { font-size: 13px; color: #d4e3e7; }
 .faq-list { max-width: 900px; margin: 0 auto; border-top: 1px solid var(--line); }
 .faq-list summary h3 { font: inherit; font-weight: 500; margin: 0; }
 .faq-list summary { gap: 20px; }
