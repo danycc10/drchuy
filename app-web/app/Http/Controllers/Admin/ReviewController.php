@@ -40,7 +40,7 @@ class ReviewController extends Controller
         $changes = [];
         foreach (array_unique([...array_keys($before), ...array_keys($after)]) as $field) {
             if (($before[$field] ?? null) !== ($after[$field] ?? null)) {
-                $changes[] = ['field' => $field, 'before' => $this->display($before[$field] ?? null), 'after' => $this->display($after[$field] ?? null)];
+                $changes[] = ['field' => $field, 'before' => $this->display($before[$field] ?? null, $field), 'after' => $this->display($after[$field] ?? null, $field)];
             }
         }
 
@@ -55,8 +55,11 @@ class ReviewController extends Controller
         return back()->with('status', $data['decision'] === 'publish' ? 'Versión revisada y publicada.' : 'Cambios solicitados. El comentario quedó disponible para el equipo.');
     }
 
-    private function display(mixed $value): string
+    private function display(mixed $value, string $field): string
     {
+        if (str_ends_with($field, '_image_id')) {
+            return $value ? (\App\Models\MediaAsset::find($value)?->title ?? 'Fotografía no disponible') : 'Fotografía original del sitio';
+        }
         return match (true) { $value === null => '—', is_bool($value) => $value ? 'Sí' : 'No', is_array($value) => 'Sin elementos', default => (string) $value };
     }
 }
