@@ -3,6 +3,10 @@ export function initEditor(document) {
     const editor = document.querySelector('[data-editor]');
     const tabs = [...document.querySelectorAll('[data-language-tabs] [role=tab]')];
     const panels = [...document.querySelectorAll('[data-language-panel]')];
+    document.querySelector('a[href="#editor-workflow"]')?.addEventListener('click', () => {
+        const workflow = document.getElementById('editor-workflow');
+        if (workflow) { workflow.open = true; workflow.querySelector('summary').focus(); }
+    });
 
     function selectTab(tab, focus = false) {
         tabs.forEach((item) => {

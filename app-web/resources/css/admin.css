@@ -728,6 +728,23 @@ td .small-link {
 .editor-toolbar .button {
     flex-shrink: 0;
 }
+.editor-toolbar-actions { display: flex; align-items: center; justify-content: flex-end; flex-wrap: wrap; gap: 12px 20px; }
+.editor-workflow { margin-bottom: 24px; scroll-margin-top: 155px; }
+.editor-workflow > summary { display: flex; justify-content: space-between; align-items: center; gap: 16px; cursor: pointer; list-style: none; min-height: 44px; }
+.editor-workflow > summary::-webkit-details-marker { display: none; }
+.editor-workflow > summary .field-help { display: block; margin-top: 6px; }
+.editor-workflow > summary > svg { flex-shrink: 0; }
+.editor-workflow[open] > summary > svg { transform: rotate(180deg); }
+.workflow-columns { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; margin-top: 22px; }
+.workflow-columns > div { min-width: 0; }
+.workflow-columns h3 { font-size: 14px; margin-bottom: 12px; }
+.workflow-columns .field-help { margin: 10px 0; }
+.workflow-columns .button { width: 100%; margin-top: 12px; }
+.workflow-columns .stack-form { gap: 12px; }
+.workflow-review summary { cursor: pointer; padding: 10px 0; font-size: 13px; color: var(--teal); }
+.workflow-review details label { margin-top: 8px; }
+@media(max-width:1100px) { .workflow-columns { grid-template-columns: 1fr; gap: 20px; } .workflow-columns > div + div { border-top: 1px solid var(--line); padding-top: 20px; } .workflow-columns .button { width: auto; } }
+@media(max-width:800px) { .editor-toolbar-actions { justify-content: space-between; } .editor-toolbar-actions .small-link { min-height: 44px; } .editor-workflow { scroll-margin-top: 210px; } }
 .save-state {
     font-size: 14px;
     font-weight: 600;

@@ -27,6 +27,8 @@ class EditorialReviewTest extends TestCase
         $block = ContentBlock::where('key', 'home')->firstOrFail();
         $this->actingAs($editor)->post('/admin/reviews', ['type' => 'content', 'target_id' => $block->id, 'revision_id' => $block->current_revision_id, 'note' => 'Revisar texto <script>unsafe</script>'])->assertSessionHasNoErrors();
         $review = ReviewRequest::firstOrFail();
+        $this->get(route('admin.content.edit', $block))->assertOk()
+            ->assertSee('Abrir solicitud y comentarios')->assertDontSee('Enviar a revisión');
         $this->get(route('admin.reviews.show', $review))->assertOk()->assertSee('Español · Título principal')->assertDontSee('<script>unsafe</script>', false);
         $this->post(route('admin.reviews.decide', $review), ['decision' => 'publish'])->assertForbidden();
         $this->assertNull($block->fresh()->published_revision_id);
@@ -42,6 +44,8 @@ class EditorialReviewTest extends TestCase
         $new = ReviewRequest::latest('id')->first();
         $this->actingAs($owner)->post(route('admin.reviews.decide', $new), ['decision' => 'publish', 'response' => 'Revisado.'])->assertSessionHasNoErrors();
         $this->assertSame('published', $new->fresh()->status);
+        $this->get(route('admin.content.edit', $block))->assertOk()
+            ->assertSee('Esta versión ya está publicada.')->assertDontSee('Enviar a revisión');
         $this->get('/')->assertSee('Texto corregido');
         $this->assertDatabaseHas('audit_events', ['action' => 'review.changes_requested']);
     }
