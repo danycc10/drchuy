@@ -28,7 +28,7 @@ class MaintenanceController extends Controller
             'services' => Service::with('revisions')->get()->map(fn ($item) => [
                 'source_id' => $item->source_id, 'category' => $item->category->name,
                 'published_revision' => $item->published_revision_id, 'current_revision' => $item->current_revision_id,
-                'revisions' => $item->revisions->map(fn ($revision) => ['id' => $revision->id, 'payload' => $revision->payload, 'created_at' => $revision->created_at]),
+                'revisions' => $item->revisions->map(fn ($revision) => ['id' => $revision->id, 'payload' => $revision->payload, 'image_id' => $revision->image_id, 'created_at' => $revision->created_at]),
             ]),
             'content' => ContentBlock::with('revisions')->get()->map(fn ($item) => [
                 'key' => $item->key, 'published_revision' => $item->published_revision_id, 'current_revision' => $item->current_revision_id,

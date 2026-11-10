@@ -80,7 +80,13 @@ Los servicios se listan por categoría. Cada nombre tiene un botón **Solicitar 
 
 El catálogo se presenta en tarjetas con una ilustración por categoría, nombre, **Conocer el servicio** y la solicitud por WhatsApp. Se adapta a tres columnas en escritorio, dos en tablet y una en móvil. La primera categoría disponible queda seleccionada al iniciar y siempre hay una categoría activa; se eliminó la opción Todos. El buscador y el contador se limitan a esa categoría. **Limpiar búsqueda**, **Ver servicios de esta categoría** y Escape limpian el texto sin cambiar la selección. Las tarjetas y sus descripciones siguen disponibles sin JavaScript. El movimiento al pasar el puntero respeta la preferencia de movimiento reducido.
 
-Las cinco ilustraciones y sus prompts se documentan en [IMAGENES_SERVICIOS.md](IMAGENES_SERVICIOS.md). Son recursos estáticos por categoría; los textos y el estado de publicación siguen administrándose en Servicios.
+Las cinco ilustraciones y sus prompts se documentan en [IMAGENES_SERVICIOS.md](IMAGENES_SERVICIOS.md). Se usan como imagen inicial por categoría. Cada servicio puede tener una imagen propia desde el panel:
+
+1. Subir la fotografía en **Imágenes**, con un nombre que permita identificarla.
+2. Abrir **Servicios → Editar → Imagen del servicio** y seleccionarla en la biblioteca. La miniatura muestra la selección; se aplica al mismo servicio en ambos idiomas.
+3. Guardar el borrador, revisar **Vista previa** y publicar con el rol autorizado. Los procedimientos siguen requiriendo al propietario.
+
+Para volver a la imagen inicial, seleccionar **Ilustración original de la categoría**, guardar y publicar. Cambiar la imagen de un servicio no cambia los demás. Las tarjetas recortan horizontalmente la fotografía; conviene usar una imagen horizontal con el motivo centrado. La imagen forma parte del historial y se recupera al restaurar una versión. La biblioteca no permite eliminar imágenes utilizadas en versiones de servicios, incluidos borradores e historial.
 
 La preferencia pública se guarda en la sesión y comienza en español para una visita nueva. El aviso usa `/aviso-de-privacidad` en ambos idiomas. Los enlaces públicos antiguos con `/es` o `/en` redirigen a las direcciones limpias conservando el idioma solicitado. La vista previa privada mantiene rutas por idioma para poder revisar ambos borradores de forma independiente.
 

@@ -130,7 +130,7 @@ class MediaLibrary
         Gate::forUser($user)->authorize('delete', $media);
         DB::transaction(function () use ($media, $user) {
             $locked = MediaAsset::whereKey($media->id)->lockForUpdate()->firstOrFail();
-            if ($locked->revisions()->exists()) {
+            if ($locked->revisions()->exists() || $locked->serviceRevisions()->exists()) {
                 throw ValidationException::withMessages(['media' => 'Esta imagen se utiliza en un borrador, publicación o historial. Se conserva para poder recuperar esas versiones.']);
             }
             $locked->delete();

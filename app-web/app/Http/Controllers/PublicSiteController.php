@@ -63,8 +63,12 @@ class PublicSiteController extends Controller
         app()->setLocale($locale);
         ['clinic' => $clinic, 'hours' => $hours] = $this->content->snapshot($preview);
         $relation = $preview ? 'currentRevision' : 'publishedRevision';
-        $services = Service::with($relation)->whereNotNull($preview ? 'current_revision_id' : 'published_revision_id')->get()
-            ->map(fn ($service) => ['category_id' => $service->service_category_id, 'id' => $service->id, ...$service->{$relation}->payload])
+        $services = Service::with($relation.'.image')->whereNotNull($preview ? 'current_revision_id' : 'published_revision_id')->get()
+            ->map(function ($service) use ($relation, $preview) {
+                $image = $service->{$relation}->image;
+                return ['category_id' => $service->service_category_id, 'id' => $service->id, ...$service->{$relation}->payload,
+                    'image' => $image ? ['url' => $image->url($preview), 'width' => $image->display_width, 'height' => $image->display_height] : null];
+            })
             ->filter(fn ($item) => $item['visible'])->sortBy('position')->groupBy('category_id');
         $response = response()->view('public.home', [
             'locale' => $locale, 'preview' => $preview,

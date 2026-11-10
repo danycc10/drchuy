@@ -37,6 +37,8 @@ La retención se aplica solo después de completar un respaldo correcto y conser
 
 La restauración rechaza la conexión activa, la base identificada como origen, una base con datos, migraciones distintas y una carpeta de medios ocupada o dentro de la raíz pública/medios activos. No existe una restauración por navegador ni una opción para sobrescribir la instalación activa.
 
+Los respaldos posteriores a la migración de imágenes de servicios conservan la selección de imagen de cada versión y sus archivos. Para restaurar un respaldo anterior, preparar primero el destino con las mismas migraciones que tenía ese respaldo; aplicar las nuevas migraciones después de la restauración. La exportación de contenido incluye las referencias `image_id`, pero no los archivos de imagen.
+
 1. Preparar una base **nueva y vacía**, con un usuario autorizado para ella, y una carpeta privada vacía para los medios. Usar el código del commit correspondiente al respaldo y la misma `APP_KEY` de origen.
 2. Configurar la conexión `backup_restore` mediante `RESTORE_DB_HOST`, `RESTORE_DB_PORT`, `RESTORE_DB_DATABASE`, `RESTORE_DB_USERNAME` y `RESTORE_DB_PASSWORD` en la configuración privada. No poner contraseñas en argumentos ni en Git.
 3. Aplicar las migraciones al destino; no ejecutar seeders:

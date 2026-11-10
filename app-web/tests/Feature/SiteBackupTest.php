@@ -50,6 +50,9 @@ class SiteBackupTest extends TestCase
     {
         $user = User::factory()->create(['role' => Role::Owner]);
         $asset = $this->media();
+        $service = \App\Models\Service::firstOrFail();
+        app(\App\Services\ServicePublisher::class)->draft($service, [...$service->currentRevision->payload, 'image_id' => $asset->id], $service->current_revision_id, $user);
+        $service->refresh();
         $block = ContentBlock::where('key', 'home')->firstOrFail();
         $block->published_revision_id = $block->current_revision_id;
         $block->save();
@@ -66,6 +69,7 @@ class SiteBackupTest extends TestCase
         $zip->close();
         $backup->restore($path, 'restore_test', $this->workspace.'/restored');
         $target = DB::connection('restore_test');
+        $this->assertSame($asset->id, $target->table('service_revisions')->where('id', $service->current_revision_id)->value('image_id'));
         $this->assertSame($block->published_revision_id, $target->table('content_blocks')->where('id', $block->id)->value('published_revision_id'));
         $this->assertSame($user->password, $target->table('users')->where('id', $user->id)->value('password'));
         $this->assertSame(1, $target->table('users')->where('id', $user->id)->value('auth_version'));

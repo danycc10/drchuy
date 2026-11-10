@@ -7,6 +7,7 @@ use App\Http\Requests\SaveServiceRequest;
 use App\Models\Service;
 use App\Models\ServiceCategory;
 use App\Models\ServiceRevision;
+use App\Models\MediaAsset;
 use App\Services\ServicePublisher;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
@@ -42,13 +43,14 @@ class ServiceController extends Controller
         Gate::authorize('update', $service);
         $service->load(['category', 'currentRevision', 'publishedRevision']);
 
-        return view('admin.services.edit', ['service' => $service, 'revisions' => $service->revisions()->with('author')->latest('id')->paginate(6)]);
+        return view('admin.services.edit', ['service' => $service, 'revisions' => $service->revisions()->with('author')->latest('id')->paginate(6), 'mediaOptions' => MediaAsset::orderBy('title')->get()]);
     }
 
     public function update(SaveServiceRequest $request, Service $service, ServicePublisher $publisher)
     {
         $data = $request->validated();
         $payload = ['es' => $data['es'], 'en' => $data['en'], 'visible' => $request->boolean('visible'), 'position' => (int) $data['position']];
+        if (array_key_exists('image_id', $data)) { $payload['image_id'] = $data['image_id']; }
         $publisher->draft($service, $payload, (int) $data['revision_id'], $request->user());
 
         return to_route('admin.services.edit', $service)->with('status', 'Borrador guardado. La versión pública sigue igual hasta que se publique este cambio.');

@@ -6,6 +6,7 @@ use App\Models\AuditEvent;
 use App\Models\Service;
 use App\Models\ServiceRevision;
 use App\Models\User;
+use App\Models\MediaAsset;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Validation\ValidationException;
@@ -21,7 +22,13 @@ class ServicePublisher
                 abort_unless($restored->service_id === $locked->id, 404);
                 $payload = $restored->payload;
             }
-            $revision = $locked->revisions()->create(['payload' => $payload, 'created_by' => $user->id]);
+            $imageId = $restored ? $restored->image_id : (array_key_exists('image_id', $payload) ? $payload['image_id'] : $locked->currentRevision->image_id);
+            unset($payload['image_id']);
+            $imageId = validator(['image_id' => $imageId], ['image_id' => 'nullable|integer|min:1'])->validate()['image_id'];
+            if ($imageId && ! MediaAsset::whereKey($imageId)->lockForUpdate()->first()) {
+                throw ValidationException::withMessages(['image_id' => 'La imagen ya no está disponible. Selecciona otra de la biblioteca.']);
+            }
+            $revision = $locked->revisions()->create(['payload' => $payload, 'image_id' => $imageId, 'created_by' => $user->id]);
             $locked->current_revision_id = $revision->id;
             $locked->save();
             EditorialReview::onDraft($locked);

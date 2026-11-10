@@ -37,6 +37,10 @@ class ReviewController extends Controller
         $base = $review->base_revision_id ? $target->revisions()->findOrFail($review->base_revision_id) : null;
         $before = Arr::dot($base?->payload ?? []);
         $after = Arr::dot($revision->payload);
+        if ($target instanceof Service) {
+            $before['image_id'] = $base?->image_id;
+            $after['image_id'] = $revision->image_id;
+        }
         $changes = [];
         foreach (array_unique([...array_keys($before), ...array_keys($after)]) as $field) {
             if (($before[$field] ?? null) !== ($after[$field] ?? null)) {
@@ -57,6 +61,9 @@ class ReviewController extends Controller
 
     private function display(mixed $value, string $field): string
     {
+        if ($field === 'image_id') {
+            return $value ? (\App\Models\MediaAsset::find($value)?->title ?? 'Imagen no disponible') : 'Ilustración original de la categoría';
+        }
         if (str_ends_with($field, '_image_id')) {
             return $value ? (\App\Models\MediaAsset::find($value)?->title ?? 'Fotografía no disponible') : 'Fotografía original del sitio';
         }

@@ -6,7 +6,7 @@ Generadas con la herramienta integrada `image_gen`, sin CLI ni API externa confi
 
 En `app-web/public/images/services/`, cada categoría tiene dos derivados WebP: `consultation`, `diagnostics`, `treatment`, `procedures` y `occupational`, con sufijos `-640.webp` (640 × 427) y `-960.webp` (960 × 640). Diez archivos en total, entre 7 y 19 KB cada uno. Se generaron desde los PNG originales mediante PHP/GD, conservando la composición y sin sobrescribir los originales. Las tarjetas usan `srcset`, dimensiones declaradas y carga diferida. La imagen corresponde a la categoría; el nombre y la descripción corresponden a cada servicio.
 
-Estas ilustraciones forman parte de los archivos del sitio. Su selección no se modifica desde el panel; los nombres, descripciones, visibilidad y publicación de servicios sí conservan su edición habitual.
+Estas ilustraciones forman parte de los archivos del sitio y se conservan como opción inicial. Cada servicio puede reemplazar su ilustración con una fotografía de la biblioteca: subirla en **Imágenes**, seleccionarla en **Servicios → Editar → Imagen del servicio**, guardar, revisar la vista previa y publicar. La selección es independiente por servicio, compartida entre sus dos idiomas y se conserva en cada versión del historial. La opción **Ilustración original de la categoría** recupera el recurso inicial. Los derivados de imágenes personalizadas se sirven desde la biblioteca privada cuando la versión del servicio está publicada y visible; las imágenes de borradores requieren acceso al panel.
 
 ## Prompts completos
 

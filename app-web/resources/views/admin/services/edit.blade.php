@@ -13,6 +13,7 @@
                     <p class="field-help">Texto simple, hasta 3,000 caracteres. Conserva las condiciones de disponibilidad del servicio.</p>
                 </section>
             @endforeach
+            @include('admin.services.image-field')
             <section class="panel"><h2>Presentación</h2><label style="margin-top:20px">Orden dentro de la categoría<input type="number" name="position" value="{{ old('position', $payload['position']) }}" min="1" max="999" required></label><input type="hidden" name="visible" value="0"><label style="margin-top:20px"><input type="checkbox" name="visible" value="1" @checked(old('visible', $payload['visible']))> Mostrar este servicio al publicar</label></section>
         </form>
         <aside class="editor-aside"><section class="panel"><h2>Historial</h2>@foreach($revisions as $revision)<div class="revision-row"><a class="small-link" href="{{ route('admin.services.revision', [$service, $revision]) }}">Versión #{{ $revision->id }}</a><small>{{ $revision->author?->name ?? 'Importación inicial' }}</small><small>{{ $revision->created_at->timezone('America/Matamoros')->format('d/m/Y H:i') }}</small>@if($revision->id === $service->published_revision_id)<span class="badge published">Versión pública</span>@endif</div>@endforeach<div class="pagination">{{ $revisions->links('pagination::simple-tailwind') }}</div></section></aside>

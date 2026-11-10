@@ -23,6 +23,7 @@ class SaveServiceRequest extends FormRequest
             'en.description' => 'required|string|max:3000',
             'visible' => 'required|boolean',
             'position' => 'required|integer|min:1|max:999',
+            'image_id' => 'nullable|integer|exists:media_assets,id',
         ];
     }
 
@@ -32,6 +33,7 @@ class SaveServiceRequest extends FormRequest
             '*.required' => 'Completa este campo antes de guardar.',
             '*.max' => 'El contenido excede el límite permitido.',
             'position.integer' => 'El orden debe ser un número entero.',
+            'image_id.exists' => 'La imagen ya no está disponible. Selecciona otra de la biblioteca.',
         ];
     }
 }

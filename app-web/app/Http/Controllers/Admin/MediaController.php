@@ -18,14 +18,14 @@ class MediaController extends Controller
     {
         Gate::authorize('viewAny', MediaAsset::class);
         $filters = $request->validate(['q' => 'nullable|string|max:100', 'usage' => 'nullable|in:used,unused']);
-        $query = MediaAsset::with('author')->withCount('revisions')->latest('id');
+        $query = MediaAsset::with('author')->withCount(['revisions', 'serviceRevisions'])->latest('id');
         if (filled($filters['q'] ?? null)) {
             $query->where(fn ($query) => $query->where('title', 'like', '%'.$filters['q'].'%')->orWhere('original_name', 'like', '%'.$filters['q'].'%'));
         }
         if (($filters['usage'] ?? '') === 'used') {
-            $query->has('revisions');
+            $query->where(fn ($query) => $query->has('revisions')->orHas('serviceRevisions'));
         } elseif (($filters['usage'] ?? '') === 'unused') {
-            $query->doesntHave('revisions');
+            $query->doesntHave('revisions')->doesntHave('serviceRevisions');
         }
 
         return view('admin.media.index', [
@@ -58,7 +58,7 @@ class MediaController extends Controller
             ]);
         }
 
-        return to_route('admin.media.index')->with('status', 'Fotografía guardada en la biblioteca. Elige dónde usarla en «Fotografías del sitio» antes de publicar.');
+        return to_route('admin.media.index')->with('status', 'Imagen guardada en la biblioteca. Puedes seleccionarla al editar un servicio o en «Fotografías del sitio». Guarda el borrador y publica cuando esté listo.');
     }
 
     public function image(MediaAsset $media, string $variant)

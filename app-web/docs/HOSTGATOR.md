@@ -29,6 +29,8 @@ Las claves TOTP se cifran con `APP_KEY`: incluirla en el respaldo privado y no r
 
 Ejecutar migraciones revisadas y después `php artisan db:seed --force` para importar registros iniciales faltantes de servicios y bloques. Los seeders no publican contenido, no sobrescriben ediciones existentes y no crean usuarios. Crear la cuenta propietaria con `php artisan app:create-admin` en la instalación inicial.
 
+La edición de imágenes de servicios requiere la migración `2026_11_10_000003_add_image_to_service_revisions`. Respaldar antes de ejecutar `php artisan migrate --force`. Las versiones existentes conservan la ilustración de su categoría hasta que se seleccione y publique una imagen propia.
+
 Regenerar cachés en destino con `php artisan optimize`. No copiar cachés de configuración generadas con el entorno local. Preservar `.env`, imágenes subidas y archivos persistentes entre versiones. No usar permisos 777 ni un endpoint web para ejecutar Artisan.
 
 La biblioteca guarda originales y derivados en `storage/app/private/media`. Incluir esta carpeta y las tablas de medios/revisiones en los respaldos y conservarlas al desplegar. No crear enlaces públicos hacia esa carpeta. Las rutas de Laravel sirven derivados publicados y comprueban autenticación para borradores y originales; no se necesita `storage:link` para este módulo. Las cargas se procesan durante la petición, sin workers permanentes. Confirmar memoria, tiempo de ejecución y cuota disponibles en el plan Turbo.

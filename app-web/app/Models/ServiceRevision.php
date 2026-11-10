@@ -9,7 +9,7 @@ class ServiceRevision extends Model
 {
     public const UPDATED_AT = null;
 
-    protected $fillable = ['payload', 'created_by'];
+    protected $fillable = ['payload', 'created_by', 'image_id'];
 
     protected function casts(): array
     {
@@ -19,5 +19,10 @@ class ServiceRevision extends Model
     public function author(): BelongsTo
     {
         return $this->belongsTo(User::class, 'created_by');
+    }
+
+    public function image(): BelongsTo
+    {
+        return $this->belongsTo(MediaAsset::class, 'image_id');
     }
 }

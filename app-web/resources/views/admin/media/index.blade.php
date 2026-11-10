@@ -27,10 +27,10 @@
                     <a class="media-thumbnail" href="{{ $asset->url(true) }}" target="_blank" rel="noopener noreferrer" aria-label="Ampliar {{ $asset->title }} (pestaña nueva)"><img src="{{ $asset->url(true, 'thumb') }}" alt="{{ $asset->title }}" loading="lazy" width="{{ $asset->display_width }}" height="{{ $asset->display_height }}"></a>
                     <div class="media-card-body"><h2>{{ $asset->title }}</h2><p class="media-filename">{{ $asset->original_name }}</p>
                         <p class="field-help">{{ $asset->width }} × {{ $asset->height }} px · original {{ number_format($asset->original_bytes / 1024, 0) }} KB<br>WebP del sitio: {{ number_format($asset->display_bytes / 1024, 0) }} KB</p>
-                        <span class="badge {{ $asset->revisions_count ? 'published' : '' }}">{{ $asset->revisions_count ? 'Conservada en contenido o historial' : 'Sin usar' }}</span>
+                        <span class="badge {{ ($asset->revisions_count + $asset->service_revisions_count) ? 'published' : '' }}">{{ ($asset->revisions_count + $asset->service_revisions_count) ? 'Conservada en contenido o historial' : 'Sin usar' }}</span>
                         <div class="media-card-actions">
                             @can('download', $asset)<a class="small-link" href="{{ route('admin.media.original', $asset) }}">Descargar original</a>@endcan
-                            @can('delete', $asset)@if(!$asset->revisions_count)<form method="post" action="{{ route('admin.media.destroy', $asset) }}" data-confirm-detail="{{ $asset->title }}" data-confirm="¿Eliminar esta fotografía sin usar y sus archivos? Esta acción no se puede deshacer.">@csrf @method('DELETE')<button class="small-link danger"><x-site-icon name="close" /> Eliminar</button></form>@endif @endcan
+                            @can('delete', $asset)@if(!($asset->revisions_count + $asset->service_revisions_count))<form method="post" action="{{ route('admin.media.destroy', $asset) }}" data-confirm-detail="{{ $asset->title }}" data-confirm="¿Eliminar esta fotografía sin usar y sus archivos? Esta acción no se puede deshacer.">@csrf @method('DELETE')<button class="small-link danger"><x-site-icon name="close" /> Eliminar</button></form>@endif @endcan
                         </div>
                     </div>
                 </article>
