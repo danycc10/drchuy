@@ -33,9 +33,9 @@
         <div id="service-catalog">
         @foreach($categories as $category)
             @if($services->has($category->id))
-                <div class="service-group" data-service-group>
+                <div class="service-group" data-service-group data-service-category="{{ $category->slug }}">
                     <div class="category-heading"><span class="category-number">0{{ $loop->iteration }}</span><h3>{{ $category->name[$locale] }}</h3></div>
-                    <ul class="service-items service-catalog-list">
+                    <ul class="service-items service-catalog-list" role="list">
                         @foreach($services[$category->id] as $service)
                             @include('public.service-item')
                         @endforeach

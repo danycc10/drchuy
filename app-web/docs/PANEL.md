@@ -78,6 +78,10 @@ Abrir una versión desde el historial del servicio. **Recuperar como borrador** 
 
 Los servicios se listan por categoría. Cada nombre tiene un botón **Solicitar servicio**, visible sin abrir la descripción, que abre WhatsApp con el nombre del servicio y una solicitud de disponibilidad y cómo agendar. El mensaje usa el idioma elegido y el teléfono del contenido público; el visitante puede editarlo antes de enviarlo. La descripción se despliega por separado. El buscador filtra nombre, descripción y categoría sin perder el botón de solicitud. Ocultar un servicio requiere guardar y publicar su visibilidad desde el panel.
 
+El catálogo se presenta en tarjetas con una ilustración por categoría, nombre, **Conocer el servicio** y la solicitud por WhatsApp. Se adapta a tres columnas en escritorio, dos en tablet y una en móvil. Los botones de categoría se combinan con el buscador; **Limpiar filtros**, **Ver todos los servicios** o Escape desde la búsqueda restauran el catálogo completo. Las tarjetas y sus descripciones siguen disponibles sin JavaScript. El movimiento al pasar el puntero respeta la preferencia de movimiento reducido.
+
+Las cinco ilustraciones y sus prompts se documentan en [IMAGENES_SERVICIOS.md](IMAGENES_SERVICIOS.md). Son recursos estáticos por categoría; los textos y el estado de publicación siguen administrándose en Servicios.
+
 La preferencia pública se guarda en la sesión y comienza en español para una visita nueva. El aviso usa `/aviso-de-privacidad` en ambos idiomas. Los enlaces públicos antiguos con `/es` o `/en` redirigen a las direcciones limpias conservando el idioma solicitado. La vista previa privada mantiene rutas por idioma para poder revisar ambos borradores de forma independiente.
 
 El menú público resalta la sección que se está leyendo, también en las vistas previas. Horarios se distingue de Ubicación cuando entra en la zona de lectura. Las anclas dejan espacio para el encabezado según su altura; desplazar la página no cambia la dirección ni el foco del teclado. Se mantiene la preferencia de movimiento reducido.

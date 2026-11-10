@@ -64,10 +64,13 @@ export function initServiceSearch(document) {
     const empty = document.querySelector('[data-service-empty]');
     const normalize = (text) => text.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLocaleLowerCase().trim();
     const groups = [...document.querySelectorAll('[data-service-group]')];
+    const categoryButtons = [...search.querySelectorAll('[data-service-filter]')];
+    let category = 'all';
     const services = [...document.querySelectorAll('[data-service-item]')].map((item) => ({
         item,
         details: item.querySelector('details'),
-        text: normalize(`${item.querySelector('summary').textContent} ${item.querySelector('.service-description p').textContent} ${item.closest('[data-service-group]').querySelector('h3').textContent}`),
+        text: normalize(`${item.querySelector('h4').textContent} ${item.querySelector('.service-description p').textContent} ${item.closest('[data-service-group]').querySelector('h3').textContent}`),
+        category: item.closest('[data-service-group]').dataset.serviceCategory,
         wasOpen: item.querySelector('details').open,
     }));
     let filtering = false;
@@ -78,7 +81,7 @@ export function initServiceSearch(document) {
         if (active && !filtering) services.forEach((service) => { service.wasOpen = service.details.open; });
         let count = 0;
         services.forEach((service) => {
-            const matches = terms.every((term) => service.text.includes(term));
+            const matches = (category === 'all' || service.category === category) && terms.every((term) => service.text.includes(term));
             service.item.hidden = !matches;
             if (active) service.details.open = matches;
             else if (filtering) service.details.open = service.wasOpen;
@@ -87,13 +90,15 @@ export function initServiceSearch(document) {
         groups.forEach((group) => { group.hidden = !group.querySelector('[data-service-item]:not([hidden])'); });
         counter.textContent = counter.dataset.template.replace('{count}', count).replace('{total}', services.length);
         empty.hidden = count > 0;
-        search.querySelector('[data-clear-service-search]').disabled = query.value.length === 0;
+        search.querySelector('[data-clear-service-search]').disabled = query.value.length === 0 && category === 'all';
+        categoryButtons.forEach((button) => button.setAttribute('aria-pressed', String(button.dataset.serviceFilter === category)));
         filtering = active;
     }
-    const clear = () => { query.value = ''; filter(); query.focus(); };
+    const clear = () => { query.value = ''; category = 'all'; filter(); query.focus(); };
+    categoryButtons.forEach((button) => button.addEventListener('click', () => { category = button.dataset.serviceFilter; filter(); }));
     query.addEventListener('input', filter);
     query.addEventListener('keydown', (event) => {
-        if (event.key === 'Escape' && query.value) { event.preventDefault(); clear(); }
+        if (event.key === 'Escape' && (query.value || category !== 'all')) { event.preventDefault(); clear(); }
     });
     document.querySelectorAll('[data-clear-service-search]').forEach((button) => button.addEventListener('click', clear));
     document.defaultView.addEventListener('pageshow', filter);

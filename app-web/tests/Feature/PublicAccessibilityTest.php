@@ -49,6 +49,8 @@ class PublicAccessibilityTest extends TestCase
             $this->assertGreaterThan(0, $xpath->query('//section[@id="faq"]//details/summary')->length);
             $items = $xpath->query('//li[@data-service-item]');
             $this->assertSame(14, $items->length);
+            $this->assertSame(6, $xpath->query('//button[@data-service-filter]')->length);
+            $this->assertSame(1, $xpath->query('//button[@data-service-filter and @aria-pressed="true"]')->length);
             foreach ($items as $item) {
                 $name = trim($xpath->query('.//h4', $item)->item(0)->textContent);
                 $link = $xpath->query('./a[@data-service-request]', $item)->item(0);
@@ -59,6 +61,10 @@ class PublicAccessibilityTest extends TestCase
                     : 'Hello, I would like to request the following service: '.$name.'. Could you confirm availability and how to book an appointment?';
                 $this->assertSame($expected, $query['text']);
                 $this->assertStringContainsString($name, $link->getAttribute('aria-label'));
+                $image = $xpath->query('.//img', $item)->item(0);
+                $this->assertNotNull($image);
+                $this->assertSame('lazy', $image->getAttribute('loading'));
+                $this->assertFileExists(public_path(ltrim(parse_url($image->getAttribute('src'), PHP_URL_PATH), '/')));
             }
         }
     }

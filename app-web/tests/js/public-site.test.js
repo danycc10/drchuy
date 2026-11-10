@@ -50,10 +50,10 @@ test('language selection submits a known section without adding the language to 
 function searchableCatalog() {
     const { window } = new JSDOM(`<body><div data-service-search hidden>
         <input type="search" data-service-query><button data-clear-service-search>Clear</button>
-        <p data-service-count data-template="Services found: {count} of {total}"></p></div>
+        <p data-service-count data-template="Services found: {count} of {total}"></p><div><button data-service-filter="all">All</button><button data-service-filter="diagnostics">Diagnostics</button><button data-service-filter="consultation">Consultation</button></div></div>
         <div data-service-empty hidden><button data-clear-service-search>Show all</button></div>
-        <div data-service-group><h3>Estudios respiratorios</h3><article data-service-item id="spirometry"><details><summary>Espirometría</summary><div class="service-description"><p>Medición de la función pulmonar.</p></div></details><a data-service-request href="https://wa.me/528781146336?text=request">Request</a></article></div>
-        <div data-service-group><h3>Consultas</h3><article data-service-item id="consultation"><details open><summary>Consulta médica</summary><div class="service-description"><p>Valoración individual.</p></div></details><a data-service-request href="https://wa.me/528781146336?text=request">Request</a></article></div></body>`);
+        <div data-service-group data-service-category="diagnostics"><h3>Estudios respiratorios</h3><article data-service-item id="spirometry"><h4>Espirometría</h4><details><summary>About this service</summary><div class="service-description"><p>Medición de la función pulmonar.</p></div></details><a data-service-request href="https://wa.me/528781146336?text=request">Request</a></article></div>
+        <div data-service-group data-service-category="consultation"><h3>Consultas</h3><article data-service-item id="consultation"><h4>Consulta médica</h4><details open><summary>About this service</summary><div class="service-description"><p>Valoración individual.</p></div></details><a data-service-request href="https://wa.me/528781146336?text=request">Request</a></article></div></body>`);
     const { document } = window;
     initServiceSearch(document);
     return { window, document, find: (selector) => document.querySelector(selector), search: (value) => {
@@ -93,5 +93,33 @@ test('no-results recovery and Escape restore all services and return focus to th
     search('consulta');
     find('input').dispatchEvent(new window.KeyboardEvent('keydown', { key: 'Escape', cancelable: true }));
     assert.equal(find('input').value, '');
+    assert.equal(find('[data-service-count]').textContent, 'Services found: 2 of 2');
+});
+
+test('category chips combine with search and clearing restores cards, descriptions and request links', () => {
+    const { search, find, document, window } = searchableCatalog();
+    const diagnostics = find('[data-service-filter=diagnostics]');
+    diagnostics.focus();
+    diagnostics.click();
+    assert.equal(diagnostics.getAttribute('aria-pressed'), 'true');
+    assert.equal(find('[data-service-filter=all]').getAttribute('aria-pressed'), 'false');
+    assert.equal(find('#spirometry').hidden, false);
+    assert.equal(find('#spirometry details').open, false, 'Filtering a category does not force descriptions open');
+    assert.equal(find('#consultation').hidden, true);
+    assert.equal(find('[data-clear-service-search]').disabled, false);
+    assert.equal(document.activeElement, diagnostics);
+    search('consulta');
+    assert.equal(find('[data-service-empty]').hidden, false);
+    assert.equal(find('[data-service-count]').textContent, 'Services found: 0 of 2');
+    find('[data-service-empty] button').click();
+    assert.equal(find('[data-service-filter=all]').getAttribute('aria-pressed'), 'true');
+    assert.equal(find('#spirometry').hidden, false);
+    assert.equal(find('#consultation').hidden, false);
+    assert.equal(find('#consultation details').open, true);
+    assert.ok(find('#spirometry > [data-service-request]'));
+    assert.equal(document.activeElement, find('input'));
+    diagnostics.click();
+    find('input').dispatchEvent(new window.KeyboardEvent('keydown', { key: 'Escape', cancelable: true }));
+    assert.equal(diagnostics.getAttribute('aria-pressed'), 'false');
     assert.equal(find('[data-service-count]').textContent, 'Services found: 2 of 2');
 });
