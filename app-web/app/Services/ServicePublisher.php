@@ -24,6 +24,7 @@ class ServicePublisher
             $revision = $locked->revisions()->create(['payload' => $payload, 'created_by' => $user->id]);
             $locked->current_revision_id = $revision->id;
             $locked->save();
+            EditorialReview::onDraft($locked);
             AuditEvent::create([
                 'user_id' => $user->id, 'service_id' => $locked->id,
                 'action' => $restored ? 'service.restored' : 'service.drafted',
@@ -49,6 +50,7 @@ class ServicePublisher
             $locked->published_revision_id = $locked->current_revision_id;
             $locked->published_at = now();
             $locked->save();
+            EditorialReview::onPublish($locked, $user);
             AuditEvent::create([
                 'user_id' => $user->id, 'service_id' => $locked->id, 'action' => 'service.published',
                 'metadata' => ['revision_id' => $locked->published_revision_id],

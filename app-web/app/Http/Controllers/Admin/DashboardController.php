@@ -17,6 +17,7 @@ class DashboardController extends Controller
             'total' => Service::count(),
             'published' => Service::whereNotNull('published_revision_id')->count(),
             'drafts' => $serviceDrafts + $contentDrafts,
+            'pendingReviews' => \App\Models\ReviewRequest::where('status', 'pending')->count(),
             'events' => AuditEvent::with(['user', 'service.currentRevision'])->latest('id')->limit(8)->get(),
         ]);
     }

@@ -36,6 +36,8 @@ class AuditEvent extends Model
             'content.published' => 'Contenido publicado',
             'content.restored' => 'Contenido recuperado como borrador',
             'user.created' => 'Cuenta creada',
+            'review.requested' => 'Revisión solicitada',
+            'review.changes_requested' => 'Correcciones solicitadas',
             'user.updated' => 'Cuenta actualizada',
             'user.setup_link' => 'Enlace de acceso generado',
             'security.enabled' => 'Verificación en dos pasos activada',

@@ -991,6 +991,13 @@ td .small-link {
 }
 
 .content-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 22px; }
+.review-change { margin-top: 24px; padding-top: 24px; border-top: 1px solid var(--line); }
+.review-change h3 { margin-bottom: 16px; font-size: 16px; }
+.review-comparison { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; }
+.review-comparison > div { padding: 18px; background: #f5f8f7; border-radius: 8px; }
+.review-comparison > div:last-child { background: #edf5f2; }
+.review-text { white-space: pre-wrap; overflow-wrap: anywhere; line-height: 1.75; margin: 16px 0; }
+@media(max-width:700px) { .review-comparison { grid-template-columns: minmax(0, 1fr); } }
 .security-layout { max-width: 850px; }
 .security-layout .panel > p { margin-top: 14px; }
 .security-enrollment { display: grid; grid-template-columns: 240px minmax(0, 1fr); gap: 28px; align-items: center; margin-top: 28px; }

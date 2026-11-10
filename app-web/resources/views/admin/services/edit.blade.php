@@ -21,4 +21,5 @@
             @if($service->published_at)<p class="field-help" style="margin-top:15px">Última publicación: {{ $service->published_at->timezone('America/Matamoros')->format('d/m/Y H:i') }}.</p>@endif
         </section><section class="panel"><h2>Historial</h2>@foreach($revisions as $revision)<div class="revision-row"><a class="small-link" href="{{ route('admin.services.revision', [$service, $revision]) }}">Versión #{{ $revision->id }}</a><small>{{ $revision->author?->name ?? 'Importación inicial' }}</small><small>{{ $revision->created_at->timezone('America/Matamoros')->format('d/m/Y H:i') }}</small>@if($revision->id === $service->published_revision_id)<span class="badge published">Versión pública</span>@endif</div>@endforeach<div class="pagination">{{ $revisions->links('pagination::simple-tailwind') }}</div></section></aside>
     </div>
+    @include('admin.reviews.request', ['target' => $service])
 </x-admin-layout>

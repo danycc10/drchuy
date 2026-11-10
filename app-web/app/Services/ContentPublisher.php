@@ -33,6 +33,7 @@ class ContentPublisher
             $revision->mediaAssets()->attach($mediaIds);
             $locked->current_revision_id = $revision->id;
             $locked->save();
+            EditorialReview::onDraft($locked);
             AuditEvent::create([
                 'user_id' => $user->id, 'content_block_id' => $locked->id,
                 'action' => $restored ? 'content.restored' : 'content.drafted',
@@ -53,6 +54,7 @@ class ContentPublisher
             $locked->published_revision_id = $locked->current_revision_id;
             $locked->published_at = now();
             $locked->save();
+            EditorialReview::onPublish($locked, $user);
             AuditEvent::create([
                 'user_id' => $user->id, 'content_block_id' => $locked->id, 'action' => 'content.published',
                 'metadata' => ['block' => $locked->key, 'revision_id' => $locked->published_revision_id],
