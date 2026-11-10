@@ -19,6 +19,10 @@ test('public menu closes with Escape, outside clicks and section navigation', ()
     assert.equal(document.activeElement, toggle);
     assert.equal(menu.classList.contains('open'), false);
     toggle.click();
+    toggle.focus();
+    menu.querySelector('a').dispatchEvent(new window.MouseEvent('click', { ctrlKey: true, bubbles: true, cancelable: true }));
+    assert.equal(toggle.getAttribute('aria-expanded'), 'true');
+    assert.equal(document.activeElement, toggle);
     menu.querySelector('a').click();
     assert.equal(document.activeElement.id, 'hours');
     assert.equal(toggle.getAttribute('aria-expanded'), 'false');

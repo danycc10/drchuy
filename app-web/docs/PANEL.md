@@ -78,6 +78,8 @@ Abrir una versión desde el historial del servicio. **Recuperar como borrador** 
 
 La preferencia pública se guarda en la sesión y comienza en español para una visita nueva. El aviso usa `/aviso-de-privacidad` en ambos idiomas. Los enlaces públicos antiguos con `/es` o `/en` redirigen a las direcciones limpias conservando el idioma solicitado. La vista previa privada mantiene rutas por idioma para poder revisar ambos borradores de forma independiente.
 
+El menú público resalta la sección que se está leyendo, también en las vistas previas. Horarios se distingue de Ubicación cuando entra en la zona de lectura. Las anclas dejan espacio para el encabezado según su altura; desplazar la página no cambia la dirección ni el foco del teclado. Se mantiene la preferencia de movimiento reducido.
+
 ## Contenido y horarios
 
 Desde **Contenido y horarios** puedes editar inicio, perfil profesional, instalaciones, contacto, SEO, privacidad, horarios, fotografías y preguntas frecuentes. Todos usan el mismo flujo: guardar borrador, revisar, publicar y recuperar versiones. Los datos compartidos se editan una vez; los textos tienen campos ES/EN.

@@ -19,7 +19,7 @@
 }
 html {
     scroll-behavior: smooth;
-    scroll-padding-top: 110px;
+    scroll-padding-top: var(--anchor-offset, 110px);
 }
 body {
     margin: 0;
@@ -175,10 +175,11 @@ h2 {
     transform-origin: left;
     transition: transform .22s ease;
 }
-.site-header nav a:hover::after, .site-header nav a:focus-visible::after {
+.site-header nav a:hover::after, .site-header nav a:focus-visible::after,
+.site-header nav a[aria-current=location]::after {
     transform: scaleX(1);
 }
-.site-header nav a:hover {
+.site-header nav a:hover, .site-header nav a[aria-current=location] {
     color: var(--teal);
 }
 .header-actions {

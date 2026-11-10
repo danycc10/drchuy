@@ -14,7 +14,8 @@ export function initPublicNavigation(document) {
             const opened = menu.classList.toggle('open');
             toggle.setAttribute('aria-expanded', String(opened));
         });
-        menu.querySelectorAll('a').forEach((link) => link.addEventListener('click', () => {
+        menu.querySelectorAll('a').forEach((link) => link.addEventListener('click', (event) => {
+            if (event.defaultPrevented || event.button !== 0 || event.ctrlKey || event.metaKey || event.shiftKey || event.altKey) return;
             close();
             const target = document.getElementById(link.hash.slice(1));
             if (target) {
