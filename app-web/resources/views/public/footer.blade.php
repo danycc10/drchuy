@@ -2,15 +2,24 @@
     <div class="container">
         <div class="footer-main">
             <div class="footer-identity">
-                <a class="footer-brand" href="{{ $preview ? route('admin.preview', $locale) : route('home') }}"><img src="{{ asset('images/logo.png') }}" alt="{{ $clinic['name'] }}" width="1400" height="445" loading="lazy"></a>
+                <a class="footer-brand" href="{{ $preview ? route('admin.preview', $locale) : route('home') }}">{{ $clinic['name'] }}</a>
                 <p class="footer-physician">{{ $clinic['physician'] }}</p>
-                <p>{{ $copy['location'] }}</p>
+                <p class="footer-location"><x-site-icon name="pin" /> {{ $copy['location'] }}</p>
             </div>
+            <nav class="footer-navigation" aria-label="{{ $locale === 'es' ? 'Explorar el sitio' : 'Explore the website' }}">
+                <p class="footer-label">{{ $locale === 'es' ? 'EXPLORA' : 'EXPLORE' }}</p>
+                <a href="#services">{{ $copy['nav'][0] }}</a>
+                <a href="#physician">{{ $copy['nav'][1] }}</a>
+                <a href="#hours">{{ $copy['hours_label'] }}</a>
+                <a href="#location">{{ $copy['nav'][3] }}</a>
+            </nav>
             <div class="footer-contact">
-                <p class="footer-contact-title">{{ $locale === 'es' ? 'Sigamos en contacto' : 'Stay in touch' }}</p>
+                <p class="footer-label">{{ $locale === 'es' ? 'CITAS Y CONTACTO' : 'APPOINTMENTS & CONTACT' }}</p>
+                <a class="footer-phone" href="tel:{{ $clinic['phone'] }}">{{ $clinic['phone_display'] }}</a>
+                <p class="footer-contact-note">{{ $locale === 'es' ? 'Atención con cita previa.' : 'Visits by appointment.' }}</p>
                 <nav class="footer-social" aria-label="{{ $locale === 'es' ? 'Redes y contacto' : 'Social media and contact' }}">
-                    <a class="footer-social-link footer-whatsapp" href="{{ $clinic['appointment_url'][$locale] }}" data-appointment-link target="_blank" rel="noopener noreferrer" aria-label="{{ $locale === 'es' ? 'Solicitar cita por WhatsApp' : 'Request an appointment on WhatsApp' }}"><span class="footer-social-icon"><x-site-icon name="whatsapp" /></span><span>WhatsApp<small>{{ $locale === 'es' ? 'Solicitar cita' : 'Request an appointment' }}</small></span></a>
-                    <a class="footer-social-link footer-facebook" href="{{ $clinic['facebook'] }}" target="_blank" rel="noopener noreferrer" aria-label="{{ $locale === 'es' ? 'Visitar nuestra página de Facebook' : 'Visit our Facebook page' }}"><span class="footer-social-icon"><x-site-icon name="facebook" /></span><span>Facebook<small>{{ $locale === 'es' ? 'Visita nuestra página' : 'Visit our page' }}</small></span></a>
+                    <a class="footer-social-link footer-whatsapp" href="{{ $clinic['appointment_url'][$locale] }}" data-appointment-link target="_blank" rel="noopener noreferrer" aria-label="{{ $locale === 'es' ? 'Solicitar cita por WhatsApp' : 'Request an appointment on WhatsApp' }}"><x-site-icon name="whatsapp" /> WhatsApp</a>
+                    <a class="footer-social-link footer-facebook" href="{{ $clinic['facebook'] }}" target="_blank" rel="noopener noreferrer" aria-label="{{ $locale === 'es' ? 'Visitar nuestra página de Facebook' : 'Visit our Facebook page' }}"><x-site-icon name="facebook" /> Facebook</a>
                 </nav>
             </div>
         </div>
