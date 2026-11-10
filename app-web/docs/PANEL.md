@@ -90,6 +90,10 @@ Para contacto, introduce el teléfono con `+` y código de país. Ese único val
 
 Los botones generales de cita del sitio abren un mismo mensaje preparado en el idioma elegido, editable en WhatsApp. La sección de contacto explica que se solicita disponibilidad y se espera la confirmación de fecha y hora por el consultorio; abrir WhatsApp no reserva ni envía un mensaje automáticamente. Las consultas de servicios conservan el nombre del servicio en su mensaje.
 
+La ficha **Para tu visita** reúne dirección, teléfono, pagos y horarios, incluidas las fechas especiales vigentes. **Copiar dirección** conserva calle y ciudad; si el navegador no permite copiar, selecciona la dirección y explica cómo hacerlo manualmente. **Imprimir ficha** abre la impresión del navegador solo al pulsarlo y prepara esos datos con fecha de consulta. El diseño de impresión no incluye el resto de las secciones. Ambos botones requieren JavaScript; los datos, la llamada y el enlace para llegar siguen disponibles sin él.
+
+La ficha pública usa las versiones publicadas de Contacto y Horarios. La vista previa usa sus borradores, lo indica en la ficha y omite el botón de impresión. Editar o imprimir estos datos no confirma una cita ni cambia la disponibilidad del consultorio.
+
 ## Preguntas frecuentes
 
 Abrir **Contenido y horarios → Preguntas frecuentes**. Se incluyen tres preguntas iniciales sobre citas, pagos y disponibilidad de procedimientos, con respuestas tomadas de los textos del consultorio. Llegan como borrador; revisarlas con el médico antes de publicar.

@@ -72,4 +72,35 @@ class PublicSiteTest extends TestCase
             $this->assertStringContainsString($locale === 'es' ? 'Espera la confirmación' : 'Wait for confirmation', $html);
         }
     }
+
+    public function test_visit_card_uses_published_contact_details_and_keeps_draft_preview_distinct(): void
+    {
+        $this->seed(\Database\Seeders\ContentSeeder::class);
+        $owner = User::factory()->create(['role' => Role::Owner]);
+        $block = \App\Models\ContentBlock::where('key', 'contact')->firstOrFail();
+        $payload = $block->currentRevision->payload;
+        $payload['shared']['address'] = 'Calle <Principal> 100';
+        $payload['shared']['phone'] = '+528781234567';
+        $publisher = app(\App\Services\ContentPublisher::class);
+        $publisher->draft($block, $payload, $block->current_revision_id, $owner);
+        $block->refresh();
+        $publisher->publish($block, $block->current_revision_id, $owner);
+        $block->refresh();
+        $payload['shared']['address'] = 'DIRECCION BORRADOR';
+        $publisher->draft($block, $payload, $block->current_revision_id, $owner);
+
+        foreach (['es' => 'Copiar dirección', 'en' => 'Copy address'] as $locale => $label) {
+            $html = $this->withSession(['public_locale' => $locale])->get('/')->assertOk()->getContent();
+            preg_match('~<article class="visit-card".*?</article>~s', $html, $matches);
+            $this->assertNotEmpty($matches);
+            $this->assertStringContainsString('Calle &lt;Principal&gt; 100', $matches[0]);
+            $this->assertStringNotContainsString('DIRECCION BORRADOR', $matches[0]);
+            $this->assertStringContainsString('href="tel:+528781234567"', $matches[0]);
+            $this->assertStringContainsString('id="hours"', $matches[0]);
+            $this->assertStringContainsString($label, $matches[0]);
+            $this->assertStringContainsString('data-print-visit hidden', $matches[0]);
+        }
+        $this->actingAs($owner)->get('/admin/preview/es')->assertOk()
+            ->assertSee('DIRECCION BORRADOR')->assertSee('datos del borrador')->assertDontSee('data-print-visit');
+    }
 }

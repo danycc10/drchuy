@@ -57,9 +57,8 @@
     @include('public.faq')
     <section class="contact-section" id="location">
         <div class="container"><span class="eyebrow">{{ $copy['contact_label'] }}</span><h2>{{ $copy['contact_title'] }}</h2>
-            <div class="contact-grid">
-                <div><h3><x-site-icon name="pin" /> {{ $copy['address_label'] }}</h3><address>{{ $clinic['address'] }}<br>{{ $clinic['city'] }}</address><a class="light-link" href="{{ $clinic['maps'] }}" target="_blank" rel="noopener noreferrer"><x-site-icon name="pin" /> {{ $copy['directions'] }}</a><p class="payment">{{ $copy['payment'] }}</p></div>
-                <div id="hours" tabindex="-1"><h3><x-site-icon name="clock" /> {{ $copy['hours_label'] }}</h3>@include('public.hours')</div>
+            <div class="contact-grid visit-layout">
+                @include('public.visit-card')
                 <div class="contact-action">@include('public.appointment-steps')<p>{{ $copy['appointment'] }}</p><x-appointment-link :clinic="$clinic" :copy="$copy" :locale="$locale" class="button light" :compact="true" /><a class="light-link" href="tel:{{ $clinic['phone'] }}"><x-site-icon name="phone" /> {{ $copy['call'] }}</a>@if(filled($clinic['email'] ?? null))<a class="light-link" href="mailto:{{ $clinic['email'] }}"><x-site-icon name="mail" /> {{ $clinic['email'] }}</a>@endif</div>
             </div>
         </div>
