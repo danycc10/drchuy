@@ -10,6 +10,12 @@ La recuperación usa enlaces de Laravel. En desarrollo, `MAIL_MAILER=log` guarda
 
 En móvil, **Menú** abre la navegación. Puedes cerrarla con **Cerrar menú**, la tecla Escape o pulsando fuera. El foco del teclado permanece dentro mientras está abierta y vuelve al botón al cerrar. La sección actual se identifica también para lectores de pantalla.
 
+## Inicio: tus próximos pasos
+
+El resumen muestra primero las correcciones por atender, después las solicitudes que tu rol puede resolver y finalmente los borradores disponibles. Tus borradores recientes aparecen primero. Los envíos que requieren permisos de otra cuenta se muestran como pendientes de esa revisión; no se ofrecen como aprobaciones que puedas ejecutar. Las solicitudes de versiones antiguas no aparecen como tareas actuales.
+
+Cada grupo muestra hasta tres elementos con acceso directo a su revisión o edición. Los módulos Servicios, Contenido y horarios y Revisiones conservan las listas completas.
+
 ## Usuarios
 
 Solo el propietario ve este módulo y puede acceder a sus acciones. Puede buscar por nombre/correo, crear cuentas, cambiar nombre/rol y activar o desactivar acceso. Cada cambio requiere su contraseña actual y se registra en Actividad. El correo de una cuenta existente no se cambia desde este módulo.
@@ -39,10 +45,14 @@ La implementación utiliza [RobThree/TwoFactorAuth](https://github.com/RobThree/
 2. Pulsar **Editar** y completar nombre/descripción en las pestañas **Español** e **Inglés**. Cambiar de pestaña conserva lo escrito; las flechas del teclado permiten recorrerlas.
 3. Ajustar orden y visibilidad si corresponde.
 4. Pulsar **Guardar borrador** en la barra que permanece visible al desplazarse. El estado indica si hay cambios sin guardar. La versión pública todavía no cambia.
-5. Revisar el texto guardado y abrir la vista previa en **Español** o **Inglés** desde el editor. Se abre en otra pestaña y muestra la última versión guardada.
+5. Abrir **Revisar y publicar** desde la barra. El apartado desplegable reúne las vistas previas en **Español** e **Inglés**, la solicitud de revisión y la publicación según permisos. Las vistas previas abren otra pestaña y muestran la última versión guardada. El comentario de revisión es opcional.
 6. Si el rol lo permite, pulsar **Publicar versión guardada** y confirmar.
 
 Para ocultar un servicio publicado, desmarcar su visibilidad, guardar y publicar. Un servicio oculto conserva su historial y puede recuperarse. El contador de versiones publicadas incluye las versiones cuya visibilidad es «Oculto».
+
+Si la versión tiene una solicitud, el editor muestra su estado y un enlace a sus comentarios. Si ya está publicada, indica que primero debes guardar nuevos cambios antes de enviarla otra vez a revisión. Los bloques de contenido usan estas mismas acciones.
+
+Las acciones de publicar, enviar/resolver revisiones, recuperar versiones, eliminar fotografías y cambiar la verificación en dos pasos muestran una confirmación con el diseño del panel. Identifica la versión, fotografía o cuenta afectada. **Cancelar** o Escape vuelve al control de origen y conserva los datos. Al quitar una pregunta, el cuadro aclara que el cambio se aplicará al guardar. El aviso al abandonar cambios sin guardar sigue siendo el propio del navegador.
 
 Mientras hay cambios sin guardar, la publicación queda deshabilitada. Si reviertes lo escrito a su valor guardado, el estado se actualiza. El navegador pide confirmar antes de abandonar cambios pendientes. Los errores de validación enlazan al campo correspondiente y abren su idioma; los textos largos muestran un contador de caracteres. Tras un error, lo escrito sigue disponible para corregirlo y guardarlo.
 
@@ -75,6 +85,8 @@ Desde **Contenido y horarios** puedes editar inicio, perfil profesional, instala
 El propietario publica perfil profesional, avisos legales y fotografías. Los administradores pueden publicar los demás bloques. El editor prepara borradores. El tablero cuenta los borradores de servicios y de contenido.
 
 Para contacto, introduce el teléfono con `+` y código de país. Ese único valor genera teléfono visible, enlace de llamada y WhatsApp. Los enlaces de ubicación y Facebook deben usar HTTPS y sus dominios oficiales. El correo público es opcional; no es el correo privado de acceso al panel.
+
+Los botones generales de cita del sitio abren un mismo mensaje preparado en el idioma elegido, editable en WhatsApp. La sección de contacto explica que se solicita disponibilidad y se espera la confirmación de fecha y hora por el consultorio; abrir WhatsApp no reserva ni envía un mensaje automáticamente. Las consultas de servicios conservan el nombre del servicio en su mensaje.
 
 ## Preguntas frecuentes
 
