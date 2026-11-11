@@ -1362,3 +1362,6 @@ h1, h2, h3 {
 .service-card details:not([open]) > summary [data-summary-open], .service-card details[open] > summary [data-summary-closed] { display: none; }
 .service-card details > summary > .summary-label { flex: 1 1 auto; }
 .service-card:target { border-color: #367c85; box-shadow: 0 0 0 2px #367c8530; scroll-margin-top: var(--anchor-offset, 110px); }
+/* Privacy notice: same header, a clear way back and the shared footer. */
+.privacy-end { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 40px; padding-top: 28px; border-top: 1px solid var(--line); }
+.public-privacy .site-header nav { display: none; }

@@ -1,3 +1,4 @@
+@php($anchorBase = $anchorBase ?? '')
 <footer class="site-footer">
     <div class="container">
         <div class="footer-main">
@@ -8,10 +9,10 @@
             </div>
             <nav class="footer-navigation" aria-label="{{ $locale === 'es' ? 'Explorar el sitio' : 'Explore the website' }}">
                 <p class="footer-label">{{ $locale === 'es' ? 'EXPLORA' : 'EXPLORE' }}</p>
-                <a href="#services">{{ $copy['nav'][0] }}</a>
-                <a href="#physician">{{ $copy['nav'][1] }}</a>
-                <a href="#hours">{{ $copy['hours_label'] }}</a>
-                <a href="#location">{{ $copy['nav'][3] }}</a>
+                <a href="{{ $anchorBase }}#services">{{ $copy['nav'][0] }}</a>
+                <a href="{{ $anchorBase }}#physician">{{ $copy['nav'][1] }}</a>
+                <a href="{{ $anchorBase }}#hours">{{ $copy['hours_label'] }}</a>
+                <a href="{{ $anchorBase }}#location">{{ $copy['nav'][3] }}</a>
             </nav>
             <div class="footer-contact">
                 <p class="footer-label">{{ $locale === 'es' ? 'CITAS Y CONTACTO' : 'APPOINTMENTS & CONTACT' }}</p>

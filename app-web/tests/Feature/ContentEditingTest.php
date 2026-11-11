@@ -96,7 +96,9 @@ class ContentEditingTest extends TestCase
             ->assertSee(route('admin.preview.privacy', 'en'));
         $this->post(route('admin.content.publish', $block), ['revision_id' => $block->fresh()->current_revision_id])->assertSessionHasNoErrors();
         $this->withSession(['public_locale' => 'es'])->get('/aviso-de-privacidad')->assertOk()->assertDontSee('<script>alert(1)</script>', false)->assertSee('&lt;script&gt;', false);
-        $this->withSession(['public_locale' => 'en'])->get('/aviso-de-privacidad')->assertOk()->assertSee('Approved test copy.');
+        $this->withSession(['public_locale' => 'en'])->get('/aviso-de-privacidad')->assertOk()->assertSee('Approved test copy.')
+            ->assertSee('class="site-footer"', false)->assertSee('href="'.route('home').'#hours"', false)->assertSee('class="privacy-end"', false)->assertSee('href="#main"', false);
+        $this->get('/admin/preview/en/privacy')->assertOk()->assertSee('href="'.route('admin.preview', 'en').'#hours"', false);
         $this->withSession(['public_locale' => 'es'])->get('/')->assertSee('Aviso de privacidad');
     }
 
