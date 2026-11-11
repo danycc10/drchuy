@@ -8,7 +8,7 @@
     <div class="mobile-service-category"><label for="service-category">{{ $locale === 'es' ? 'Categoría de atención' : 'Service category' }}</label><select id="service-category" data-service-category-select aria-controls="service-catalog">@foreach($categories->filter(fn ($category) => $services->has($category->id)) as $category)<option value="{{ $category->slug }}">{{ $category->name[$locale] }} ({{ $services[$category->id]->count() }})</option>@endforeach</select></div>
     <div class="service-filters" role="group" aria-label="{{ $locale === 'es' ? 'Filtrar por categoría' : 'Filter by category' }}">
         @foreach($categories->filter(fn ($category) => $services->has($category->id)) as $category)
-            <button type="button" data-service-filter="{{ $category->slug }}" aria-pressed="{{ $loop->first ? 'true' : 'false' }}" aria-controls="service-catalog">{{ $category->name[$locale] }} <span>{{ $services[$category->id]->count() }}</span></button>
+            <button type="button" data-service-filter="{{ $category->slug }}" aria-pressed="{{ ($focusedCategoryId ? $category->id === $focusedCategoryId : $loop->first) ? 'true' : 'false' }}" aria-controls="service-catalog">{{ $category->name[$locale] }} <span>{{ $services[$category->id]->count() }}</span></button>
         @endforeach
     </div>
     <p class="search-count" data-service-count data-template="{{ $locale === 'es' ? 'Servicios encontrados: {count} de {total}' : 'Services found: {count} of {total}' }}" role="status" aria-live="polite" aria-atomic="true"></p>

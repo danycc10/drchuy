@@ -68,6 +68,9 @@ export function initServiceSearch(document) {
     const categorySelect = search.querySelector('[data-service-category-select]');
     if (!categoryButtons.length) return;
     let category = (categoryButtons.find((button) => button.getAttribute('aria-pressed') === 'true') ?? categoryButtons[0]).dataset.serviceFilter;
+    const focused = document.querySelector('[data-preview-focus]');
+    const focusedCategory = focused?.closest('[data-service-group]')?.dataset.serviceCategory;
+    if (categoryButtons.some((button) => button.dataset.serviceFilter === focusedCategory)) category = focusedCategory;
     const services = [...document.querySelectorAll('[data-service-item]')].map((item) => ({
         item,
         details: item.querySelector('details'),
@@ -111,4 +114,10 @@ export function initServiceSearch(document) {
     document.defaultView.addEventListener('pageshow', filter);
     search.hidden = false;
     filter();
+    if (focused && !focused.hidden) {
+        query.value = ''; filter();
+        const reveal = () => { focused.focus({ preventScroll: true }); focused.scrollIntoView?.({ block: 'center', behavior: 'auto' }); };
+        if (document.defaultView.requestAnimationFrame) document.defaultView.requestAnimationFrame(reveal);
+        else reveal();
+    }
 }

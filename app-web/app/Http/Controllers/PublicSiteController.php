@@ -52,12 +52,13 @@ class PublicSiteController extends Controller
         return redirect()->route($page)->withHeaders(['Cache-Control' => 'private, no-store']);
     }
 
-    public function preview(string $locale)
+    public function preview(Request $request, string $locale)
     {
-        return $this->render($locale, true);
+        $data = $request->validate(['service_id' => 'nullable|integer|exists:services,id']);
+        return $this->render($locale, true, isset($data['service_id']) ? (int) $data['service_id'] : null);
     }
 
-    private function render(string $locale, bool $preview)
+    private function render(string $locale, bool $preview, ?int $previewServiceId = null)
     {
         abort_unless(in_array($locale, ['es', 'en'], true), 404);
         app()->setLocale($locale);
@@ -68,10 +69,12 @@ class PublicSiteController extends Controller
                 $image = $service->{$relation}->image;
                 return ['category_id' => $service->service_category_id, 'id' => $service->id, ...$service->{$relation}->payload,
                     'image' => $image ? ['url' => $image->url($preview), 'width' => $image->display_width, 'height' => $image->display_height] : null];
-            })
-            ->filter(fn ($item) => $item['visible'])->sortBy('position')->groupBy('category_id');
+            });
+        $focusedCategoryId = $previewServiceId ? $services->firstWhere('id', $previewServiceId)['category_id'] ?? null : null;
+        $services = $services->filter(fn ($item) => $item['visible'] || ($preview && $item['id'] === $previewServiceId))->sortBy('position')->groupBy('category_id');
         $response = response()->view('public.home', [
             'locale' => $locale, 'preview' => $preview,
+            'previewServiceId' => $previewServiceId, 'focusedCategoryId' => $focusedCategoryId,
             'copy' => $clinic[$locale], 'clinic' => $clinic,
             'structuredData' => app(ClinicStructuredData::class)->encode($clinic, $hours, $locale),
             'weeklyHours' => $this->content->hoursForDisplay($hours, $locale),

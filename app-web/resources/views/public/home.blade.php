@@ -17,7 +17,7 @@
     <a class="site-brand" href="{{ ($preview ? route('admin.preview', $locale) : route('home')) }}"><img src="{{ asset('images/logo.png') }}" alt="Medicina Respiratoria · Dr. Jesús García Espinoza" width="1400" height="445"></a>
     <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-navigation"><x-site-icon name="menu" class="menu-open-icon" /><x-site-icon name="close" class="menu-close-icon" /> {{ $locale === 'es' ? 'Menú' : 'Menu' }}</button>
     <nav id="site-navigation" aria-label="{{ $locale === 'es' ? 'Principal' : 'Main navigation' }}">@foreach(['services', 'physician', 'office', 'location'] as $i => $anchor)<a href="#{{ $anchor }}">{{ $copy['nav'][$i] }}</a>@endforeach<a href="#hours">{{ $locale === 'es' ? 'Horarios' : 'Hours' }}</a></nav>
-    <div class="header-actions"><x-public-language-switch :locale="$locale" :preview="$preview" /><x-appointment-link :clinic="$clinic" :copy="$copy" :locale="$locale" class="button compact" :compact="true" /></div>
+    <div class="header-actions"><x-public-language-switch :locale="$locale" :preview="$preview" :service-id="$previewServiceId" /><x-appointment-link :clinic="$clinic" :copy="$copy" :locale="$locale" class="button compact" :compact="true" /></div>
 </div></header>
 <main id="main">
     <section class="hero container"><div class="hero-copy"><span class="eyebrow"><span class="little-line"></span> {{ $copy['practice_label'] }}</span><h1><span class="sr-only">{{ $clinic['name'] }}: </span>{{ $copy['hero'] }}</h1><p class="hero-intro">{{ $copy['intro'] }}</p><x-appointment-link :clinic="$clinic" :copy="$copy" :locale="$locale" class="button" /><p class="appointment-note">{{ $copy['appointment'] }}</p>

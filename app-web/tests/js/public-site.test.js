@@ -47,7 +47,7 @@ test('language selection submits a known section without adding the language to 
     assert.equal(form.elements.locale.value, 'en');
 });
 
-function searchableCatalog() {
+function searchableCatalog(focused = false) {
     const { window } = new JSDOM(`<body><div data-service-search hidden>
         <input type="search" data-service-query><button data-clear-service-search>Clear</button>
         <select data-service-category-select><option value="diagnostics">Diagnostics</option><option value="consultation">Consultation</option></select>
@@ -56,6 +56,7 @@ function searchableCatalog() {
         <div data-service-group data-service-category="diagnostics"><h3>Estudios respiratorios</h3><article data-service-item id="spirometry"><h4>Espirometría</h4><details><summary>About this service</summary><div class="service-description"><p>Medición de la función pulmonar.</p></div></details><a data-service-request href="https://wa.me/528781146336?text=request">Request</a></article></div>
         <div data-service-group data-service-category="consultation"><h3>Consultas</h3><article data-service-item id="consultation"><h4>Consulta médica</h4><details open><summary>About this service</summary><div class="service-description"><p>Valoración individual.</p></div></details><a data-service-request href="https://wa.me/528781146336?text=request">Request</a></article></div></body>`);
     const { document } = window;
+    if (focused) { const item = document.querySelector('#consultation'); item.setAttribute('data-preview-focus', ''); item.tabIndex = -1; }
     initServiceSearch(document);
     return { window, document, find: (selector) => document.querySelector(selector), search: (value) => {
         const input = document.querySelector('input');
@@ -63,6 +64,14 @@ function searchableCatalog() {
         input.dispatchEvent(new window.Event('input'));
     } };
 }
+
+test('private preview selects the requested service category and focuses its card', () => {
+    const { document, find } = searchableCatalog(true);
+    assert.equal(find('#consultation').hidden, false);
+    assert.equal(find('#spirometry').hidden, true);
+    assert.equal(find('[data-service-category-select]').value, 'consultation');
+    assert.equal(document.activeElement, find('#consultation'));
+});
 
 test('service search matches accents, case, description and category without losing expanded items', () => {
     const { search, find } = searchableCatalog();

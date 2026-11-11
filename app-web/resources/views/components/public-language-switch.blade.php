@@ -1,7 +1,7 @@
-@props(['locale', 'preview' => false, 'page' => 'home'])
+@props(['locale', 'preview' => false, 'page' => 'home', 'serviceId' => null])
 @php($other = $locale === 'es' ? 'en' : 'es')
 @if($preview)
-    <a class="language-switch" data-language-switch href="{{ route($page === 'privacy' ? 'admin.preview.privacy' : 'admin.preview', $other) }}" lang="{{ $other }}" aria-label="{{ $other === 'en' ? 'Read in English' : 'Leer en español' }}">{{ strtoupper($other) }}</a>
+    <a class="language-switch" data-language-switch href="{{ route($page === 'privacy' ? 'admin.preview.privacy' : 'admin.preview', $page === 'home' && $serviceId ? ['locale' => $other, 'service_id' => $serviceId] : $other) }}" lang="{{ $other }}" aria-label="{{ $other === 'en' ? 'Read in English' : 'Leer en español' }}">{{ strtoupper($other) }}</a>
 @else
     <form method="post" action="{{ route('language.update') }}" data-language-form>
         @csrf
