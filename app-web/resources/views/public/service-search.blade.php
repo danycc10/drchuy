@@ -5,6 +5,7 @@
         <div class="search-input-wrap"><x-site-icon name="search" /><input id="service-query" data-service-query type="search" maxlength="100" autocomplete="off" placeholder="{{ $locale === 'es' ? 'Ej. espirometría' : 'e.g. spirometry' }}" aria-describedby="service-search-help" aria-controls="service-catalog"></div>
         <button type="button" data-clear-service-search>{{ $locale === 'es' ? 'Limpiar búsqueda' : 'Clear search' }}</button>
     </div>
+    <div class="mobile-service-category"><label for="service-category">{{ $locale === 'es' ? 'Categoría de atención' : 'Service category' }}</label><select id="service-category" data-service-category-select aria-controls="service-catalog">@foreach($categories->filter(fn ($category) => $services->has($category->id)) as $category)<option value="{{ $category->slug }}">{{ $category->name[$locale] }} ({{ $services[$category->id]->count() }})</option>@endforeach</select></div>
     <div class="service-filters" role="group" aria-label="{{ $locale === 'es' ? 'Filtrar por categoría' : 'Filter by category' }}">
         @foreach($categories->filter(fn ($category) => $services->has($category->id)) as $category)
             <button type="button" data-service-filter="{{ $category->slug }}" aria-pressed="{{ $loop->first ? 'true' : 'false' }}" aria-controls="service-catalog">{{ $category->name[$locale] }} <span>{{ $services[$category->id]->count() }}</span></button>

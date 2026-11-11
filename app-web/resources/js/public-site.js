@@ -65,6 +65,7 @@ export function initServiceSearch(document) {
     const normalize = (text) => text.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLocaleLowerCase().trim();
     const groups = [...document.querySelectorAll('[data-service-group]')];
     const categoryButtons = [...search.querySelectorAll('[data-service-filter]')];
+    const categorySelect = search.querySelector('[data-service-category-select]');
     if (!categoryButtons.length) return;
     let category = (categoryButtons.find((button) => button.getAttribute('aria-pressed') === 'true') ?? categoryButtons[0]).dataset.serviceFilter;
     const services = [...document.querySelectorAll('[data-service-item]')].map((item) => ({
@@ -93,10 +94,15 @@ export function initServiceSearch(document) {
         empty.hidden = count > 0;
         search.querySelector('[data-clear-service-search]').disabled = query.value.length === 0;
         categoryButtons.forEach((button) => button.setAttribute('aria-pressed', String(button.dataset.serviceFilter === category)));
+        if (categorySelect) categorySelect.value = category;
         filtering = active;
     }
     const clear = () => { query.value = ''; filter(); query.focus(); };
     categoryButtons.forEach((button) => button.addEventListener('click', () => { category = button.dataset.serviceFilter; filter(); }));
+    categorySelect?.addEventListener('change', () => {
+        if (categoryButtons.some((button) => button.dataset.serviceFilter === categorySelect.value)) category = categorySelect.value;
+        filter();
+    });
     query.addEventListener('input', filter);
     query.addEventListener('keydown', (event) => {
         if (event.key === 'Escape' && query.value) { event.preventDefault(); clear(); }

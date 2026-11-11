@@ -50,6 +50,7 @@ test('language selection submits a known section without adding the language to 
 function searchableCatalog() {
     const { window } = new JSDOM(`<body><div data-service-search hidden>
         <input type="search" data-service-query><button data-clear-service-search>Clear</button>
+        <select data-service-category-select><option value="diagnostics">Diagnostics</option><option value="consultation">Consultation</option></select>
         <p data-service-count data-template="Services found: {count} of {total}"></p><div><button data-service-filter="diagnostics" aria-pressed="true">Diagnostics</button><button data-service-filter="consultation" aria-pressed="false">Consultation</button></div></div>
         <div data-service-empty hidden><button data-clear-service-search>Show all</button></div>
         <div data-service-group data-service-category="diagnostics"><h3>Estudios respiratorios</h3><article data-service-item id="spirometry"><h4>Espirometría</h4><details><summary>About this service</summary><div class="service-description"><p>Medición de la función pulmonar.</p></div></details><a data-service-request href="https://wa.me/528781146336?text=request">Request</a></article></div>
@@ -80,6 +81,21 @@ test('service search matches accents, case, description and category without los
     assert.equal(find('#consultation details').open, true);
     assert.equal(find('#consultation').hidden, true);
     assert.equal(find('#consultation').closest('[data-service-group]').hidden, true);
+});
+
+test('mobile category selector and desktop buttons keep one shared filter across layout changes', () => {
+    const { window, find } = searchableCatalog();
+    const select = find('[data-service-category-select]');
+    select.value = 'consultation';
+    select.dispatchEvent(new window.Event('change'));
+    assert.equal(find('#consultation').hidden, false);
+    assert.equal(find('#spirometry').hidden, true);
+    assert.equal(find('[data-service-filter="consultation"]').getAttribute('aria-pressed'), 'true');
+    find('[data-service-filter="diagnostics"]').click();
+    assert.equal(select.value, 'diagnostics');
+    assert.equal(find('#spirometry').hidden, false);
+    window.dispatchEvent(new window.Event('pageshow'));
+    assert.equal(select.value, 'diagnostics');
 });
 
 test('no-results recovery and Escape keep the selected category and return focus to the query', () => {

@@ -88,6 +88,8 @@ El editor incluye **Información para la visita** en ambos idiomas: preparación
 
 El catálogo se presenta en tarjetas con una ilustración por categoría, nombre, **Conocer el servicio** y la solicitud por WhatsApp. Se adapta a tres columnas en escritorio, dos en tablet y una en móvil. La primera categoría disponible queda seleccionada al iniciar y siempre hay una categoría activa; se eliminó la opción Todos. El buscador y el contador se limitan a esa categoría. **Limpiar búsqueda**, **Ver servicios de esta categoría** y Escape limpian el texto sin cambiar la selección. Las tarjetas y sus descripciones siguen disponibles sin JavaScript. El movimiento al pasar el puntero respeta la preferencia de movimiento reducido.
 
+En celular, las categorías usan un selector compacto sincronizado con los botones de escritorio. La búsqueda ocupa el ancho disponible y los detalles usan texto de 16 px. La barra de contacto reserva espacio según su altura real, incluidos textos que ocupen más de una línea; se oculta mientras el buscador tiene el foco para dejar espacio al teclado y vuelve al salir del campo. La comprobación visual en dispositivos reales continúa pendiente.
+
 Las cinco ilustraciones y sus prompts se documentan en [IMAGENES_SERVICIOS.md](IMAGENES_SERVICIOS.md). Se usan como imagen inicial por categoría. Cada servicio puede tener una imagen propia desde el panel:
 
 1. Abrir **Servicios → Editar → Imagen del servicio**. Elegir una imagen existente o escribir un nombre, elegir el archivo y pulsar **Subir y seleccionar** sin salir del editor. La carga requiere JavaScript; la biblioteca sigue disponible como alternativa.

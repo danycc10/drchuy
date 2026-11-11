@@ -856,10 +856,10 @@ h1, h2, h3 {
         display: none;
     }
     .public-home {
-        padding-bottom: calc(84px + env(safe-area-inset-bottom, 0px));
+        padding-bottom: calc(var(--mobile-contact-height, calc(84px + env(safe-area-inset-bottom, 0px))) + 12px);
     }
     html {
-        scroll-padding-bottom: calc(100px + env(safe-area-inset-bottom, 0px));
+        scroll-padding-bottom: calc(var(--mobile-contact-height, calc(84px + env(safe-area-inset-bottom, 0px))) + 24px);
     }
     .mobile-contact {
         display: grid;
@@ -1310,4 +1310,30 @@ h1, h2, h3 {
     .printing-visit .visit-card strong, .printing-visit .visit-card h3, .printing-visit .visit-phone { color: #000; }
     .printing-visit .visit-print-note { display: block; margin-top: 20px; font-size: 12px; }
     .printing-visit .public-hours-row, .printing-visit .hours-exceptions p { break-inside: avoid; }
+}
+
+.mobile-service-category { display: none; }
+@media screen and (max-width:1000px) {
+    .public-home.search-is-focused .mobile-contact { display: none; }
+    .mobile-contact .button { overflow-wrap: anywhere; text-align: center; }
+}
+@media screen and (max-width:600px) {
+    .service-search { padding: 18px; border-radius: 14px; }
+    .search-controls { flex-wrap: wrap; gap: 4px; }
+    .search-input-wrap { flex-basis: 100%; }
+    .search-controls > button { margin-left: auto; }
+    .mobile-service-category { display: block; margin-top: 12px; }
+    .mobile-service-category label { font-size: 14px; }
+    .mobile-service-category select { width: 100%; min-width: 0; min-height: 48px; font: inherit; font-size: 16px; color: var(--navy); background: #fff; border: 1px solid #91abad; border-radius: 8px; padding: 10px; }
+    .service-filters { display: none; }
+    .service-card > h4 { margin: 18px 18px 0; }
+    .service-catalog-list .service-card > details, .service-catalog-list .service-card > details[open] { margin-left: 18px; margin-right: 18px; }
+    .service-card .service-request { margin-left: 18px; margin-right: 18px; }
+    .service-card .service-description p, .service-visit-details dd { font-size: 16px; }
+}
+@media screen and (max-width:380px) {
+    .header-inner { gap: 6px; }
+    .site-brand { width: 132px; }
+    .nav-toggle { padding: 8px; gap: 4px; }
+    .mobile-contact { padding-left: 12px; padding-right: 12px; gap: 8px; }
 }
