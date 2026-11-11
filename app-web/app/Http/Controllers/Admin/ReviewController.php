@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 use App\Models\{ContentBlock, ReviewRequest, Service};
 use App\Services\EditorialReview;
 use Illuminate\Http\Request;
-use Illuminate\Support\Arr;
 use Illuminate\Validation\Rule;
 
 class ReviewController extends Controller
@@ -35,18 +34,7 @@ class ReviewController extends Controller
         $target = $review->target();
         $revision = $target->revisions()->findOrFail($review->revision_id);
         $base = $review->base_revision_id ? $target->revisions()->findOrFail($review->base_revision_id) : null;
-        $before = Arr::dot($base?->payload ?? []);
-        $after = Arr::dot($revision->payload);
-        if ($target instanceof Service) {
-            $before['image_id'] = $base?->image_id;
-            $after['image_id'] = $revision->image_id;
-        }
-        $changes = [];
-        foreach (array_unique([...array_keys($before), ...array_keys($after)]) as $field) {
-            if (($before[$field] ?? null) !== ($after[$field] ?? null)) {
-                $changes[] = ['field' => $field, 'before' => $this->display($before[$field] ?? null, $field), 'after' => $this->display($after[$field] ?? null, $field)];
-            }
-        }
+        $changes = app(\App\Services\RevisionComparison::class)->changes($target, $base, $revision);
 
         return view('admin.reviews.show', compact('review', 'target', 'revision', 'base', 'changes'));
     }
@@ -59,14 +47,4 @@ class ReviewController extends Controller
         return back()->with('status', $data['decision'] === 'publish' ? 'Versión revisada y publicada.' : 'Cambios solicitados. El comentario quedó disponible para el equipo.');
     }
 
-    private function display(mixed $value, string $field): string
-    {
-        if ($field === 'image_id') {
-            return $value ? (\App\Models\MediaAsset::find($value)?->title ?? 'Imagen no disponible') : 'Ilustración original de la categoría';
-        }
-        if (str_ends_with($field, '_image_id')) {
-            return $value ? (\App\Models\MediaAsset::find($value)?->title ?? 'Fotografía no disponible') : 'Fotografía original del sitio';
-        }
-        return match (true) { $value === null => '—', is_bool($value) => $value ? 'Sí' : 'No', is_array($value) => 'Sin elementos', default => (string) $value };
-    }
 }

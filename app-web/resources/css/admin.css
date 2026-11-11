@@ -1163,3 +1163,14 @@ input[type=file]::file-selector-button { border: 1px solid var(--line); padding:
 .image-picker-option[aria-pressed=true] .image-picker-check { visibility: visible; }
 [data-image-native] > summary { cursor: pointer; min-height: 44px; padding: 12px 0; font-size: 14px; color: #176b76; }
 .upload-progress { display: block; width: 100%; height: 10px; margin-top: 18px; accent-color: #176b76; border-radius: 8px; }
+.comparison-photo { display: block; max-width: 100%; width: 360px; max-height: 260px; object-fit: contain; background: #edf2ef; border-radius: 12px; margin-top: 14px; }
+.comparison-language { margin-top: 20px; }
+.comparison-language > summary { padding: 14px 0; min-height: 44px; cursor: pointer; color: #176b76; font-weight: 600; }
+.comparison-card { min-width: 0; border: 1px solid #d7e2df; border-radius: 14px; padding: 20px; }
+.comparison-card > .badge { margin-top: 10px; }
+.comparison-card .service-crop-preview { width: 100%; }
+.comparison-field { margin-top: 14px; padding: 10px; border-left: 3px solid transparent; }
+.comparison-field.is-changed { background: #edf6f2; border-left-color: #26757d; }
+.comparison-field h4 { font-size: 13px; font-weight: 600; }
+.comparison-field h4 span { display: inline-block; margin-left: 6px; font-size: 11px; color: #176b76; }
+.comparison-field p { margin-top: 6px; font-size: 14px; white-space: pre-line; overflow-wrap: anywhere; }

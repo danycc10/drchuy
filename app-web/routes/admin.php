@@ -63,6 +63,8 @@ Route::prefix('admin')->middleware('admin.headers')->group(function () {
         Route::get('/content/{block}/revisions/{revision}', [ContentController::class, 'revision'])->name('admin.content.revision');
         Route::post('/content/{block}/revisions/{revision}/restore', [ContentController::class, 'restore'])->name('admin.content.restore');
         Route::get('/services/{service}/edit', [ServiceController::class, 'edit'])->name('admin.services.edit');
+        Route::get('/services/{service}/compare', [\App\Http\Controllers\Admin\ComparisonController::class, 'service'])->name('admin.services.compare');
+        Route::get('/content/{block}/compare', [\App\Http\Controllers\Admin\ComparisonController::class, 'content'])->name('admin.content.compare');
         Route::put('/services/{service}', [ServiceController::class, 'update'])->name('admin.services.update');
         Route::post('/services/{service}/publish', [ServiceController::class, 'publish'])->name('admin.services.publish');
         Route::get('/services/{service}/revisions/{revision}', [ServiceController::class, 'revision'])->name('admin.services.revision');

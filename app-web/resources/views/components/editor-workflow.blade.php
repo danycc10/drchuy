@@ -13,6 +13,7 @@
     <p data-dirty-note class="dirty-note" id="publish-help" hidden>Guarda tus cambios antes de revisarlos o publicarlos.</p>
     <div class="workflow-columns">
         <div><h3>1. Comprueba el resultado</h3><p class="field-help">La vista previa abre la última versión guardada en una pestaña nueva. Revisa ambos idiomas.</p>
+            <a class="button secondary" style="margin:12px 0" href="{{ route('admin.'.$kind.'.compare', $target) }}" target="_blank" rel="noopener noreferrer"><x-site-icon name="document" /> Comparar antes de publicar</a>
             @if($legalIncomplete)
                 <p class="field-help">Guarda el aviso en español e inglés para habilitar su vista previa.</p>
             @else
