@@ -4,6 +4,15 @@
 .service-crop-preview img { display: block; width: 100%; height: 100%; object-fit: cover; }
 .crop-controls { border: 0; padding: 0; margin-top: 20px; }
 .crop-controls legend { font-weight: 600; }
+.service-order-list { list-style: none; padding: 0; margin: 24px 0; display: grid; gap: 12px; }
+.service-order-list > li { display: flex; align-items: center; gap: 16px; padding: 18px; border: 1px solid #d7e2df; border-radius: 14px; background: #fafcfb; }
+.service-order-list > li[draggable=true] { cursor: grab; }
+.service-order-list > li.is-dragging { opacity: .5; }
+.order-number { color: #26757d; font-size: 20px; min-width: 26px; }
+.order-copy { flex: 1; min-width: 0; overflow-wrap: anywhere; }
+.order-copy > div { margin: 8px 0; }
+.order-actions { display: flex; gap: 8px; }
+@media(max-width:600px) { .service-order-list > li { flex-wrap: wrap; padding: 14px; } .order-actions { width: 100%; justify-content: flex-end; } .order-actions button { min-height: 44px; } }
 .crop-controls input[type=range] { width: 100%; min-height: 44px; accent-color: #26757d; padding: 0; }
 [data-inline-upload] { margin-top: 24px; padding-top: 20px; border-top: 1px solid #d7e2df; }
 @source '../views';

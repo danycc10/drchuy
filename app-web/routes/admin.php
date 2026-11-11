@@ -53,6 +53,8 @@ Route::prefix('admin')->middleware('admin.headers')->group(function () {
         Route::get('/preview/{locale}', [PublicSiteController::class, 'preview'])->whereIn('locale', ['es', 'en'])->name('admin.preview');
         Route::get('/preview/{locale}/privacy', [PublicSiteController::class, 'previewPrivacy'])->whereIn('locale', ['es', 'en'])->name('admin.preview.privacy');
         Route::get('/services', [ServiceController::class, 'index'])->name('admin.services.index');
+        Route::get('/services/order', [ServiceController::class, 'order'])->name('admin.services.order');
+        Route::post('/services/order', [ServiceController::class, 'reorder'])->name('admin.services.reorder');
         Route::get('/content', [ContentController::class, 'index'])->name('admin.content.index');
         Route::get('/content/{block}/edit', [ContentController::class, 'edit'])->name('admin.content.edit');
         Route::put('/content/{block}', [ContentController::class, 'update'])->name('admin.content.update');
