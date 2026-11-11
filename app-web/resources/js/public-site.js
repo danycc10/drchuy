@@ -111,13 +111,33 @@ export function initServiceSearch(document) {
         if (event.key === 'Escape' && query.value) { event.preventDefault(); clear(); }
     });
     document.querySelectorAll('[data-clear-service-search]').forEach((button) => button.addEventListener('click', clear));
-    document.defaultView.addEventListener('pageshow', filter);
+    const window = document.defaultView;
+    window.addEventListener('pageshow', filter);
+    // A direct link to a service card selects its category and opens it, even when another category was active.
+    function revealFromHash(scroll) {
+        const service = services.find((entry) => entry.item.id && entry.item.id === window.location.hash.slice(1));
+        if (!service) return false;
+        category = service.category;
+        query.value = '';
+        filter();
+        service.details.open = true;
+        service.wasOpen = true;
+        service.item.setAttribute('tabindex', '-1');
+        service.item.focus({ preventScroll: true });
+        if (scroll) service.item.scrollIntoView?.({ block: 'start' });
+        return true;
+    }
+    window.addEventListener('hashchange', () => revealFromHash(true));
     search.hidden = false;
     filter();
     if (focused && !focused.hidden) {
         query.value = ''; filter();
         const reveal = () => { focused.focus({ preventScroll: true }); focused.scrollIntoView?.({ block: 'center', behavior: 'auto' }); };
-        if (document.defaultView.requestAnimationFrame) document.defaultView.requestAnimationFrame(reveal);
+        if (window.requestAnimationFrame) window.requestAnimationFrame(reveal);
+        else reveal();
+    } else if (revealFromHash(false)) {
+        const reveal = () => services.find((entry) => entry.item.id === window.location.hash.slice(1))?.item.scrollIntoView?.({ block: 'start' });
+        if (window.requestAnimationFrame) window.requestAnimationFrame(reveal);
         else reveal();
     }
 }

@@ -157,3 +157,33 @@ test('one category remains selected on load, clearing, repeated clicks and brows
     assert.equal(document.querySelectorAll('[data-service-filter][aria-pressed=true]').length, 1);
     assert.equal(find('[data-service-count]').textContent, 'Services found: 1 of 1');
 });
+
+test('a direct link to a service selects its category, opens the card and follows later hash changes', () => {
+    const { window } = new JSDOM(`<body><div data-service-search hidden>
+        <input type="search" data-service-query><button data-clear-service-search>Clear</button>
+        <p data-service-count data-template="{count} of {total}"></p><div><button data-service-filter="diagnostics" aria-pressed="true">Diagnostics</button><button data-service-filter="consultation" aria-pressed="false">Consultation</button></div></div>
+        <div data-service-empty hidden><button data-clear-service-search>Show all</button></div>
+        <div data-service-group data-service-category="diagnostics"><h3>Estudios</h3><li data-service-item id="service-1"><h4>Espirometría</h4><details><summary>About</summary><div class="service-description"><p>Función pulmonar.</p></div></details><a data-service-request href="#">Request</a></li></div>
+        <div data-service-group data-service-category="consultation"><h3>Consultas</h3><li data-service-item id="service-2"><h4>Consulta</h4><details><summary>About</summary><div class="service-description"><p>Valoración.</p></div></details><a data-service-request href="#">Request</a></li></div></body>`, { url: 'https://clinic.test/#service-2' });
+    const { document } = window;
+    const scrolled = [];
+    window.Element.prototype.scrollIntoView = function () { scrolled.push(this.id); };
+    window.requestAnimationFrame = (callback) => callback();
+    initServiceSearch(document);
+    assert.equal(document.querySelector('#service-2').hidden, false);
+    assert.equal(document.querySelector('#service-1').hidden, true);
+    assert.equal(document.querySelector('#service-2 details').open, true);
+    assert.equal(document.querySelector('[data-service-filter=consultation]').getAttribute('aria-pressed'), 'true');
+    assert.equal(document.activeElement.id, 'service-2');
+    assert.deepEqual(scrolled, ['service-2']);
+    window.location.hash = '#service-1';
+    window.dispatchEvent(new window.HashChangeEvent('hashchange'));
+    assert.equal(document.querySelector('#service-1').hidden, false);
+    assert.equal(document.querySelector('#service-1 details').open, true);
+    assert.equal(document.querySelector('[data-service-filter=diagnostics]').getAttribute('aria-pressed'), 'true');
+    assert.equal(document.activeElement.id, 'service-1');
+    assert.deepEqual(scrolled, ['service-2', 'service-1']);
+    window.location.hash = '#hours';
+    window.dispatchEvent(new window.HashChangeEvent('hashchange'));
+    assert.equal(document.querySelector('#service-1').hidden, false, 'Unrelated anchors leave the catalog untouched');
+});

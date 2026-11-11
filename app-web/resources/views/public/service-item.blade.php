@@ -15,7 +15,7 @@
     </div>
     <h4>{{ $name }}</h4>
     <details @if($preview && $previewServiceId === $service['id']) open @endif>
-        <summary aria-label="{{ ($locale === 'es' ? 'Conocer el servicio: ' : 'About this service: ').$name }}"><span>{{ $locale === 'es' ? 'Conocer el servicio' : 'About this service' }}</span><x-site-icon name="chevron-down" class="service-chevron" /></summary>
+        <summary><span class="summary-label" data-summary-closed>{{ $locale === 'es' ? 'Conocer el servicio' : 'About this service' }}</span><span class="summary-label" data-summary-open>{{ $locale === 'es' ? 'Ocultar detalles' : 'Hide details' }}</span><span class="sr-only">: {{ $name }}</span><x-site-icon name="chevron-down" class="service-chevron" /></summary>
         <div class="service-description"><p>{{ $service[$locale]['description'] }}</p>
             @include('public.service-visit-details', ['details' => $service[$locale]])
         </div>
