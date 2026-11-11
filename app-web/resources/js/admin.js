@@ -7,6 +7,7 @@ import { initServiceImage } from './service-image';
 import { initServiceOrder } from './service-order';
 import { initDevicePreview } from './device-preview';
 import { initImagePicker } from './image-picker';
+import { initPanelGuide } from './panel-guide';
 
 initFaq(document);
 initEditor(document);
@@ -17,6 +18,7 @@ initServiceImage(document);
 initImagePicker(document);
 initServiceOrder(document);
 initDevicePreview(document);
+initPanelGuide(document);
 const editor = document.querySelector('[data-editor]');
 
 document.addEventListener('change', (event) => {

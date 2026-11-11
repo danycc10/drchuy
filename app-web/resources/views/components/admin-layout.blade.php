@@ -21,6 +21,7 @@
         <a class="admin-brand" href="{{ route('admin.dashboard') }}"><img src="{{ asset('images/logo-white.png') }}" alt="Medicina Respiratoria · Dr. Jesús García Espinoza" style="width:100%;height:auto"></a>
         <span class="nav-caption">ESPACIO DE TRABAJO</span>
         <nav aria-label="Administración">
+            <a href="{{ route('admin.dashboard', ['guide' => 1]) }}#panel-guide"><x-site-icon name="document" /> Guía del panel</a>
             <a class="{{ request()->routeIs('admin.dashboard') ? 'active' : '' }}" aria-current="{{ request()->routeIs('admin.dashboard') ? 'page' : 'false' }}" href="{{ route('admin.dashboard') }}"><x-site-icon name="grid" /> Resumen</a>
             @if(Route::has('admin.services.index'))<a class="{{ request()->routeIs('admin.services.*') ? 'active' : '' }}" aria-current="{{ request()->routeIs('admin.services.*') ? 'page' : 'false' }}" href="{{ route('admin.services.index') }}"><x-site-icon name="list" /> Servicios</a>@endif
             <a class="{{ request()->routeIs('admin.content.*') ? 'active' : '' }}" aria-current="{{ request()->routeIs('admin.content.*') ? 'page' : 'false' }}" href="{{ route('admin.content.index') }}"><x-site-icon name="document" /> Contenido y horarios</a>

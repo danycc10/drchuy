@@ -8,6 +8,8 @@ Entrar a `/admin` con el correo y la contraseña elegidos. El rol `owner` public
 
 El resumen ofrece accesos directos a borradores de servicios, orden del catálogo, imágenes y vista previa adaptable. Distingue servicios visibles de los publicados como ocultos y enlaza a sus filtros. Los grupos de tareas priorizan correcciones y revisiones; **Ver pendientes más** despliega los restantes sin salir del resumen. La actividad reciente permanece al final.
 
+La **Guía del panel** explica editar, guardar, revisar y publicar en cuatro pasos. Puede cerrarse o terminarse; el navegador recuerda la preferencia por cuenta. Para consultarla de nuevo, usar **Guía del panel** en el menú o **Abrir guía del panel** en el resumen. Funciona como lectura completa sin JavaScript y como recorrido con botones cuando está disponible; no publica ni modifica contenido.
+
 La recuperación usa enlaces de Laravel. En desarrollo, `MAIL_MAILER=log` guarda el mensaje en el log privado en lugar de enviarlo. En producción se necesita correo configurado y probado. El log puede contener el enlace de recuperación: no compartirlo ni subirlo a Git.
 
 En móvil, **Menú** abre la navegación. Puedes cerrarla con **Cerrar menú**, la tecla Escape o pulsando fuera. El foco del teclado permanece dentro mientras está abierta y vuelve al botón al cerrar. La sección actual se identifica también para lectores de pantalla.
