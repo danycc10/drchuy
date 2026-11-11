@@ -116,6 +116,8 @@ El menú público resalta la sección que se está leyendo, también en las vist
 
 Desde **Contenido y horarios** puedes editar inicio, perfil profesional, instalaciones, contacto, SEO, privacidad, horarios, fotografías y preguntas frecuentes. Todos usan el mismo flujo: guardar borrador, revisar, publicar y recuperar versiones. Los datos compartidos se editan una vez; los textos tienen campos ES/EN.
 
+El bloque **SEO y redes sociales** alimenta el título y la descripción de la página, las etiquetas Open Graph y Twitter para enlaces compartidos y la descripción de los datos estructurados. En **Contacto**, el campo de ciudad admite «Ciudad, Estado, C. P. 00000»: así se obtienen localidad, estado y código postal para buscadores; si se escribe de otra forma, el texto se usa tal cual como localidad. El retrato publicado del médico es la imagen de los enlaces compartidos. El sitio incluye iconos derivados del isotipo del logo (pestaña, favoritos y pantalla de inicio), un `sitemap.xml` con la fecha de la última publicación y una página de error 404 con el mismo diseño, en el idioma preferido del navegador, con regreso al inicio y solicitud de cita.
+
 El propietario publica perfil profesional, avisos legales y fotografías. Los administradores pueden publicar los demás bloques. El editor prepara borradores. El tablero cuenta los borradores de servicios y de contenido.
 
 Para contacto, introduce el teléfono con `+` y código de país. Ese único valor genera teléfono visible, enlace de llamada y WhatsApp. Los enlaces de ubicación y Facebook deben usar HTTPS y sus dominios oficiales. El correo público es opcional; no es el correo privado de acceso al panel.
