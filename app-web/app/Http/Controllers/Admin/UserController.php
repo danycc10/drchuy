@@ -42,6 +42,7 @@ class UserController extends Controller
             'role' => ['required', Rule::enum(Role::class)], 'current_password' => 'required|current_password',
         ]);
         $account = DB::transaction(function () use ($data, $request) {
+            $this->assertCurrentOwner(User::whereKey($request->user()->id)->lockForUpdate()->first(), $request);
             $account = new User(['name' => $data['name'], 'email' => $data['email'], 'password' => Str::random(64)]);
             $account->role = Role::from($data['role']);
             $account->save();
@@ -71,7 +72,7 @@ class UserController extends Controller
             // Serialize account changes, including simultaneous changes to owner accounts.
             $accounts = User::orderBy('id')->lockForUpdate()->get();
             $actor = $accounts->firstWhere('id', $request->user()->id);
-            abort_unless($actor->is_active && $actor->role === Role::Owner && $actor->auth_version === $request->user()->auth_version, 403);
+            $this->assertCurrentOwner($actor, $request);
             $locked = $accounts->firstWhere('id', $account->id);
             $removesOwner = $locked->role === Role::Owner && ($data['role'] !== Role::Owner->value || ! $data['is_active']);
             if ($locked->id === $request->user()->id && ($data['role'] !== $locked->role->value || ! $data['is_active'])) {
@@ -99,11 +100,23 @@ class UserController extends Controller
     {
         Gate::authorize('viewAny', User::class);
         $request->validate(['current_password' => 'required|current_password']);
-        abort_unless($account->is_active && $account->id !== $request->user()->id, 403);
-        $token = Password::createToken($account);
-        $url = rtrim(config('app.url'), '/').'/admin/reset-password/'.rawurlencode($token).'?'.http_build_query(['email' => $account->email]);
-        AuditEvent::create(['user_id' => $request->user()->id, 'action' => 'user.setup_link', 'metadata' => ['account_id' => $account->id, 'account_name' => $account->name]]);
+        $url = DB::transaction(function () use ($request, $account) {
+            // Use the same ascending lock order as account updates.
+            $accounts = User::whereIn('id', [$request->user()->id, $account->id])->orderBy('id')->lockForUpdate()->get()->keyBy('id');
+            $this->assertCurrentOwner($accounts->get($request->user()->id), $request);
+            $target = $accounts->get($account->id);
+            abort_unless($target?->is_active && $target->id !== $request->user()->id, 403);
+            $token = Password::createToken($target);
+            AuditEvent::create(['user_id' => $request->user()->id, 'action' => 'user.setup_link', 'metadata' => ['account_id' => $target->id, 'account_name' => $target->name]]);
+
+            return rtrim(config('app.url'), '/').'/admin/reset-password/'.rawurlencode($token).'?'.http_build_query(['email' => $target->email]);
+        });
 
         return back()->with('setup_link', encrypt($url))->with('status', 'Enlace generado. Compártelo directamente con el titular de la cuenta.');
+    }
+
+    private function assertCurrentOwner(?User $actor, Request $request): void
+    {
+        abort_unless($actor?->is_active && $actor->role === Role::Owner && $actor->auth_version === $request->user()->auth_version, 403);
     }
 }

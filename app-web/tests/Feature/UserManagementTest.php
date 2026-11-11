@@ -33,6 +33,28 @@ class UserManagementTest extends TestCase
         }
     }
 
+    public function test_revoked_owner_cannot_create_an_account_with_an_already_loaded_identity(): void
+    {
+        $owner = User::factory()->create(['role' => Role::Owner]);
+        $this->actingAs($owner);
+        // Model a revocation committed after authentication loaded this request's user.
+        User::whereKey($owner->id)->update(['role' => Role::Editor->value, 'auth_version' => 1]);
+        $response = $this->post('/admin/users', ['name' => 'Blocked', 'email' => 'blocked@example.test', 'role' => 'owner', 'current_password' => 'password']);
+        $this->assertDatabaseMissing('users', ['email' => 'blocked@example.test']);
+        $response->assertForbidden();
+    }
+
+    public function test_revoked_owner_cannot_issue_password_setup_tokens_with_a_stale_identity(): void
+    {
+        $owner = User::factory()->create(['role' => Role::Owner]);
+        $target = User::factory()->create();
+        $this->actingAs($owner);
+        User::whereKey($owner->id)->update(['is_active' => false, 'auth_version' => 1]);
+        $response = $this->post(route('admin.users.setup-link', $target), ['current_password' => 'password']);
+        $this->assertDatabaseMissing('password_reset_tokens', ['email' => $target->email]);
+        $response->assertForbidden();
+    }
+
     public function test_owner_creates_account_and_generates_a_trusted_single_use_link_without_sending_mail(): void
     {
         Notification::fake();
