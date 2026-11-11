@@ -3,8 +3,8 @@
     @foreach($tasks['groups'] as $group)
         @if($group['items']->isNotEmpty())
             <div class="task-group"><h3>{{ $group['title'] }} <span class="badge">{{ $group['items']->count() }}</span></h3><p class="muted small">{{ $group['description'] }}</p>
-                <ul class="task-list">@foreach($group['items']->take(3) as $task)<li><span class="module-icon"><x-site-icon :name="$task['icon']" /></span><div class="task-copy"><h4>{{ $task['title'] }}</h4><p>{{ $task['description'] }}</p></div><a class="button secondary" href="{{ $task['url'] }}" aria-label="{{ $task['action'].': '.$task['title'] }}">{{ $task['action'] }}</a></li>@endforeach</ul>
-                @if($group['items']->count() > 3)<p class="field-help">Se muestran 3 de {{ $group['items']->count() }} pendientes. Consulta el módulo correspondiente para ver todos.</p>@endif
+                <ul class="task-list">@foreach($group['items']->take(3) as $task)@include('admin.partials.dashboard-task-row')@endforeach</ul>
+                @if($group['items']->count() > 3)<details class="more-tasks"><summary>Ver {{ $group['items']->count() - 3 }} pendientes más</summary><ul class="task-list">@foreach($group['items']->skip(3) as $task)@include('admin.partials.dashboard-task-row')@endforeach</ul></details>@endif
             </div>
         @endif
     @endforeach

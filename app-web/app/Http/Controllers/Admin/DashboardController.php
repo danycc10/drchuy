@@ -15,7 +15,8 @@ class DashboardController extends Controller
         $contentDrafts = ContentBlock::where(fn ($query) => $query->whereNull('published_revision_id')->orWhereColumn('current_revision_id', '!=', 'published_revision_id'))->count();
         return view('admin.dashboard', [
             'total' => Service::count(),
-            'published' => Service::whereNotNull('published_revision_id')->count(),
+            'published' => Service::whereHas('publishedRevision', fn ($query) => $query->where('payload->visible', true))->count(),
+            'hidden' => Service::whereHas('publishedRevision', fn ($query) => $query->where('payload->visible', false))->count(),
             'drafts' => $serviceDrafts + $contentDrafts,
             'pendingReviews' => \App\Models\ReviewRequest::where('status', 'pending')->count(),
             'tasks' => $tasks->forUser($request->user()),

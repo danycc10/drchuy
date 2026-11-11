@@ -1,0 +1,1 @@
+<li><span class="module-icon"><x-site-icon :name="$task['icon']" /></span><div class="task-copy"><h4>{{ $task['title'] }}</h4><p>{{ $task['description'] }}</p></div><a class="button secondary" href="{{ $task['url'] }}" aria-label="{{ $task['action'].': '.$task['title'] }}">{{ $task['action'] }}</a></li>

@@ -6,6 +6,8 @@ Crear la primera cuenta propietaria desde una terminal en la carpeta de la aplic
 
 Entrar a `/admin` con el correo y la contraseña elegidos. El rol `owner` publica todos los servicios; `administrator` publica servicios ordinarios; `editor` prepara borradores. Los procedimientos necesitan al propietario.
 
+El resumen ofrece accesos directos a borradores de servicios, orden del catálogo, imágenes y vista previa adaptable. Distingue servicios visibles de los publicados como ocultos y enlaza a sus filtros. Los grupos de tareas priorizan correcciones y revisiones; **Ver pendientes más** despliega los restantes sin salir del resumen. La actividad reciente permanece al final.
+
 La recuperación usa enlaces de Laravel. En desarrollo, `MAIL_MAILER=log` guarda el mensaje en el log privado en lugar de enviarlo. En producción se necesita correo configurado y probado. El log puede contener el enlace de recuperación: no compartirlo ni subirlo a Git.
 
 En móvil, **Menú** abre la navegación. Puedes cerrarla con **Cerrar menú**, la tecla Escape o pulsando fuera. El foco del teclado permanece dentro mientras está abierta y vuelve al botón al cerrar. La sección actual se identifica también para lectores de pantalla.

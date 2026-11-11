@@ -13,6 +13,24 @@ class DashboardTasksTest extends TestCase
 {
     use RefreshDatabase;
 
+    public function test_dashboard_distinguishes_hidden_and_visible_services_and_exposes_all_pending_tasks(): void
+    {
+        $this->withoutVite();
+        $this->seed([\Database\Seeders\ServiceCatalogSeeder::class, ContentSeeder::class]);
+        $owner = User::factory()->create(['role' => Role::Owner]);
+        $services = \App\Models\Service::take(2)->get();
+        $publisher = app(\App\Services\ServicePublisher::class);
+        $publisher->publish($services[0], $services[0]->current_revision_id, $owner);
+        $payload = $services[1]->currentRevision->payload;
+        $payload['visible'] = false;
+        $publisher->draft($services[1], $payload, $services[1]->current_revision_id, $owner);
+        $hidden = $services[1]->fresh();
+        $publisher->publish($hidden, $hidden->current_revision_id, $owner);
+        $this->actingAs($owner)->get('/admin')->assertOk()->assertViewHas('published', 1)->assertViewHas('hidden', 1)
+            ->assertSee('pendientes más')->assertSee(route('admin.services.order'))->assertSee(route('admin.preview.screen'));
+        $this->get('/admin/services?status=hidden')->assertSee($hidden->currentRevision->payload['es']['name'])->assertDontSee($services[0]->currentRevision->payload['es']['name']);
+    }
+
     public function test_tasks_prioritize_corrections_and_respect_publication_permissions_without_duplicates(): void
     {
         $this->withoutVite();
