@@ -25,6 +25,8 @@ Apuntar el dominio únicamente a `public/`. Si el dominio principal obliga a `pu
 
 Configurar `.env` con `APP_ENV=production`, `APP_DEBUG=false`, `APP_URL=https://dominio-confirmado`, credenciales exclusivas, correo real y cookies seguras mediante `SESSION_SECURE_COOKIE=true`. Crear `APP_KEY` una sola vez al instalar y conservarla en despliegues posteriores. Mantener `SITE_INDEXABLE=false` durante revisión.
 
+Fuera del entorno local, la aplicación solo acepta el hostname exacto de `APP_URL`; no confía automáticamente en subdominios. Configurar en el servidor las redirecciones de alias como `www` hacia el dominio elegido. Conservar `SESSION_HTTP_ONLY=true` y `SESSION_SAME_SITE=lax` (o `strict` si se verifica el flujo de acceso). `app:launch-check` comprueba estas opciones. La restricción de hosts sigue el mecanismo [TrustHosts de Laravel](https://github.com/laravel/docs/blob/13.x/requests.md#configuring-trusted-hosts).
+
 Las claves TOTP se cifran con `APP_KEY`: incluirla en el respaldo privado y no regenerarla al actualizar o restaurar. La migración de seguridad no activa dos pasos ni cambia contraseñas existentes. Activarlo desde **Mi seguridad** y guardar los códigos antes de cerrar la sesión. Los enlaces generados desde **Usuarios** usan `APP_URL`, que debe coincidir con el dominio HTTPS real.
 
 Ejecutar migraciones revisadas y después `php artisan db:seed --force` para importar registros iniciales faltantes de servicios y bloques. Los seeders no publican contenido, no sobrescriben ediciones existentes y no crean usuarios. Crear la cuenta propietaria con `php artisan app:create-admin` en la instalación inicial.
@@ -34,6 +36,8 @@ La edición de imágenes de servicios requiere la migración `2026_11_10_000003_
 Regenerar cachés en destino con `php artisan optimize`. No copiar cachés de configuración generadas con el entorno local. Preservar `.env`, imágenes subidas y archivos persistentes entre versiones. No usar permisos 777 ni un endpoint web para ejecutar Artisan.
 
 La biblioteca guarda originales y derivados en `storage/app/private/media`. Incluir esta carpeta y las tablas de medios/revisiones en los respaldos y conservarlas al desplegar. No crear enlaces públicos hacia esa carpeta. Las rutas de Laravel sirven derivados publicados y comprueban autenticación para borradores y originales; no se necesita `storage:link` para este módulo. Las cargas se procesan durante la petición, sin workers permanentes. Confirmar memoria, tiempo de ejecución y cuota disponibles en el plan Turbo.
+
+El disco `local` mantiene `serve=false`: no se utilizan las rutas genéricas de URLs temporales de Laravel. Toda imagen debe pasar por los controladores del sitio y sus permisos. Conservar esta configuración al actualizar; las copias privadas tampoco deben tener un acceso HTTP directo.
 
 ## Aceptación y reversión
 

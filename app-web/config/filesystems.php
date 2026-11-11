@@ -33,7 +33,8 @@ return [
         'local' => [
             'driver' => 'local',
             'root' => storage_path('app/private'),
-            'serve' => true,
+            // Private media must pass the application's publication and role checks.
+            'serve' => false,
             'throw' => false,
             'report' => false,
         ],

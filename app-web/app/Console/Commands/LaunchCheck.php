@@ -23,6 +23,8 @@ class LaunchCheck extends Command
             'debug_disabled' => ['Depuración desactivada', ! config('app.debug')],
             'public_domain' => ['Dominio HTTPS configurado', ($url['scheme'] ?? '') === 'https' && $host !== '' && ! filter_var($host, FILTER_VALIDATE_IP) && $host !== 'localhost' && ! str_ends_with($host, '.test') && ! str_ends_with($host, '.local')],
             'secure_cookies' => ['Cookies de sesión seguras', (bool) config('session.secure')],
+            'session_cookie_policy' => ['Cookies HttpOnly con SameSite Lax o Strict', (bool) config('session.http_only') && in_array(config('session.same_site'), ['lax', 'strict'], true)],
+            'private_storage_routes' => ['Disco privado sin rutas genéricas de descarga/carga', ! config('filesystems.disks.local.serve') && config('filesystems.disks.local.visibility', 'private') === 'private'],
             'persistent_limits' => ['Caché persistente para límites de acceso', ! in_array(config('cache.default'), ['array', 'null'], true)],
             'outgoing_mail' => ['Transporte de correo configurado', ! in_array(config('mail.default'), ['log', 'array'], true)],
             'owner_two_factor' => ['Todos los propietarios activos con dos pasos', User::where('role', Role::Owner)->where('is_active', true)->exists() && ! User::where('role', Role::Owner)->where('is_active', true)->whereNull('two_factor_confirmed_at')->exists()],

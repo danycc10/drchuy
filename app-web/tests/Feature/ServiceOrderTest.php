@@ -37,6 +37,9 @@ class ServiceOrderTest extends TestCase
         $this->post(route('admin.services.reorder'), $data)->assertSessionHasErrors('order');
         $this->assertSame($current, Service::where('service_category_id', $category)->pluck('current_revision_id', 'id')->all());
         $data['revisions'] = $current;
+        $malformed = $data;
+        $malformed['order'] = array_combine(array_map(fn ($id) => 'key-'.$id, $data['order']), $data['order']);
+        $this->postJson(route('admin.services.reorder'), $malformed)->assertUnprocessable()->assertJsonValidationErrors('order');
         array_pop($data['order']);
         $this->post(route('admin.services.reorder'), $data)->assertSessionHasErrors('order');
         $this->assertSame($current, Service::where('service_category_id', $category)->pluck('current_revision_id', 'id')->all());

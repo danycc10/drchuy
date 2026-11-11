@@ -66,8 +66,8 @@ class ServiceController extends Controller
     {
         $data = $request->validate([
             'category' => 'required|integer|exists:service_categories,id',
-            'order' => 'required|array|min:1|max:999', 'order.*' => 'required|integer|distinct',
-            'revisions' => 'required|array', 'revisions.*' => 'required|integer|min:1',
+            'order' => 'required|array|list|min:1|max:999', 'order.*' => 'required|integer|distinct',
+            'revisions' => 'required|array|max:999', 'revisions.*' => 'required|integer|min:1',
         ]);
         DB::transaction(function () use ($data, $request, $publisher) {
             app(\App\Services\AccountSecurity::class)->lockActor($request->user());
