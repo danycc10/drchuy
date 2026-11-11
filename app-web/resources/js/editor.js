@@ -92,6 +92,7 @@ export function initEditor(document) {
     const recovered = editor?.dataset.recoveredInput === 'true';
     const saveButton = document.querySelector('[data-save-button]');
     const saveLabel = saveButton?.querySelector('[data-save-label]') ?? saveButton;
+    const idleSaveLabel = saveLabel?.textContent ?? 'Guardar borrador';
     const publishButtons = [...document.querySelectorAll('[data-publish-button]')].map((button) => ({ button, disabled: button.disabled }));
     let dirty = false;
     let submitting = false;
@@ -124,7 +125,7 @@ export function initEditor(document) {
     window.addEventListener('pageshow', () => {
         submitting = false;
         editor?.removeAttribute('aria-busy');
-        if (saveLabel) saveLabel.textContent = 'Guardar borrador';
+        if (saveLabel) saveLabel.textContent = idleSaveLabel;
         updateState();
     });
     document.querySelectorAll('form[data-confirm]').forEach((form) => {
