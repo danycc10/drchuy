@@ -2,6 +2,8 @@
 
 Guía inicial; no se ha conectado a la cuenta ni realizado un despliegue. Completar los requisitos de lanzamiento del plan antes de publicar.
 
+Para el dominio confirmado **medicinarespiratoriadrjesus.com**, usar la [guía de instalación del paquete](../deploy/INSTALAR.md). El constructor `deploy/build-release.ps1` prepara carpetas separadas `medicina-respiratoria` y `public_html`, dependencias sin desarrollo y assets compilados. Terminal/SSH fue confirmado por el propietario; todavía falta verificar la configuración real del servidor. No incluye datos ni secretos locales.
+
 ## Verificar la cuenta
 
 - PHP web y CLI compatibles con `composer.lock` y las extensiones requeridas por `composer check-platform-reqs`.
