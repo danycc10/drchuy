@@ -48,9 +48,9 @@ class PublishedHoursTest extends TestCase
         $this->withoutVite();
         $this->seed(ContentSeeder::class);
         $owner = User::factory()->create(['role' => Role::Owner]);
-        $block = ContentBlock::where('key', 'home')->firstOrFail();
+        $block = ContentBlock::where('key', 'seo')->firstOrFail();
         $payload = $block->currentRevision->payload;
-        $payload['es']['intro'] = '</script><script>alert(1)</script>';
+        $payload['es']['description'] = '</script><script>alert(1)</script>';
         $publisher = app(ContentPublisher::class);
         $publisher->draft($block, $payload, $block->current_revision_id, $owner);
         $block->refresh();

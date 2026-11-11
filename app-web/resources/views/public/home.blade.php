@@ -5,8 +5,11 @@
     <title>{{ $copy['title'] }}</title><meta name="description" content="{{ $copy['description'] }}">
     <meta name="robots" content="{{ !$clinic['indexable'] || $preview ? 'noindex, nofollow' : 'index, follow' }}">
     <link rel="canonical" href="{{ rtrim(config('app.url'), '/') }}/">
-    <meta property="og:type" content="website"><meta property="og:title" content="{{ $copy['title'] }}"><meta property="og:description" content="{{ $copy['description'] }}"><meta property="og:url" content="{{ rtrim(config('app.url'), '/') }}/"><meta property="og:image" content="{{ $clinic['images']['doctor']['url'] }}"><meta property="og:locale" content="{{ $locale === 'es' ? 'es_MX' : 'en_US' }}">
-    @if(!$preview)<script type="application/ld+json">{!! $structuredData !!}</script>@endif
+    <meta property="og:type" content="website"><meta property="og:site_name" content="{{ $clinic['name'] }}"><meta property="og:title" content="{{ $copy['title'] }}"><meta property="og:description" content="{{ $copy['description'] }}"><meta property="og:url" content="{{ rtrim(config('app.url'), '/') }}/"><meta property="og:image" content="{{ $clinic['images']['doctor']['url'] }}"><meta property="og:image:width" content="{{ $clinic['images']['doctor']['width'] }}"><meta property="og:image:height" content="{{ $clinic['images']['doctor']['height'] }}"><meta property="og:image:alt" content="{{ $clinic['images']['doctor']['alt'][$locale] }}"><meta property="og:locale" content="{{ $locale === 'es' ? 'es_MX' : 'en_US' }}"><meta property="og:locale:alternate" content="{{ $locale === 'es' ? 'en_US' : 'es_MX' }}">
+    <meta name="twitter:card" content="summary"><meta name="twitter:title" content="{{ $copy['title'] }}"><meta name="twitter:description" content="{{ $copy['description'] }}"><meta name="twitter:image" content="{{ $clinic['images']['doctor']['url'] }}"><meta name="twitter:image:alt" content="{{ $clinic['images']['doctor']['alt'][$locale] }}">
+    @include('public.head-icons')
+    @if(!$preview)<script type="application/ld+json">{!! $structuredData !!}</script>@if($faqStructuredData)<script type="application/ld+json">{!! $faqStructuredData !!}</script>@endif
+    @endif
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 <body class="public-home">

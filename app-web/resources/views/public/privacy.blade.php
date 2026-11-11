@@ -3,7 +3,10 @@
     <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
     <title>{{ $copy['privacy_title'] }} · {{ $clinic['name'] }}</title>
     <meta name="robots" content="{{ $preview || !$clinic['indexable'] ? 'noindex, nofollow' : 'index, follow' }}">
+    <meta name="description" content="{{ $copy['privacy_title'] }} · {{ $clinic['name'] }}, {{ $clinic['physician'] }}. {{ $copy['location'] }}.">
     <link rel="canonical" href="{{ rtrim(config('app.url'), '/') }}{{ route('privacy', [], false) }}">
+    <meta property="og:type" content="article"><meta property="og:site_name" content="{{ $clinic['name'] }}"><meta property="og:title" content="{{ $copy['privacy_title'] }} · {{ $clinic['name'] }}"><meta property="og:url" content="{{ rtrim(config('app.url'), '/') }}{{ route('privacy', [], false) }}"><meta property="og:locale" content="{{ $locale === 'es' ? 'es_MX' : 'en_US' }}">
+    @include('public.head-icons')
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head><body class="public-privacy">
 <a class="skip-link" href="#main">{{ $locale === 'es' ? 'Ir al contenido' : 'Skip to content' }}</a>

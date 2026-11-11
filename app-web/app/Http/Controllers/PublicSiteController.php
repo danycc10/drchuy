@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\ContentBlock;
 use App\Models\Service;
 use App\Models\ServiceCategory;
 use App\Services\PublicContent;
 use App\Services\ClinicStructuredData;
+use Carbon\CarbonImmutable;
 use Illuminate\Http\Request;
 
 class PublicSiteController extends Controller
@@ -77,6 +79,7 @@ class PublicSiteController extends Controller
             'previewServiceId' => $previewServiceId, 'focusedCategoryId' => $focusedCategoryId,
             'copy' => $clinic[$locale], 'clinic' => $clinic,
             'structuredData' => app(ClinicStructuredData::class)->encode($clinic, $hours, $locale),
+            'faqStructuredData' => app(ClinicStructuredData::class)->encodeFaq($clinic, $locale),
             'weeklyHours' => $this->content->hoursForDisplay($hours, $locale),
             'openingStatus' => $this->content->openingStatus($hours, $locale),
             'exceptions' => array_values(array_filter($hours['exceptions'], fn ($item) => $item['date'] >= now('America/Matamoros')->toDateString())),
@@ -111,6 +114,13 @@ class PublicSiteController extends Controller
 
     public function sitemap()
     {
-        return response()->view('public.sitemap', ['hasPrivacy' => $this->content->snapshot()['clinic']['has_privacy']])->header('Content-Type', 'application/xml');
+        $blocks = ContentBlock::whereNotNull('published_at')->get();
+        $latest = collect([$blocks->max('published_at'), Service::whereNotNull('published_revision_id')->max('published_at')])->filter()->max();
+
+        return response()->view('public.sitemap', [
+            'hasPrivacy' => $this->content->snapshot()['clinic']['has_privacy'],
+            'homeUpdated' => $latest ? CarbonImmutable::parse($latest)->setTimezone('America/Matamoros')->toDateString() : null,
+            'privacyUpdated' => $blocks->firstWhere('key', 'legal')?->published_at?->setTimezone('America/Matamoros')->toDateString(),
+        ])->header('Content-Type', 'application/xml');
     }
 }
