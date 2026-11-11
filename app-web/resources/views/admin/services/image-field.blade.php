@@ -6,7 +6,14 @@
 <section class="panel" data-service-image data-upload-url="{{ route('admin.media.store') }}">
     <div class="section-heading"><h2>Imagen del servicio</h2><a class="small-link" href="{{ route('admin.media.index') }}"><x-site-icon name="image" /> Abrir biblioteca</a></div>
     <p class="field-help">Elige una imagen de la biblioteca o sube una nueva aquí. La selección y el encuadre se guardan con este servicio.</p>
-    <div class="media-selection">
+    <div data-image-picker hidden>
+        <label for="service-image-search">Buscar en tus imágenes<input id="service-image-search" type="search" maxlength="150" autocomplete="off" placeholder="Nombre de la imagen" data-image-search></label>
+        <p class="field-help" data-image-selection role="status" aria-live="polite"></p>
+        <div class="image-picker-grid" data-image-grid role="group" aria-label="Imágenes para este servicio"></div>
+        <p class="field-help" data-image-empty hidden>No encontramos imágenes con ese nombre. Prueba otro término o sube una nueva.</p>
+        <p class="field-help" data-image-count role="status" aria-live="polite"></p>
+    </div>
+    <details class="media-selection" data-image-native open><summary>Elegir imagen por nombre</summary>
         <label for="service-image">Imagen de la tarjeta
             <select id="service-image" name="image_id" data-media-select data-preview-id="service-image-preview">
                 <option value="" data-src="{{ $defaultImage }}">Ilustración original de la categoría</option>
@@ -14,7 +21,7 @@
             </select>
         </label>
         <img id="service-image-preview" class="media-selection-preview" src="{{ $selectedMedia ? $selectedMedia->url(true, 'thumb') : $defaultImage }}" alt="Vista de la imagen seleccionada para este servicio" width="160" height="120" loading="lazy">
-    </div>
+    </details>
     @error('image_id')<p class="field-error">{{ $message }}</p>@enderror
     <div data-inline-upload hidden>
         <label for="service-upload-title">Nombre de la nueva imagen<input id="service-upload-title" type="text" maxlength="150" data-upload-title placeholder="Ej. Equipo para espirometría"></label>

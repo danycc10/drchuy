@@ -66,6 +66,7 @@ export function initServiceImage(document) {
             select.value = String(data.id);
             axes.forEach((axis) => { axis.value = '50'; });
             select.dispatchEvent(new window.Event('change', { bubbles: true }));
+            section.dispatchEvent(new window.Event('image:uploaded'));
             file.value = '';
             title.value = '';
             status.textContent = 'Imagen seleccionada. Ajusta el encuadre y guarda el borrador.';

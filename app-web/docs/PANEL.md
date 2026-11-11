@@ -96,6 +96,8 @@ Las cinco ilustraciones y sus prompts se documentan en [IMAGENES_SERVICIOS.md](I
 2. Ajustar **Posición horizontal** y **Posición vertical** mirando la vista de la tarjeta. Se conserva el original; el encuadre se aplica al mismo servicio en ambos idiomas y se guarda en su historial. Una imagen con las mismas proporciones que la tarjeta puede no necesitar desplazamiento.
 3. Guardar el borrador, revisar **Vista previa** y publicar con el rol autorizado. Los procedimientos siguen requiriendo al propietario.
 
+El selector visual muestra miniaturas, un buscador por nombre y una marca en la imagen seleccionada. Buscar no modifica la selección; **Escape** limpia la búsqueda. **Elegir imagen por nombre** conserva el selector tradicional y funciona sin JavaScript. Al subir una imagen dentro del editor, se agrega a las miniaturas y se selecciona automáticamente; aún hay que guardar el borrador.
+
 Para volver a la imagen inicial, seleccionar **Ilustración original de la categoría**, guardar y publicar. Cambiar la imagen de un servicio no cambia los demás. Las tarjetas recortan horizontalmente la fotografía; conviene usar una imagen horizontal con el motivo centrado. La imagen forma parte del historial y se recupera al restaurar una versión. La biblioteca no permite eliminar imágenes utilizadas en versiones de servicios, incluidos borradores e historial.
 
 La preferencia pública se guarda en la sesión y comienza en español para una visita nueva. El aviso usa `/aviso-de-privacidad` en ambos idiomas. Los enlaces públicos antiguos con `/es` o `/en` redirigen a las direcciones limpias conservando el idioma solicitado. La vista previa privada mantiene rutas por idioma para poder revisar ambos borradores de forma independiente.

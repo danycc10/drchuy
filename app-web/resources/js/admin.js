@@ -6,6 +6,7 @@ import { initConfirmations } from './confirmations';
 import { initServiceImage } from './service-image';
 import { initServiceOrder } from './service-order';
 import { initDevicePreview } from './device-preview';
+import { initImagePicker } from './image-picker';
 
 initFaq(document);
 initEditor(document);
@@ -13,6 +14,7 @@ initConfirmations(document);
 initNavigation(document);
 initMedia(document);
 initServiceImage(document);
+initImagePicker(document);
 initServiceOrder(document);
 initDevicePreview(document);
 const editor = document.querySelector('[data-editor]');

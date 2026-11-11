@@ -1,0 +1,30 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import { JSDOM } from 'jsdom';
+import { initImagePicker } from '../../resources/js/image-picker.js';
+
+test('visual picker searches accents, preserves selection and keyboard focus, and incorporates uploaded images safely', () => {
+    const { window } = new JSDOM(`<form><section data-service-image><div data-image-picker hidden><input data-image-search><p data-image-selection></p><div data-image-grid></div><p data-image-empty hidden></p><p data-image-count></p></div><details data-image-native open><select name="image_id" data-media-select><option value="" data-src="/default.webp">Original</option><option value="2" data-src="/two.webp">Espirometría</option></select></details></section></form>`);
+    const { document } = window;
+    initImagePicker(document);
+    const input = document.querySelector('input');
+    input.value = 'ESPIROMETRIA'; input.dispatchEvent(new window.Event('input'));
+    const tile = document.querySelector('[data-image-value="2"]');
+    assert.equal(tile.hidden, false);
+    assert.equal(document.querySelector('[data-image-value=""]').hidden, true);
+    tile.focus(); tile.click();
+    assert.equal(document.activeElement, tile);
+    assert.equal(new window.FormData(document.querySelector('form')).get('image_id'), '2');
+    assert.equal(tile.getAttribute('aria-pressed'), 'true');
+    input.value = 'missing'; input.dispatchEvent(new window.Event('input'));
+    assert.equal(document.querySelector('[data-image-empty]').hidden, false);
+    assert.match(document.querySelector('[data-image-selection]').textContent, /Espirometría/);
+    const option = new window.Option('<script>unsafe</script>', '3', false, true);
+    option.dataset.src = '/three.webp'; document.querySelector('select').add(option);
+    document.querySelector('section').dispatchEvent(new window.Event('image:uploaded'));
+    assert.equal(input.value, '');
+    assert.equal(document.querySelector('[data-image-value="3"]').getAttribute('aria-pressed'), 'true');
+    assert.equal(document.querySelector('script'), null);
+    const enter = new window.KeyboardEvent('keydown', { key: 'Enter', cancelable: true });
+    input.dispatchEvent(enter); assert.equal(enter.defaultPrevented, true);
+});
