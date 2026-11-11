@@ -11,6 +11,12 @@
                     <label for="name-{{ $locale }}">Nombre del servicio<input id="name-{{ $locale }}" name="{{ $locale }}[name]" value="{{ old($locale.'.name', $payload[$locale]['name']) }}" required maxlength="200" lang="{{ $locale }}"></label>@error($locale.'.name')<p class="field-error">{{ $message }}</p>@enderror
                     <label for="description-{{ $locale }}">Descripción<textarea id="description-{{ $locale }}" name="{{ $locale }}[description]" rows="6" required maxlength="3000" lang="{{ $locale }}">{{ old($locale.'.description', $payload[$locale]['description']) }}</textarea></label>@error($locale.'.description')<p class="field-error">{{ $message }}</p>@enderror
                     <p class="field-help">Texto simple, hasta 3,000 caracteres. Conserva las condiciones de disponibilidad del servicio.</p>
+                    <h3 style="margin-top:24px">Información para la visita</h3>
+                    <p class="field-help">Opcional. Incluye únicamente indicaciones confirmadas por el médico, en ambos idiomas. Los campos vacíos no aparecen en el sitio.</p>
+                    @foreach(['preparation' => ['Preparación previa', 1500], 'duration' => ['Duración aproximada', 200], 'bring' => ['Qué llevar', 1000]] as $field => [$fieldLabel, $limit])
+                        <label for="{{ $field }}-{{ $locale }}">{{ $fieldLabel }}<textarea id="{{ $field }}-{{ $locale }}" name="{{ $locale }}[{{ $field }}]" rows="{{ $field === 'duration' ? 2 : 3 }}" maxlength="{{ $limit }}" lang="{{ $locale }}">{{ old($locale.'.'.$field, $payload[$locale][$field] ?? '') }}</textarea></label>
+                        @error($locale.'.'.$field)<p class="field-error">{{ $message }}</p>@enderror
+                    @endforeach
                 </section>
             @endforeach
             @include('admin.services.image-field')

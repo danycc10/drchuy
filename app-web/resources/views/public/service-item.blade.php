@@ -15,7 +15,9 @@
     <h4>{{ $name }}</h4>
     <details>
         <summary aria-label="{{ ($locale === 'es' ? 'Conocer el servicio: ' : 'About this service: ').$name }}"><span>{{ $locale === 'es' ? 'Conocer el servicio' : 'About this service' }}</span><x-site-icon name="chevron-down" class="service-chevron" /></summary>
-        <div class="service-description"><p>{{ $service[$locale]['description'] }}</p></div>
+        <div class="service-description"><p>{{ $service[$locale]['description'] }}</p>
+            @include('public.service-visit-details', ['details' => $service[$locale]])
+        </div>
     </details>
     <a class="button secondary service-request" data-service-request href="{{ $clinic['whatsapp'].'?text='.rawurlencode($message) }}" target="_blank" rel="noopener noreferrer" aria-label="{{ $copy['ask_service'].': '.$name }}"><x-site-icon name="message" /> {{ $copy['ask_service'] }}</a>
 </li>

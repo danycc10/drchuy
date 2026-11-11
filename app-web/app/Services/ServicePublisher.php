@@ -24,6 +24,15 @@ class ServicePublisher
             }
             $imageId = $restored ? $restored->image_id : (array_key_exists('image_id', $payload) ? $payload['image_id'] : $locked->currentRevision->image_id);
             unset($payload['image_id']);
+            if (! $restored) {
+                foreach (['es', 'en'] as $locale) {
+                    foreach (['preparation', 'duration', 'bring'] as $field) {
+                        if (! array_key_exists($field, $payload[$locale]) && array_key_exists($field, $locked->currentRevision->payload[$locale])) {
+                            $payload[$locale][$field] = $locked->currentRevision->payload[$locale][$field];
+                        }
+                    }
+                }
+            }
             if (! $restored && ! array_key_exists('image_position', $payload) && isset($locked->currentRevision->payload['image_position'])) {
                 $payload['image_position'] = $locked->currentRevision->payload['image_position'];
             }
@@ -52,6 +61,11 @@ class ServicePublisher
             foreach (['es', 'en'] as $locale) {
                 if (blank($payload[$locale]['name'] ?? null) || blank($payload[$locale]['description'] ?? null)) {
                     throw ValidationException::withMessages(['revision_id' => 'Completa ambos idiomas antes de publicar.']);
+                }
+            }
+            foreach (['preparation', 'duration', 'bring'] as $field) {
+                if (filled($payload['es'][$field] ?? null) !== filled($payload['en'][$field] ?? null)) {
+                    throw ValidationException::withMessages(['revision_id' => 'Completa la información para la visita en ambos idiomas antes de publicar.']);
                 }
             }
             if ($locked->published_revision_id === $locked->current_revision_id) {

@@ -31,7 +31,7 @@ class ReviewFields
                 return $name.' · '.implode(' · ', array_map(fn ($part) => is_numeric($part) ? (string) ((int) $part + 1) : ($terms[$part] ?? Str::headline($part)), array_slice($parts, 1)));
             }
         }
-        $labels = ['name' => 'Nombre', 'description' => 'Descripción', 'visible' => 'Visible', 'position' => 'Orden', 'image_id' => 'Imagen del servicio'];
+        $labels = ['name' => 'Nombre', 'description' => 'Descripción', 'visible' => 'Visible', 'position' => 'Orden', 'image_id' => 'Imagen del servicio', 'preparation' => 'Preparación previa', 'duration' => 'Duración aproximada', 'bring' => 'Qué llevar'];
 
         return ($language ? $language.' · ' : '').($labels[$field] ?? Str::headline($field));
     }

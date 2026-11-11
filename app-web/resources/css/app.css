@@ -1248,6 +1248,10 @@ h1, h2, h3 {
 .service-card .service-chevron { width: 24px; height: 24px; padding: 3px; }
 .service-card .service-description { padding: 8px 0 0; }
 .service-card .service-description p { font-size: 15px; line-height: 1.75; }
+.service-visit-details { margin: 20px 0 0; padding-top: 16px; border-top: 1px solid #d7e2df; }
+.service-visit-details > div + div { margin-top: 16px; }
+.service-visit-details dt { color: var(--navy); font-size: 14px; font-weight: 600; }
+.service-visit-details dd { margin: 5px 0 0; white-space: pre-line; overflow-wrap: anywhere; font-size: 15px; line-height: 1.7; }
 .service-card .service-request { min-height: 48px; margin: auto 22px 22px; padding: 12px; font-size: 14px; background: #edf4f1; border-color: #c6d8d2; color: #175963; }
 .service-card:focus-within { border-color: #367c85; box-shadow: 0 0 0 2px #367c8530; }
 @media(max-width:1000px) { .service-catalog-list { grid-template-columns: repeat(2, minmax(0, 1fr)); } }

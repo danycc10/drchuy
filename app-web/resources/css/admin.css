@@ -4,6 +4,9 @@
 .service-crop-preview img { display: block; width: 100%; height: 100%; object-fit: cover; }
 .crop-controls { border: 0; padding: 0; margin-top: 20px; }
 .crop-controls legend { font-weight: 600; }
+.service-visit-details { margin-top: 20px; }
+.service-visit-details dt { font-weight: 600; margin-top: 16px; }
+.service-visit-details dd { margin: 6px 0 0; white-space: pre-line; overflow-wrap: anywhere; }
 .service-order-list { list-style: none; padding: 0; margin: 24px 0; display: grid; gap: 12px; }
 .service-order-list > li { display: flex; align-items: center; gap: 16px; padding: 18px; border: 1px solid #d7e2df; border-radius: 14px; background: #fafcfb; }
 .service-order-list > li[draggable=true] { cursor: grab; }

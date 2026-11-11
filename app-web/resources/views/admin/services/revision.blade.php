@@ -6,4 +6,5 @@
         <p class="field-help">{{ $revision->image?->title ?? 'Ilustración original de la categoría' }}</p>
         <div class="service-crop-preview"><img src="{{ $revision->image ? $revision->image->url(true) : asset('images/services/'.$service->category->slug.'-640.webp') }}" style="object-position: {{ (int) ($revision->payload['image_position']['x'] ?? 50) }}% {{ (int) ($revision->payload['image_position']['y'] ?? 50) }}%" alt="Imagen guardada en esta versión" loading="lazy"></div>
     </section>
+    <div class="dashboard-grid">@foreach(['es' => 'Español', 'en' => 'English'] as $locale => $label)<section class="panel"><h2>Información para la visita · {{ $label }}</h2>@include('public.service-visit-details', ['details' => $revision->payload[$locale]])</section>@endforeach</div>
 </x-admin-layout>
