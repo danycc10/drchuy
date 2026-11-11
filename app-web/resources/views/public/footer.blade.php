@@ -18,8 +18,8 @@
                 <a class="footer-phone" href="tel:{{ $clinic['phone'] }}">{{ $clinic['phone_display'] }}</a>
                 <p class="footer-contact-note">{{ $locale === 'es' ? 'Atención con cita previa.' : 'Visits by appointment.' }}</p>
                 <nav class="footer-social" aria-label="{{ $locale === 'es' ? 'Redes y contacto' : 'Social media and contact' }}">
-                    <a class="footer-social-link footer-whatsapp" href="{{ $clinic['appointment_url'][$locale] }}" data-appointment-link target="_blank" rel="noopener noreferrer" aria-label="{{ $locale === 'es' ? 'Solicitar cita por WhatsApp' : 'Request an appointment on WhatsApp' }}"><x-site-icon name="whatsapp" /> WhatsApp</a>
-                    <a class="footer-social-link footer-facebook" href="{{ $clinic['facebook'] }}" target="_blank" rel="noopener noreferrer" aria-label="{{ $locale === 'es' ? 'Visitar nuestra página de Facebook' : 'Visit our Facebook page' }}"><x-site-icon name="facebook" /> Facebook</a>
+                    <a class="footer-social-link footer-whatsapp" href="{{ $clinic['appointment_url'][$locale] }}" data-appointment-link target="_blank" rel="noopener noreferrer" aria-label="{{ $locale === 'es' ? 'Solicitar cita por WhatsApp' : 'Request an appointment on WhatsApp' }} ({{ $copy['new_tab'] }})"><x-site-icon name="whatsapp" /> WhatsApp</a>
+                    <a class="footer-social-link footer-facebook" href="{{ $clinic['facebook'] }}" target="_blank" rel="noopener noreferrer" aria-label="{{ $locale === 'es' ? 'Visitar nuestra página de Facebook' : 'Visit our Facebook page' }} ({{ $copy['new_tab'] }})"><x-site-icon name="facebook" /> Facebook</a>
                 </nav>
             </div>
         </div>

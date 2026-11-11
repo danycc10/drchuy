@@ -1,6 +1,7 @@
 @import 'tailwindcss';
 @source '../views/public';
 @source '../views/components/site-icon.blade.php';
+@source '../views/components/new-tab-hint.blade.php';
 @theme {
     --font-sans: 'Segoe UI',ui-sans-serif,system-ui,sans-serif;
 }

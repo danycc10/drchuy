@@ -56,6 +56,7 @@ return [
         'local_time' => 'Hora local de Piedras Negras',
         'disclaimer' => 'El sitio ofrece información general y no sustituye una valoración médica ni la atención de urgencias. Ante una emergencia, acudir a un servicio de urgencias.',
         'doctor_alt' => 'Dr. Jesús García Espinoza sentado en su consultorio',
+        'new_tab' => 'se abre en una pestaña nueva',
     ],
     'en' => [
         'title' => 'Respiratory Medicine | Dr. Jesús García Espinoza | Piedras Negras, Mexico',
@@ -101,5 +102,6 @@ return [
         'local_time' => 'Local time in Piedras Negras',
         'disclaimer' => 'This website provides general information and does not replace an in-person medical evaluation or emergency care. In a medical emergency, seek immediate emergency services.',
         'doctor_alt' => 'Dr. Jesús García Espinoza seated in his consultation room',
+        'new_tab' => 'opens in a new tab',
     ],
 ];

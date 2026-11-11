@@ -6,7 +6,7 @@
             <h3><x-site-icon name="pin" /> {{ $copy['address_label'] }}</h3>
             <address data-visit-address tabindex="-1">{{ $clinic['address'] }}<br>{{ $clinic['city'] }}</address>
             <div class="visit-address-actions">
-                <a class="button secondary" href="{{ $clinic['maps'] }}" target="_blank" rel="noopener noreferrer"><x-site-icon name="pin" /> {{ $copy['directions'] }}</a>
+                <a class="button secondary" href="{{ $clinic['maps'] }}" target="_blank" rel="noopener noreferrer"><x-site-icon name="pin" /> {{ $copy['directions'] }}<x-new-tab-hint :copy="$copy" /></a>
                 <button class="visit-text-button" type="button" data-copy-address hidden data-success="{{ $locale === 'es' ? 'Dirección copiada. Puedes pegarla en otra aplicación.' : 'Address copied. You can paste it into another app.' }}" data-fallback="{{ $locale === 'es' ? 'No se pudo copiar automáticamente. La dirección está seleccionada; cópiala con el menú de tu dispositivo.' : 'Automatic copying was unavailable. The address is selected; copy it using your device menu.' }}"><x-site-icon name="copy" /> {{ $locale === 'es' ? 'Copiar dirección' : 'Copy address' }}</button>
             </div>
             <p class="visit-feedback" data-copy-status role="status" aria-live="polite" aria-atomic="true"></p>

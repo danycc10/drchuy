@@ -12,6 +12,6 @@
                 </details>
             @endforeach
         </div>
-        <div class="faq-contact"><p>{{ $locale === 'es' ? '¿Tienes otra duda sobre tu visita?' : 'Have another question about your visit?' }}</p><a class="button" href="{{ $clinic['whatsapp'] }}" target="_blank" rel="noopener noreferrer"><x-site-icon name="message" /> {{ $locale === 'es' ? 'Contactar al consultorio' : 'Contact the office' }}</a></div>
+        <div class="faq-contact"><p>{{ $locale === 'es' ? '¿Tienes otra duda sobre tu visita?' : 'Have another question about your visit?' }}</p><a class="button" href="{{ $clinic['whatsapp'] }}" target="_blank" rel="noopener noreferrer"><x-site-icon name="message" /> {{ $locale === 'es' ? 'Contactar al consultorio' : 'Contact the office' }}<x-new-tab-hint :copy="$copy" /></a></div>
     </section>
 @endif

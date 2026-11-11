@@ -20,5 +20,5 @@
             @include('public.service-visit-details', ['details' => $service[$locale]])
         </div>
     </details>
-    <a class="button secondary service-request" data-service-request href="{{ $clinic['whatsapp'].'?text='.rawurlencode($message) }}" target="_blank" rel="noopener noreferrer" aria-label="{{ $copy['ask_service'].': '.$name }}"><x-site-icon name="message" /> {{ $copy['ask_service'] }}</a>
+    <a class="button secondary service-request" data-service-request href="{{ $clinic['whatsapp'].'?text='.rawurlencode($message) }}" target="_blank" rel="noopener noreferrer" aria-label="{{ $copy['ask_service'].': '.$name }} ({{ $copy['new_tab'] }})"><x-site-icon name="message" /> {{ $copy['ask_service'] }}</a>
 </li>

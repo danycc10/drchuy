@@ -18,6 +18,6 @@
     <p>{{ $locale === 'es' ? 'Prueba otro nombre o selecciona otra categoría.' : 'Try another name or select another category.' }}</p>
     <div class="search-empty-actions">
         <button class="button secondary" type="button" data-clear-service-search>{{ $locale === 'es' ? 'Ver servicios de esta categoría' : 'Show services in this category' }}</button>
-        <a class="button" href="{{ $clinic['whatsapp'] }}" target="_blank" rel="noopener noreferrer"><x-site-icon name="message" /> {{ $locale === 'es' ? 'Consultar por WhatsApp' : 'Ask on WhatsApp' }}</a>
+        <a class="button" href="{{ $clinic['whatsapp'] }}" target="_blank" rel="noopener noreferrer"><x-site-icon name="message" /> {{ $locale === 'es' ? 'Consultar por WhatsApp' : 'Ask on WhatsApp' }}<x-new-tab-hint :copy="$copy" /></a>
     </div>
 </div>
