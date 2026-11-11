@@ -145,7 +145,7 @@ Define hasta dos turnos por día y la última cita de cada turno. Marca **Cerrad
 
 Las excepciones por fecha reemplazan el horario de ese día. Puedes agregar hasta 20 fechas, con cierre completo o turnos especiales. Las notas son opcionales, pero si incluyes una debe estar en ambos idiomas. El sitio muestra las fechas actuales y futuras; elimina las antiguas desde el editor cuando ya no se necesiten.
 
-La misma versión publicada alimenta horarios visibles y datos estructurados para buscadores. La vista previa utiliza los borradores. No se ofrece un estado automático de «abierto ahora» ni reservas automáticas.
+La misma versión publicada alimenta horarios visibles, datos estructurados para buscadores y el estado **Abierto ahora** / **Cerrado ahora** que aparece en la ficha de visita y junto a **Ver horarios** en la portada. El estado se calcula al cargar la página con la hora de Piedras Negras, indica la hora de cierre o la próxima apertura (hoy, mañana, día de la semana o fecha dentro de dos semanas) y resalta el día actual; las excepciones por fecha tienen prioridad sobre la semana. La vista previa utiliza los borradores. No se ofrecen reservas automáticas y la ficha impresa omite el estado en vivo.
 
 ## Privacidad
 
