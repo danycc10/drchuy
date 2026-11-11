@@ -1310,6 +1310,9 @@ h1, h2, h3 {
     .printing-visit .visit-card strong, .printing-visit .visit-card h3, .printing-visit .visit-phone { color: #000; }
     .printing-visit .visit-print-note { display: block; margin-top: 20px; font-size: 12px; }
     .printing-visit .public-hours-row, .printing-visit .hours-exceptions p { break-inside: avoid; }
+    /* The live status is only meaningful on screen; the printed sheet keeps the consultation date. */
+    .printing-visit .hours-status, .printing-visit .today-badge { display: none !important; }
+    .printing-visit .is-today { background: none; padding: 0; margin: 0; }
 }
 
 .mobile-service-category { display: none; }
@@ -1339,3 +1342,18 @@ h1, h2, h3 {
 }
 .service-card[data-preview-focus] { outline: 3px solid #26757d; outline-offset: 4px; scroll-margin-top: var(--anchor-offset, 110px); }
 .service-preview-note { padding: 12px 18px; background: #e2f0e8; color: #164f58; font-size: 14px; font-weight: 600; }
+
+/* Opening status: computed from the published hours at render time. */
+.hours-status { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 10px; margin-bottom: 8px; }
+.hours-status .status-dot { width: 10px; height: 10px; border-radius: 50%; background: #9db9c3; flex: 0 0 auto; }
+.hours-status.is-open .status-dot { background: #2f9a6a; box-shadow: 0 0 0 3px #2f9a6a26; }
+.hours-status.is-closed .status-dot { background: #b7623f; box-shadow: 0 0 0 3px #b7623f22; }
+.contact-grid .hours-status strong { font-size: 15px; font-weight: 600; }
+.contact-grid .hours-status span:last-child { font-size: 14px; }
+.contact-grid .hours-today { margin-bottom: 18px; padding-bottom: 16px; border-bottom: 1px solid var(--line); font-size: 14px; }
+.hours-today strong { font-weight: 600; }
+.public-hours-row.is-today, .hours-exceptions .is-today { padding: 10px 12px; margin-left: -12px; margin-right: -12px; background: #e8f1ee; border-radius: 8px; }
+.today-badge { display: inline-block; margin-left: 8px; padding: 1px 8px; border-radius: 10px; font-size: 11px; font-weight: 600; letter-spacing: .4px; text-transform: uppercase; background: var(--teal); color: #fff; vertical-align: 2px; }
+.shortcut-text { display: inline-flex; flex-wrap: wrap; align-items: center; gap: 4px 10px; }
+.shortcut-status { font-size: 11px; font-weight: 600; letter-spacing: .3px; padding: 2px 8px; border-radius: 10px; background: #e8f1ee; color: #1f6a52; }
+.shortcut-status.is-closed { background: #f6ebe4; color: #8f4a2a; }

@@ -78,6 +78,7 @@ class PublicSiteController extends Controller
             'copy' => $clinic[$locale], 'clinic' => $clinic,
             'structuredData' => app(ClinicStructuredData::class)->encode($clinic, $hours, $locale),
             'weeklyHours' => $this->content->hoursForDisplay($hours, $locale),
+            'openingStatus' => $this->content->openingStatus($hours, $locale),
             'exceptions' => array_values(array_filter($hours['exceptions'], fn ($item) => $item['date'] >= now('America/Matamoros')->toDateString())),
             'categories' => ServiceCategory::orderBy('position')->get(), 'services' => $services,
         ])->header('Content-Language', $locale)->header('Cache-Control', 'private, no-store')->header('Vary', 'Cookie');

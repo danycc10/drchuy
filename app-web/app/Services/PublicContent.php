@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Models\ContentBlock;
 use App\Support\ContentSchema;
+use Carbon\CarbonImmutable;
 
 class PublicContent
 {
@@ -61,8 +62,9 @@ class PublicContent
         foreach (ContentSchema::days() as $day => $names) {
             $schedule = $hours['week'][$day];
             $key = json_encode($schedule);
-            $groups[$key] ??= ['days' => [], 'closed' => $schedule['closed'], 'sessions' => $schedule['sessions']];
+            $groups[$key] ??= ['days' => [], 'keys' => [], 'closed' => $schedule['closed'], 'sessions' => $schedule['sessions']];
             $groups[$key]['days'][] = $names[$locale];
+            $groups[$key]['keys'][] = $day;
         }
         foreach ($groups as &$group) {
             $names = $group['days'];
@@ -72,6 +74,82 @@ class PublicContent
         unset($group);
 
         return array_values($groups);
+    }
+
+    /**
+     * Whether the office is open at this moment and when it opens or closes next.
+     * Uses the same published hours and exceptions as the schedule, in the office time zone.
+     */
+    public function openingStatus(array $hours, string $locale, ?CarbonImmutable $now = null): array
+    {
+        $now = ($now ?? CarbonImmutable::now('America/Matamoros'))->setTimezone('America/Matamoros');
+        $today = $this->scheduleFor($hours, $now);
+        $time = $now->format('H:i');
+        $status = [
+            'open' => false, 'date' => $now->toDateString(), 'day' => strtolower($now->englishDayOfWeek),
+            'exception' => $today['exception'], 'closed_today' => $today['closed'],
+            'today_hours' => $today['closed'] ? '' : implode($locale === 'es' ? ' y ' : ' and ', array_map(
+                fn ($session) => $this->formatTime($session['start'], $locale).'–'.$this->formatTime($session['end'], $locale), $today['sessions'])),
+            'label' => '', 'detail' => '',
+        ];
+        foreach ($today['sessions'] as $session) {
+            if ($session['start'] <= $time && $time < $session['end']) {
+                $status['open'] = true;
+                $status['label'] = $locale === 'es' ? 'Abierto ahora' : 'Open now';
+                $closes = $this->formatTime($session['end'], $locale);
+                $status['detail'] = $this->sentence($locale === 'es' ? 'Cierra a las '.$closes : 'Closes at '.$closes);
+                if ($time < $session['last']) {
+                    $last = $this->formatTime($session['last'], $locale);
+                    $status['detail'] .= ' '.$this->sentence($locale === 'es' ? 'Última cita: '.$last : 'Last appointment: '.$last);
+                }
+
+                return $status;
+            }
+        }
+        $status['label'] = $locale === 'es' ? 'Cerrado ahora' : 'Closed now';
+        foreach ($today['sessions'] as $session) {
+            if ($session['start'] > $time) {
+                $opens = $this->formatTime($session['start'], $locale);
+                $status['detail'] = $this->sentence($locale === 'es' ? 'Abre hoy a las '.$opens : 'Opens today at '.$opens);
+
+                return $status;
+            }
+        }
+        for ($ahead = 1; $ahead <= 14; $ahead++) {
+            $date = $now->addDays($ahead);
+            $schedule = $this->scheduleFor($hours, $date);
+            if ($schedule['closed'] || ! $schedule['sessions']) {
+                continue;
+            }
+            $opens = $this->formatTime($schedule['sessions'][0]['start'], $locale);
+            $when = match (true) {
+                $ahead === 1 => $locale === 'es' ? 'mañana' : 'tomorrow',
+                $ahead < 7 => ($locale === 'es' ? 'el ' : 'on ').$date->locale($locale)->isoFormat('dddd'),
+                default => ($locale === 'es' ? 'el ' : 'on ').$date->locale($locale)->isoFormat('D MMM'),
+            };
+            $status['detail'] = $this->sentence($locale === 'es' ? 'Abre '.$when.' a las '.$opens : 'Opens '.$when.' at '.$opens);
+
+            return $status;
+        }
+
+        return $status;
+    }
+
+    private function sentence(string $text): string
+    {
+        return str_ends_with($text, '.') ? $text : $text.'.';
+    }
+
+    private function scheduleFor(array $hours, CarbonImmutable $date): array
+    {
+        foreach ($hours['exceptions'] ?? [] as $exception) {
+            if ($exception['date'] === $date->toDateString()) {
+                return ['closed' => (bool) $exception['closed'], 'sessions' => $exception['closed'] ? [] : $exception['sessions'], 'exception' => true];
+            }
+        }
+        $schedule = $hours['week'][strtolower($date->englishDayOfWeek)] ?? ['closed' => true, 'sessions' => []];
+
+        return ['closed' => (bool) $schedule['closed'], 'sessions' => $schedule['closed'] ? [] : $schedule['sessions'], 'exception' => false];
     }
 
     public function formatTime(string $time, string $locale): string

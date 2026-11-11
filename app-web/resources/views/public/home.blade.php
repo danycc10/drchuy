@@ -22,7 +22,7 @@
 <main id="main">
     <section class="hero container"><div class="hero-copy"><span class="eyebrow"><span class="little-line"></span> {{ $copy['practice_label'] }}</span><h1><span class="sr-only">{{ $clinic['name'] }}: </span>{{ $copy['hero'] }}</h1><p class="hero-intro">{{ $copy['intro'] }}</p><x-appointment-link :clinic="$clinic" :copy="$copy" :locale="$locale" class="button" /><p class="appointment-note">{{ $copy['appointment'] }}</p>
         <nav class="visit-shortcuts" aria-label="{{ $locale === 'es' ? 'Planea tu visita' : 'Plan your visit' }}">
-            <a href="#hours"><span class="shortcut-icon"><x-site-icon name="clock" /></span> {{ $locale === 'es' ? 'Ver horarios' : 'View office hours' }}</a>
+            <a href="#hours"><span class="shortcut-icon"><x-site-icon name="clock" /></span> <span class="shortcut-text">{{ $locale === 'es' ? 'Ver horarios' : 'View office hours' }}<span class="shortcut-status {{ $openingStatus['open'] ? 'is-open' : 'is-closed' }}">{{ $openingStatus['label'] }}</span></span></a>
             @if($clinic['faq'])<a href="#faq"><span class="shortcut-icon"><x-site-icon name="message" /></span> {{ $locale === 'es' ? 'Preguntas frecuentes' : 'Common questions' }}</a>@endif
             <a href="{{ $clinic['maps'] }}" target="_blank" rel="noopener noreferrer"><span class="shortcut-icon"><x-site-icon name="pin" /></span> {{ $copy['directions'] }}</a>
         </nav>
