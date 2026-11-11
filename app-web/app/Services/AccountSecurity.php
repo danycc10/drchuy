@@ -10,6 +10,15 @@ use Illuminate\Support\Str;
 
 class AccountSecurity
 {
+    // Acquire this lock before content/media locks and keep it until the write commits.
+    public function lockActor(User $identity): User
+    {
+        $current = User::whereKey($identity->id)->lockForUpdate()->first();
+        abort_unless($current?->is_active && $current->auth_version === $identity->auth_version, 403);
+
+        return $current;
+    }
+
     // Call within the transaction that changes credentials, role or account status.
     public function invalidate(User $user): void
     {

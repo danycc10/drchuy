@@ -48,7 +48,7 @@ class MediaController extends Controller
         ]);
         try {
             $asset = $library->upload($request->file('image'), $data['title'], $request->user());
-        } catch (ValidationException $exception) {
+        } catch (ValidationException|\Illuminate\Auth\Access\AuthorizationException|\Symfony\Component\HttpKernel\Exception\HttpException $exception) {
             throw $exception;
         } catch (Throwable $exception) {
             report($exception);

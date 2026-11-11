@@ -64,6 +64,8 @@ class MediaLibrary
             }
 
             return DB::transaction(function () use ($file, $title, $user, $mime, $extension, $directory, $image, $display, $displayWidth, $displayHeight) {
+                $user = app(AccountSecurity::class)->lockActor($user);
+                Gate::forUser($user)->authorize('create', MediaAsset::class);
                 $asset = MediaAsset::create([
                     'title' => $title, 'original_name' => mb_substr(basename(str_replace('\\', '/', $file->getClientOriginalName())), 0, 250),
                     'original_mime' => $mime, 'directory' => $directory, 'extension' => $extension,
@@ -129,6 +131,8 @@ class MediaLibrary
     {
         Gate::forUser($user)->authorize('delete', $media);
         DB::transaction(function () use ($media, $user) {
+            $user = app(AccountSecurity::class)->lockActor($user);
+            Gate::forUser($user)->authorize('delete', $media);
             $locked = MediaAsset::whereKey($media->id)->lockForUpdate()->firstOrFail();
             if ($locked->revisions()->exists() || $locked->serviceRevisions()->exists()) {
                 throw ValidationException::withMessages(['media' => 'Esta imagen se utiliza en un borrador, publicación o historial. Se conserva para poder recuperar esas versiones.']);

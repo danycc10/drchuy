@@ -19,6 +19,8 @@ class EditorialReview
         Gate::forUser($user)->authorize('update', $target);
 
         return DB::transaction(function () use ($target, $revision, $note, $user) {
+            $user = app(AccountSecurity::class)->lockActor($user);
+            Gate::forUser($user)->authorize('update', $target);
             $locked = $target->newQuery()->whereKey($target->id)->lockForUpdate()->firstOrFail();
             if ($locked->current_revision_id !== $revision || ! $locked->hasDraft()) {
                 throw ValidationException::withMessages(['revision_id' => 'El borrador cambió o ya fue publicado. Recarga antes de solicitar revisión.']);
@@ -42,6 +44,8 @@ class EditorialReview
         $target = $review->target();
         Gate::forUser($user)->authorize('publish', $target);
         DB::transaction(function () use ($review, $target, $user, $decision, $response) {
+            $user = app(AccountSecurity::class)->lockActor($user);
+            Gate::forUser($user)->authorize('publish', $target);
             $locked = $target->newQuery()->whereKey($target->id)->lockForUpdate()->firstOrFail();
             $request = ReviewRequest::whereKey($review->id)->lockForUpdate()->firstOrFail();
             if ($request->status !== 'pending' || $locked->current_revision_id !== $request->revision_id || ! $locked->hasDraft()) {

@@ -17,6 +17,8 @@ class ServicePublisher
     {
         Gate::forUser($user)->authorize('update', $service);
         DB::transaction(function () use ($service, $payload, $expectedRevision, $user, $restored) {
+            $user = app(AccountSecurity::class)->lockActor($user);
+            Gate::forUser($user)->authorize('update', $service);
             $locked = $this->lock($service, $expectedRevision);
             if ($restored) {
                 abort_unless($restored->service_id === $locked->id, 404);
@@ -56,6 +58,8 @@ class ServicePublisher
     {
         Gate::forUser($user)->authorize('publish', $service);
         DB::transaction(function () use ($service, $expectedRevision, $user) {
+            $user = app(AccountSecurity::class)->lockActor($user);
+            Gate::forUser($user)->authorize('publish', $service);
             $locked = $this->lock($service, $expectedRevision);
             $payload = $locked->currentRevision->payload;
             foreach (['es', 'en'] as $locale) {

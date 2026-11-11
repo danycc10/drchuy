@@ -70,6 +70,7 @@ class ServiceController extends Controller
             'revisions' => 'required|array', 'revisions.*' => 'required|integer|min:1',
         ]);
         DB::transaction(function () use ($data, $request, $publisher) {
+            app(\App\Services\AccountSecurity::class)->lockActor($request->user());
             $services = Service::where('service_category_id', $data['category'])->orderBy('id')->lockForUpdate()->get()->keyBy('id');
             $ids = array_map('intval', $data['order']);
             $expected = $services->keys()->all();

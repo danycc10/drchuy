@@ -24,6 +24,8 @@ class ContentPublisher
         }
         $payload = $this->validator->validate($block->key, $payload);
         DB::transaction(function () use ($block, $payload, $expectedRevision, $user, $restored) {
+            $user = app(AccountSecurity::class)->lockActor($user);
+            Gate::forUser($user)->authorize('update', $block);
             $locked = $this->lock($block, $expectedRevision);
             $mediaIds = $block->key === 'media' ? array_values(array_unique(array_filter($payload['shared']))) : [];
             if ($mediaIds && MediaAsset::whereIn('id', $mediaIds)->orderBy('id')->lockForUpdate()->get()->count() !== count($mediaIds)) {
@@ -46,6 +48,8 @@ class ContentPublisher
     {
         Gate::forUser($user)->authorize('publish', $block);
         DB::transaction(function () use ($block, $expectedRevision, $user) {
+            $user = app(AccountSecurity::class)->lockActor($user);
+            Gate::forUser($user)->authorize('publish', $block);
             $locked = $this->lock($block, $expectedRevision);
             $this->validator->validate($block->key, $locked->currentRevision->payload, true);
             if ($locked->published_revision_id === $locked->current_revision_id) {
