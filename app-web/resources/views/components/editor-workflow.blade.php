@@ -21,6 +21,7 @@
                         <a class="small-link" href="{{ route($key === 'legal' ? 'admin.preview.privacy' : 'admin.preview', $locale).($key === 'faq' ? '#faq' : '') }}" target="_blank" rel="noopener noreferrer"><x-site-icon name="eye" /> {{ $language }}</a>
                     @endforeach
                 </div>
+                <a class="button secondary" style="margin-top:16px" href="{{ route('admin.preview.screen', ['page' => $key === 'legal' ? 'privacy' : 'home', 'section' => $isService ? 'services' : ($key === 'faq' ? 'faq' : null)]) }}" target="_blank" rel="noopener noreferrer"><x-site-icon name="eye" /> Revisar en celular y escritorio</a>
             @endif
         </div>
         <div><h3>2. Revisa con el equipo</h3>@include('admin.reviews.request', ['target' => $target])</div>

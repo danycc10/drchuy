@@ -51,6 +51,7 @@ Route::prefix('admin')->middleware('admin.headers')->group(function () {
         Route::get('/media/{media}/original', [MediaController::class, 'original'])->name('admin.media.original');
         Route::delete('/media/{media}', [MediaController::class, 'destroy'])->name('admin.media.destroy');
         Route::get('/preview/{locale}', [PublicSiteController::class, 'preview'])->whereIn('locale', ['es', 'en'])->name('admin.preview');
+        Route::get('/preview-screen', \App\Http\Controllers\Admin\PreviewController::class)->name('admin.preview.screen');
         Route::get('/preview/{locale}/privacy', [PublicSiteController::class, 'previewPrivacy'])->whereIn('locale', ['es', 'en'])->name('admin.preview.privacy');
         Route::get('/services', [ServiceController::class, 'index'])->name('admin.services.index');
         Route::get('/services/order', [ServiceController::class, 'order'])->name('admin.services.order');

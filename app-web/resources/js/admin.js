@@ -5,6 +5,7 @@ import { initFaq } from './faq';
 import { initConfirmations } from './confirmations';
 import { initServiceImage } from './service-image';
 import { initServiceOrder } from './service-order';
+import { initDevicePreview } from './device-preview';
 
 initFaq(document);
 initEditor(document);
@@ -13,6 +14,7 @@ initNavigation(document);
 initMedia(document);
 initServiceImage(document);
 initServiceOrder(document);
+initDevicePreview(document);
 const editor = document.querySelector('[data-editor]');
 
 document.addEventListener('change', (event) => {

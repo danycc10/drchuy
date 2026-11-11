@@ -13,7 +13,9 @@ class AdminHeaders
         $response = $next($request);
         $response->headers->set('X-Robots-Tag', 'noindex, nofollow, noarchive');
         $response->headers->set('Cache-Control', 'no-store, private');
-        $response->headers->set('X-Frame-Options', 'DENY');
+        $isPreview = $request->routeIs('admin.preview', 'admin.preview.privacy');
+        $response->headers->set('X-Frame-Options', $isPreview ? 'SAMEORIGIN' : 'DENY');
+        $response->headers->set('Content-Security-Policy', $isPreview ? "frame-ancestors 'self'" : "frame-ancestors 'none'");
         $response->headers->set('X-Content-Type-Options', 'nosniff');
         $response->headers->set('Referrer-Policy', 'same-origin');
 

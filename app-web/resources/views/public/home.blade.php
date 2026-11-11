@@ -11,7 +11,7 @@
 </head>
 <body class="public-home">
 <a class="skip-link" href="#main">{{ $locale === 'es' ? 'Ir al contenido' : 'Skip to content' }}</a>
-@if($preview)<div class="preview-banner">Vista previa privada · incluye borradores sin publicar <a href="{{ route('admin.dashboard') }}"><x-site-icon name="grid" /> Volver al panel</a></div>@endif
+@if($preview)<div class="preview-banner">Vista previa privada · incluye borradores sin publicar <a href="{{ route('admin.dashboard') }}" target="_top"><x-site-icon name="grid" /> Volver al panel</a></div>@endif
 <div class="location-bar"><div class="container"><span>{{ $copy['location'] }} <span class="location-separator">/</span> <span class="appointment-top">{{ $locale === 'es' ? 'Atención con cita previa' : 'By appointment' }}</span></span><a href="tel:{{ $clinic['phone'] }}"><x-site-icon name="phone" /> {{ $clinic['phone_display'] }}</a></div></div>
 <header class="site-header"><div class="container header-inner">
     <a class="site-brand" href="{{ ($preview ? route('admin.preview', $locale) : route('home')) }}"><img src="{{ asset('images/logo.png') }}" alt="Medicina Respiratoria · Dr. Jesús García Espinoza" width="1400" height="445"></a>
