@@ -82,8 +82,8 @@ El catálogo se presenta en tarjetas con una ilustración por categoría, nombre
 
 Las cinco ilustraciones y sus prompts se documentan en [IMAGENES_SERVICIOS.md](IMAGENES_SERVICIOS.md). Se usan como imagen inicial por categoría. Cada servicio puede tener una imagen propia desde el panel:
 
-1. Subir la fotografía en **Imágenes**, con un nombre que permita identificarla.
-2. Abrir **Servicios → Editar → Imagen del servicio** y seleccionarla en la biblioteca. La miniatura muestra la selección; se aplica al mismo servicio en ambos idiomas.
+1. Abrir **Servicios → Editar → Imagen del servicio**. Elegir una imagen existente o escribir un nombre, elegir el archivo y pulsar **Subir y seleccionar** sin salir del editor. La carga requiere JavaScript; la biblioteca sigue disponible como alternativa.
+2. Ajustar **Posición horizontal** y **Posición vertical** mirando la vista de la tarjeta. Se conserva el original; el encuadre se aplica al mismo servicio en ambos idiomas y se guarda en su historial. Una imagen con las mismas proporciones que la tarjeta puede no necesitar desplazamiento.
 3. Guardar el borrador, revisar **Vista previa** y publicar con el rol autorizado. Los procedimientos siguen requiriendo al propietario.
 
 Para volver a la imagen inicial, seleccionar **Ilustración original de la categoría**, guardar y publicar. Cambiar la imagen de un servicio no cambia los demás. Las tarjetas recortan horizontalmente la fotografía; conviene usar una imagen horizontal con el motivo centrado. La imagen forma parte del historial y se recupera al restaurar una versión. La biblioteca no permite eliminar imágenes utilizadas en versiones de servicios, incluidos borradores e historial.

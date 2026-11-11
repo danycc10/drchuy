@@ -24,6 +24,9 @@ class ServicePublisher
             }
             $imageId = $restored ? $restored->image_id : (array_key_exists('image_id', $payload) ? $payload['image_id'] : $locked->currentRevision->image_id);
             unset($payload['image_id']);
+            if (! $restored && ! array_key_exists('image_position', $payload) && isset($locked->currentRevision->payload['image_position'])) {
+                $payload['image_position'] = $locked->currentRevision->payload['image_position'];
+            }
             $imageId = validator(['image_id' => $imageId], ['image_id' => 'nullable|integer|min:1'])->validate()['image_id'];
             if ($imageId && ! MediaAsset::whereKey($imageId)->lockForUpdate()->first()) {
                 throw ValidationException::withMessages(['image_id' => 'La imagen ya no está disponible. Selecciona otra de la biblioteca.']);

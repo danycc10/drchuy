@@ -51,6 +51,7 @@ class ServiceController extends Controller
         $data = $request->validated();
         $payload = ['es' => $data['es'], 'en' => $data['en'], 'visible' => $request->boolean('visible'), 'position' => (int) $data['position']];
         if (array_key_exists('image_id', $data)) { $payload['image_id'] = $data['image_id']; }
+        if (isset($data['image_position'])) { $payload['image_position'] = array_map('intval', $data['image_position']); }
         $publisher->draft($service, $payload, (int) $data['revision_id'], $request->user());
 
         return to_route('admin.services.edit', $service)->with('status', 'Borrador guardado. La versión pública sigue igual hasta que se publique este cambio.');

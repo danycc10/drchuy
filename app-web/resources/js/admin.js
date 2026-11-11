@@ -3,12 +3,14 @@ import { initNavigation } from './navigation';
 import { initMedia } from './media';
 import { initFaq } from './faq';
 import { initConfirmations } from './confirmations';
+import { initServiceImage } from './service-image';
 
 initFaq(document);
 initEditor(document);
 initConfirmations(document);
 initNavigation(document);
 initMedia(document);
+initServiceImage(document);
 const editor = document.querySelector('[data-editor]');
 
 document.addEventListener('change', (event) => {

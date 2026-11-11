@@ -32,6 +32,25 @@ class ServiceImagesTest extends TestCase
         return app(MediaLibrary::class)->upload(UploadedFile::fake()->image('service.png', 120, 80), $title, $this->owner);
     }
 
+    public function test_inline_upload_returns_private_asset_and_crop_is_versioned(): void
+    {
+        $response = $this->postJson(route('admin.media.store'), ['title' => 'Nueva tarjeta', 'image' => UploadedFile::fake()->image('card.jpg', 160, 120)])
+            ->assertCreated()->assertJsonStructure(['id', 'title', 'url', 'thumb']);
+        $asset = MediaAsset::findOrFail($response->json('id'));
+        $this->get($asset->url())->assertNotFound();
+        $service = Service::firstOrFail();
+        $this->put(route('admin.services.update', $service), [...$service->currentRevision->payload, 'revision_id' => $service->current_revision_id, 'image_id' => $asset->id, 'image_position' => ['x' => 20, 'y' => 80]])->assertSessionHasNoErrors();
+        $service->refresh();
+        $revision = $service->current_revision_id;
+        $this->get('/admin/preview/es')->assertSee('object-position: 20% 80%', false);
+        $this->publish($service);
+        $this->get('/')->assertSee('object-position: 20% 80%', false);
+        $this->put(route('admin.services.update', $service), [...$service->currentRevision->payload, 'revision_id' => $revision, 'image_position' => ['x' => 50, 'y' => 50]])->assertSessionHasNoErrors();
+        $this->post(route('admin.services.restore', [$service, $revision]), ['revision_id' => $service->fresh()->current_revision_id])->assertSessionHasNoErrors();
+        $this->assertSame(['x' => 20, 'y' => 80], $service->fresh()->currentRevision->payload['image_position']);
+        $this->putJson(route('admin.services.update', $service), [...$service->fresh()->currentRevision->payload, 'revision_id' => $service->fresh()->current_revision_id, 'image_position' => ['x' => 101, 'y' => -1]])->assertUnprocessable()->assertJsonValidationErrors(['image_position.x', 'image_position.y']);
+    }
+
     private function save(Service $service, ?int $imageId): void
     {
         $service->refresh();
@@ -89,7 +108,7 @@ class ServiceImagesTest extends TestCase
         $this->post(route('admin.services.restore', [$service, $withFirst]), ['revision_id' => $service->current_revision_id])->assertSessionHasNoErrors();
         $service->refresh();
         $this->assertSame($first->id, $service->currentRevision->image_id);
-        $this->get(route('admin.services.revision', [$service, $withFirst]))->assertOk()->assertSee($first->url(true, 'thumb'))->assertSee($first->title);
+        $this->get(route('admin.services.revision', [$service, $withFirst]))->assertOk()->assertSee($first->url(true))->assertSee($first->title);
         $this->publish($service);
         $this->get('/')->assertSee($first->url());
         $this->get('/admin/media?usage=used')->assertSee($first->title)->assertSee($second->title);

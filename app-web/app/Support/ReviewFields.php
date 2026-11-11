@@ -13,6 +13,9 @@ class ReviewFields
         $group = array_shift($parts);
         $language = ['es' => 'Español', 'en' => 'Inglés', 'shared' => 'Datos compartidos'][$group] ?? null;
         $field = $parts[0] ?? $group;
+        if ($target instanceof Service && $group === 'image_position') {
+            return 'Encuadre · '.(($parts[0] ?? '') === 'x' ? 'Posición horizontal' : 'Posición vertical');
+        }
         if ($target instanceof ContentBlock) {
             $schema = ContentSchema::definitions()[$target->key];
             if ($language) {

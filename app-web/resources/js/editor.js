@@ -111,6 +111,7 @@ export function initEditor(document) {
     editor?.addEventListener('input', updateState);
     editor?.addEventListener('change', updateState);
     editor?.addEventListener('submit', (event) => {
+        if (event.defaultPrevented) return;
         if (submitting) { event.preventDefault(); return; }
         submitting = true;
         dirty = false;

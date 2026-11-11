@@ -24,6 +24,9 @@ class SaveServiceRequest extends FormRequest
             'visible' => 'required|boolean',
             'position' => 'required|integer|min:1|max:999',
             'image_id' => 'nullable|integer|exists:media_assets,id',
+            'image_position' => 'sometimes|array:x,y',
+            'image_position.x' => 'required_with:image_position|integer|between:0,100',
+            'image_position.y' => 'required_with:image_position|integer|between:0,100',
         ];
     }
 

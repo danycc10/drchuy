@@ -47,15 +47,23 @@ class MediaController extends Controller
             'image.max' => 'La fotografía debe pesar como máximo 8 MB.',
         ]);
         try {
-            $library->upload($request->file('image'), $data['title'], $request->user());
+            $asset = $library->upload($request->file('image'), $data['title'], $request->user());
         } catch (ValidationException $exception) {
             throw $exception;
         } catch (Throwable $exception) {
             report($exception);
 
+            if ($request->expectsJson()) {
+                return response()->json(['message' => 'No se pudo guardar la imagen. Intenta de nuevo.'], 500);
+            }
+
             return back()->withInput($request->only('title'))->withErrors([
                 'image' => 'No se pudo guardar la fotografía. Inténtalo de nuevo; si continúa, revisa el espacio disponible y los permisos del servidor.',
             ]);
+        }
+
+        if ($request->expectsJson()) {
+            return response()->json(['id' => $asset->id, 'title' => $asset->title, 'url' => $asset->url(true), 'thumb' => $asset->url(true, 'thumb')], 201);
         }
 
         return to_route('admin.media.index')->with('status', 'Imagen guardada en la biblioteca. Puedes seleccionarla al editar un servicio o en «Fotografías del sitio». Guarda el borrador y publica cuando esté listo.');

@@ -7,7 +7,7 @@
 <li class="service-card" data-service-item>
     <div class="service-card-image">
         @if($service['image'])
-            <img src="{{ $service['image']['url'] }}" alt="" width="{{ $service['image']['width'] }}" height="{{ $service['image']['height'] }}" loading="lazy" decoding="async">
+            <img src="{{ $service['image']['url'] }}" style="object-position: {{ (int) ($service['image_position']['x'] ?? 50) }}% {{ (int) ($service['image_position']['y'] ?? 50) }}%" alt="" width="{{ $service['image']['width'] }}" height="{{ $service['image']['height'] }}" loading="lazy" decoding="async">
         @else
             <img src="{{ asset('images/services/'.$category->slug.'-640.webp') }}" srcset="{{ asset('images/services/'.$category->slug.'-640.webp') }} 640w, {{ asset('images/services/'.$category->slug.'-960.webp') }} 960w" sizes="(max-width: 600px) calc(100vw - 40px), (max-width: 1000px) calc((100vw - 104px) / 2), 378px" alt="" width="960" height="640" loading="lazy" decoding="async">
         @endif

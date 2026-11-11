@@ -4,6 +4,6 @@
     <section class="panel"><p class="muted small">Visibilidad: {{ $revision->payload['visible'] ? 'Visible' : 'Oculto' }} · Orden: {{ $revision->payload['position'] }}. Recuperar crea un borrador nuevo y conserva la versión pública.</p><form method="post" action="{{ route('admin.services.restore', [$service, $revision]) }}" data-confirm-detail="{{ $revision->payload['es']['name'] }} · Versión #{{ $revision->id }}" data-confirm="¿Recuperar esta versión como un nuevo borrador?" style="margin-top:20px">@csrf<input type="hidden" name="revision_id" value="{{ $service->current_revision_id }}"><button class="button primary"><x-site-icon name="history" /> Recuperar como borrador</button></form></section>
     <section class="panel"><h2>Imagen de esta versión</h2>
         <p class="field-help">{{ $revision->image?->title ?? 'Ilustración original de la categoría' }}</p>
-        <img class="media-selection-preview" src="{{ $revision->image ? $revision->image->url(true, 'thumb') : asset('images/services/'.$service->category->slug.'-640.webp') }}" alt="Imagen guardada en esta versión" width="160" height="120" loading="lazy">
+        <div class="service-crop-preview"><img src="{{ $revision->image ? $revision->image->url(true) : asset('images/services/'.$service->category->slug.'-640.webp') }}" style="object-position: {{ (int) ($revision->payload['image_position']['x'] ?? 50) }}% {{ (int) ($revision->payload['image_position']['y'] ?? 50) }}%" alt="Imagen guardada en esta versión" loading="lazy"></div>
     </section>
 </x-admin-layout>
