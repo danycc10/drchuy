@@ -1,3 +1,5 @@
+import { uploadImage } from './image-upload.js';
+
 export function initServiceImage(document) {
     const section = document.querySelector('[data-service-image]');
     if (!section) return;
@@ -14,12 +16,14 @@ export function initServiceImage(document) {
     axes.forEach((axis) => axis.addEventListener('input', updateCrop));
     select.addEventListener('change', updateCrop);
     updateCrop();
-    if (!window.fetch || !window.FormData || !window.AbortController) return;
+    if ((!window.XMLHttpRequest && !window.fetch) || !window.FormData || !window.AbortController) return;
     section.querySelector('[data-inline-upload]').hidden = false;
     const button = section.querySelector('[data-inline-upload-button]');
     const status = section.querySelector('[data-upload-status]');
     const file = section.querySelector('[data-upload-file]');
     const title = section.querySelector('[data-upload-title]');
+    const buttonLabel = button.querySelector('[data-inline-upload-label]') ?? button;
+    const progress = section.querySelector('[data-upload-progress]');
     let pending = false;
     let controller;
     form.addEventListener('submit', (event) => {
@@ -43,6 +47,9 @@ export function initServiceImage(document) {
         }
         pending = true;
         button.disabled = true;
+        file.disabled = true; title.disabled = true;
+        buttonLabel.textContent = 'Cargando imagen…';
+        if (progress) { progress.hidden = false; progress.removeAttribute('value'); }
         section.setAttribute('aria-busy', 'true');
         status.textContent = 'Subiendo y optimizando imagen…';
         controller = new window.AbortController();
@@ -51,13 +58,22 @@ export function initServiceImage(document) {
         body.append('title', title.value.trim());
         body.append('image', image);
         try {
-            const response = await window.fetch(section.dataset.uploadUrl, { method: 'POST', body, headers: { Accept: 'application/json' }, credentials: 'same-origin', signal: controller.signal });
+            const response = await uploadImage(window, section.dataset.uploadUrl, body, (percent) => {
+                if (progress) {
+                    if (percent < 100) { progress.value = percent; progress.setAttribute('aria-label', `Subiendo imagen: ${percent}%`); }
+                    else { progress.removeAttribute('value'); progress.setAttribute('aria-label', 'Optimizando imagen'); }
+                }
+                if (percent === 100) status.textContent = 'Archivo recibido. Optimizando la imagen…';
+            }, controller.signal);
             const data = await response.json().catch(() => ({}));
             if (!response.ok) {
                 const message = response.status === 419 || response.status === 401
                     ? 'Tu sesión venció. Conserva tus textos antes de volver a iniciar sesión.'
                     : Object.values(data.errors || {}).flat()[0] || data.message || 'No se pudo subir. Revisa la conexión e intenta de nuevo.';
                 throw new Error(message);
+            }
+            if (!Number.isInteger(data.id) || !data.url || !data.thumb || typeof data.title !== 'string') {
+                throw new Error('No se recibió una confirmación válida. Revisa la biblioteca antes de reintentar.');
             }
             const option = new window.Option(data.title, String(data.id), false, true);
             option.dataset.src = data.thumb;
@@ -70,13 +86,20 @@ export function initServiceImage(document) {
             file.value = '';
             title.value = '';
             status.textContent = 'Imagen seleccionada. Ajusta el encuadre y guarda el borrador.';
+            buttonLabel.textContent = 'Subir otra imagen';
         } catch (error) {
             status.textContent = error.name === 'AbortError' ? 'Carga interrumpida. Revisa la biblioteca antes de volver a subir.' : error.message;
+            buttonLabel.textContent = 'Reintentar carga';
         } finally {
             pending = false;
             button.disabled = false;
+            file.disabled = false; title.disabled = false;
+            if (progress) { progress.hidden = true; progress.setAttribute('aria-label', 'Progreso de carga'); }
             section.removeAttribute('aria-busy');
         }
     });
     window.addEventListener('pagehide', () => controller?.abort());
+    window.addEventListener('beforeunload', (event) => {
+        if (pending) { event.preventDefault(); event.returnValue = ''; }
+    });
 }

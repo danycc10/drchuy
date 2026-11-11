@@ -27,7 +27,8 @@
         <label for="service-upload-title">Nombre de la nueva imagen<input id="service-upload-title" type="text" maxlength="150" data-upload-title placeholder="Ej. Equipo para espirometría"></label>
         <label for="service-upload-file">Archivo JPG, PNG o WebP<input id="service-upload-file" type="file" accept="image/jpeg,image/png,image/webp" data-upload-file></label>
         <p class="field-help">Hasta 8 MB. Subir guarda la imagen en la biblioteca; todavía debes guardar el borrador para asignarla al servicio.</p>
-        <button type="button" class="button secondary" data-inline-upload-button><x-site-icon name="image" /> Subir y seleccionar</button>
+        <button type="button" class="button secondary" data-inline-upload-button><x-site-icon name="image" /> <span data-inline-upload-label>Subir y seleccionar</span></button>
+        <progress class="upload-progress" data-upload-progress max="100" aria-label="Progreso de carga" hidden></progress>
         <p class="field-help" data-upload-status role="status" aria-live="polite" tabindex="-1"></p>
     </div>
     <noscript><p class="field-help">Para subir una imagen, abre la biblioteca. Después vuelve a seleccionar la imagen aquí.</p></noscript>

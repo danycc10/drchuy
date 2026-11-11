@@ -10,6 +10,7 @@ function setup() {
         <div data-inline-upload hidden><input data-upload-title value="My image"><input type="file" data-upload-file><button type="button" data-inline-upload-button>Upload</button><p data-upload-status></p></div>
         </section></form>`);
     const { document } = window;
+    window.XMLHttpRequest = undefined;
     Object.defineProperty(document.querySelector('[data-upload-file]'), 'files', { value: [new window.File(['image'], 'card.png', { type: 'image/png' })] });
     return { window, document };
 }
@@ -47,6 +48,8 @@ test('upload failure preserves the selection and allows retry; crop follows the 
     assert.equal(select.value, '5');
     assert.equal(document.querySelector('[data-upload-status]').textContent, 'Invalid image');
     assert.equal(document.querySelector('button').disabled, false);
+    assert.equal(document.querySelector('[data-upload-title]').value, 'My image');
+    assert.equal(document.querySelector('button').textContent, 'Reintentar carga');
     select.value = ''; select.dispatchEvent(new window.Event('change'));
     assert.equal(document.querySelector('img').style.objectPosition, '50% 50%');
 });
