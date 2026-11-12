@@ -103,6 +103,6 @@ Mejoras UX de esta entrega: recorrido público de solicitud de cita con mensaje 
 - Cuenta propietaria local creada con el correo proporcionado por el titular y enlace temporal para elegir contraseña. Los datos de acceso se mantienen fuera del repositorio.
 - HostGator Turbo: cuenta contratada y Terminal/SSH confirmado por el propietario; falta comprobar en el servidor real PHP/CLI, extensiones, raíz pública, límites, correo y cron siguiendo `app-web/deploy/INSTALAR.md`.
 - Dominio confirmado: `medicinarespiratoriadrjesus.com`; DNS, certificado AutoSSL y buzón SMTP por configurar. Aviso de privacidad, traducción inglesa y condiciones de procedimientos por confirmar.
-- Repositorio remoto: no configurado. Los commits se encuentran en este equipo.
+- Repositorio remoto: `github.com/danycc10/drchuy` (privado), rama `main` sincronizada. El despliegue no usa Git: se sube el ZIP generado por `deploy/build-release.ps1`.
 
 No activar indexación ni desplegar esta entrega como versión final antes de completar los pendientes de lanzamiento. `SITE_INDEXABLE=false` impide indexación solicitada, pero no sustituye una contraseña o restricción de acceso para un entorno de pruebas remoto.
