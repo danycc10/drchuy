@@ -33,7 +33,7 @@ cp .env.production.example .env
 chmod 600 .env
 ```
 
-Editar `.env` desde cPanel o el editor de Terminal: completar `DB_*`, contraseña SMTP, host/puerto/esquema reales y remitente autorizado. Los valores SMTP del ejemplo son propuestas, no cuentas creadas. Poner entre comillas las contraseñas que contengan espacios o `#`. Conservar `APP_DEBUG=false`, `APP_ENV=production`, cookies seguras y `SITE_INDEXABLE=false` durante la revisión. No compartir este archivo por chat ni guardarlo en una carpeta pública.
+Editar `.env` desde cPanel o el editor de Terminal: completar `DB_*`, contraseña SMTP, host/puerto/esquema reales y remitente autorizado. Dejar `TRUSTED_PROXIES` vacío salvo que el tráfico llegue a través de un CDN o proxy (por ejemplo Cloudflare); en ese caso indicar sus IP o `*` para que la aplicación reconozca HTTPS y la IP real del visitante. Los valores SMTP del ejemplo son propuestas, no cuentas creadas. Poner entre comillas las contraseñas que contengan espacios o `#`. Conservar `APP_DEBUG=false`, `APP_ENV=production`, cookies seguras y `SITE_INDEXABLE=false` durante la revisión. No compartir este archivo por chat ni guardarlo en una carpeta pública.
 
 Solo para instalación nueva, con una base vacía:
 
@@ -54,7 +54,7 @@ En `app:create-admin`, usar **danycc10@gmail.com**, rol **owner** y una contrase
 1. Abrir `/admin/login`, activar dos pasos en **Mi seguridad** y guardar los códigos de recuperación.
 2. Revisar y publicar servicios, textos, datos médicos, horarios, contacto e imágenes. Publicar el aviso de privacidad aprobado en los idiomas disponibles. La instalación nueva no replica las ediciones de la base local; para trasladarlas usar el procedimiento privado de `docs/RESPALDOS.md`, conservando su APP_KEY, en lugar de regenerar una clave y sembrar datos.
 3. Probar desde celular y escritorio: tarjetas/filtros de servicios, WhatsApp con el mensaje del servicio, llamadas, idioma sin prefijos, formulario de acceso, imágenes y recuperación de contraseña con correo recibido realmente.
-4. Confirmar redirecciones HTTP y `www`, certificado válido, `/up` y que `/.env`, `/composer.json` y `/storage/logs/laravel.log` no exponen archivos. No publicar `phpinfo()` ni instaladores web.
+4. Confirmar redirecciones HTTP y `www`, certificado válido, `/up` y que `/.env`, `/composer.json` y `/storage/logs/laravel.log` no exponen archivos. No publicar `phpinfo()` ni instaladores web. Con HTTPS activo la aplicación envía `Strict-Transport-Security` (180 días, sin preload) además de las cabeceras base; comprobarlas con las herramientas del navegador o `curl -I`.
 5. Configurar y probar copias cifradas y restauración siguiendo `docs/RESPALDOS.md`, además de una copia externa al hosting. Activar `BACKUP_ENABLED=true` solo al preparar este proceso y ejecutar `php artisan config:cache`.
 6. En trabajos cron de cPanel, cada minuto (sustituir USUARIO y la ruta de PHP por las reales):
 

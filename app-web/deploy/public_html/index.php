@@ -12,6 +12,11 @@ use Illuminate\Http\Request;
 
 define('LARAVEL_START', microtime(true));
 
+// Solo para pruebas locales con `php -S`: Apache sirve los archivos estáticos antes de llegar aquí.
+if (PHP_SAPI === 'cli-server' && is_file(__DIR__.(string) parse_url($_SERVER['REQUEST_URI'] ?? '/', PHP_URL_PATH))) {
+    return false;
+}
+
 const APP_DIRECTORY = 'medicina-respiratoria';
 
 $appPath = dirname(__DIR__).'/'.APP_DIRECTORY;

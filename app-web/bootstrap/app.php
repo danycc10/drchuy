@@ -12,6 +12,12 @@ $app = Application::configure(basePath: dirname(__DIR__))
     )
     ->withMiddleware(function (Middleware $middleware): void {
         $middleware->trustHosts(at: fn () => ['^'.preg_quote((string) parse_url(config('app.url'), PHP_URL_HOST), '/').'$'], subdomains: false);
+        // Only when the hosting places a proxy or CDN in front: otherwise X-Forwarded-* headers are ignored.
+        $proxies = array_values(array_filter(array_map('trim', explode(',', (string) env('TRUSTED_PROXIES', '')))));
+        if ($proxies) {
+            $middleware->trustProxies(at: in_array('*', $proxies, true) ? '*' : $proxies);
+        }
+        $middleware->append(\App\Http\Middleware\PublicHeaders::class);
         $middleware->redirectGuestsTo(fn () => route('login'));
         $middleware->redirectUsersTo(fn () => route('admin.dashboard'));
         $middleware->alias([
