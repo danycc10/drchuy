@@ -17,7 +17,7 @@ Requisitos: PHP 8.3 compatible con las dependencias, GD con WebP, EXIF, XMLWrite
 
 ## Comprobaciones
 
-`php artisan test` utiliza SQLite en memoria, separado de MySQL local. `npm run build` genera los recursos para producción. Los archivos `.env`, dependencias, bases locales y logs no se versionan. Los archivos lock sí se incluyen.
+`php artisan test` utiliza SQLite en memoria, separado de MySQL local. `npm run build` genera los recursos para producción en `public/build`, que sí se versiona para que el servidor no necesite Node: después de cambiar CSS o JavaScript, compilar y confirmar el resultado junto con el código. Los archivos `.env`, dependencias, bases locales y logs no se versionan. Los archivos lock sí se incluyen.
 
 El contenido inicial se conserva en `database/content/services.json`. Se puede regenerar desde el paquete original mediante `php scripts/prepare-content.php`; no ejecutar esa preparación durante un despliegue.
 
