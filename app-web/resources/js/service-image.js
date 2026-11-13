@@ -8,16 +8,19 @@ export function initServiceImage(document) {
     const select = section.querySelector('[data-media-select]');
     const preview = section.querySelector('[data-crop-preview]');
     const axes = [...section.querySelectorAll('[data-crop-axis]')];
+    const cropControls = section.querySelector('[data-crop-controls]');
     const updateCrop = () => {
         const option = select.selectedOptions[0];
         preview.src = option.dataset.display || option.dataset.src;
         preview.style.objectPosition = select.value ? axes.map((axis) => `${axis.value}%`).join(' ') : '50% 50%';
+        if (cropControls) cropControls.hidden = !select.value; // The category illustration is already framed.
     };
     axes.forEach((axis) => axis.addEventListener('input', updateCrop));
     select.addEventListener('change', updateCrop);
     updateCrop();
     if ((!window.XMLHttpRequest && !window.fetch) || !window.FormData || !window.AbortController) return;
-    section.querySelector('[data-inline-upload]').hidden = false;
+    const upload = section.querySelector('[data-inline-upload]');
+    upload.hidden = false;
     const button = section.querySelector('[data-inline-upload-button]');
     const status = section.querySelector('[data-upload-status]');
     const file = section.querySelector('[data-upload-file]');
@@ -46,6 +49,7 @@ export function initServiceImage(document) {
             return;
         }
         pending = true;
+        if ('open' in upload) upload.open = true;
         button.disabled = true;
         file.disabled = true; title.disabled = true;
         buttonLabel.textContent = 'Cargando imagen…';
@@ -85,8 +89,8 @@ export function initServiceImage(document) {
             section.dispatchEvent(new window.Event('image:uploaded'));
             file.value = '';
             title.value = '';
-            status.textContent = 'Imagen seleccionada. Ajusta el encuadre y pulsa Guardar y publicar.';
-            buttonLabel.textContent = 'Subir otra imagen';
+            status.textContent = 'Listo: la foto ya está seleccionada. Ajusta el encuadre si hace falta y pulsa Guardar y publicar.';
+            buttonLabel.textContent = 'Subir otra foto';
         } catch (error) {
             status.textContent = error.name === 'AbortError' ? 'Carga interrumpida. Revisa la biblioteca antes de volver a subir.' : error.message;
             buttonLabel.textContent = 'Reintentar carga';

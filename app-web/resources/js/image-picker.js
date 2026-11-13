@@ -7,6 +7,7 @@ export function initImagePicker(document) {
     const grid = picker.querySelector('[data-image-grid]');
     const normalize = (value) => value.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLocaleLowerCase().trim();
     const buttons = new Map();
+    const searchField = picker.querySelector('[data-image-search-field]');
     function filter() {
         let visible = 0;
         const terms = normalize(query.value).split(/\s+/).filter(Boolean);
@@ -15,7 +16,9 @@ export function initImagePicker(document) {
             if (!button.hidden) visible++;
         });
         picker.querySelector('[data-image-empty]').hidden = visible > 0;
-        picker.querySelector('[data-image-count]').textContent = `${visible} de ${buttons.size} opciones`;
+        const count = picker.querySelector('[data-image-count]');
+        count.hidden = terms.length === 0; // The total only helps while a search narrows the grid.
+        count.textContent = `${visible} de ${buttons.size} imágenes`;
     }
     function sync() {
         for (const option of select.options) {
@@ -29,7 +32,7 @@ export function initImagePicker(document) {
                 image.src = option.dataset.src;
                 image.alt = ''; image.loading = 'lazy'; image.width = 180; image.height = 120;
                 const title = document.createElement('span'); title.textContent = option.textContent;
-                const check = document.createElement('span'); check.className = 'image-picker-check'; check.textContent = 'Seleccionada'; check.setAttribute('aria-hidden', 'true');
+                const check = document.createElement('span'); check.className = 'image-picker-check'; check.textContent = 'En uso'; check.setAttribute('aria-hidden', 'true');
                 button.append(image, title, check);
                 button.addEventListener('click', () => {
                     select.value = option.value;
@@ -39,7 +42,9 @@ export function initImagePicker(document) {
             }
         }
         buttons.forEach((button, value) => button.setAttribute('aria-pressed', String(select.value === value)));
-        picker.querySelector('[data-image-selection]').textContent = `Seleccionada: ${select.selectedOptions[0]?.textContent ?? 'Ninguna'}`;
+        const selection = section.querySelector('[data-image-selection]');
+        if (selection) selection.textContent = select.selectedOptions[0]?.textContent ?? 'Ninguna';
+        if (searchField) searchField.hidden = buttons.size <= 8; // A handful of images is faster to scan than to search.
         filter();
     }
     query.addEventListener('input', filter);
@@ -51,5 +56,5 @@ export function initImagePicker(document) {
     section.addEventListener('image:uploaded', () => { query.value = ''; sync(); });
     document.defaultView.addEventListener('pageshow', sync);
     sync(); picker.hidden = false;
-    section.querySelector('[data-image-native]').open = false;
+    section.querySelector('[data-image-native]').hidden = true; // The thumbnails replace the dropdown; the select keeps carrying the value.
 }
