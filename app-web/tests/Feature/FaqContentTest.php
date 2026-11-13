@@ -25,7 +25,7 @@ class FaqContentTest extends TestCase
         return ContentBlock::where('key', 'faq')->firstOrFail();
     }
 
-    public function test_faq_drafts_preview_and_publication_preserve_language_order_visibility_and_escaping(): void
+    public function test_saving_faq_publishes_and_preserves_language_order_visibility_and_escaping(): void
     {
         $this->actingAs(User::factory()->create(['role' => Role::Administrator]));
         $block = $this->block();
@@ -36,14 +36,14 @@ class FaqContentTest extends TestCase
         $payload['items'][0]['en']['answer'] = 'Reviewed answer';
         $this->put(route('admin.content.update', $block), ['revision_id' => $block->current_revision_id, 'payload' => $payload])->assertSessionHasNoErrors();
 
-        $this->get('/')->assertOk()->assertDontSee('id="faq"', false)->assertDontSee('href="#faq"', false);
+        $this->get('/')->assertOk()->assertSee('id="faq"', false)->assertSee('href="#faq"', false);
         $this->get('/admin/preview/es')->assertOk()->assertSee('id="faq"', false)
             ->assertSeeInOrder([$payload['items'][0]['es']['question'], $payload['items'][2]['es']['question']])
             ->assertDontSee($payload['items'][1]['es']['question'])
             ->assertSee('&lt;script&gt;', false)->assertDontSee('<script>alert(1)</script>', false);
         $this->get('/admin/preview/en')->assertSee('Reviewed answer');
         $block->refresh();
-        $this->post(route('admin.content.publish', $block), ['revision_id' => $block->current_revision_id])->assertSessionHasNoErrors();
+        $this->assertSame($block->current_revision_id, $block->published_revision_id);
         $this->withSession(['public_locale' => 'es'])->get('/')->assertSee('id="faq"', false)->assertSee('Respuesta revisada');
         $this->post('/idioma', ['locale' => 'en', 'page' => 'home', 'anchor' => 'faq'])->assertRedirect(url('/').'#faq');
         $this->get('/')->assertSee('Reviewed answer')->assertDontSee('Respuesta revisada');
@@ -51,30 +51,27 @@ class FaqContentTest extends TestCase
             ->assertSee('Oculta')->assertSee('Reviewed answer');
     }
 
-    public function test_editors_cannot_publish_and_restore_creates_a_draft_without_replacing_public_faq(): void
+    public function test_saving_an_empty_list_hides_the_section_and_restore_shows_it_again(): void
     {
         $block = $this->block();
         $initial = $block->current_revision_id;
         $this->actingAs(User::factory()->create(['role' => Role::Editor]));
-        $this->post(route('admin.content.publish', $block), ['revision_id' => $initial])->assertForbidden();
-        $this->actingAs(User::factory()->create(['role' => Role::Owner]));
+        $this->get('/')->assertDontSee('id="faq"', false);
         $this->post(route('admin.content.publish', $block), ['revision_id' => $initial])->assertSessionHasNoErrors();
+        $this->get('/')->assertSee('id="faq"', false);
         $payload = $block->currentRevision->payload;
         unset($payload['items']); // Browsers omit the list when every question is removed.
         $this->put(route('admin.content.update', $block), ['revision_id' => $initial, 'payload' => $payload])->assertSessionHasNoErrors();
         $block->refresh();
         $this->assertSame([], $block->currentRevision->payload['items']);
-        $this->get('/admin/preview/es')->assertDontSee('id="faq"', false);
-        $this->get('/')->assertSee('id="faq"', false);
-        $this->post(route('admin.content.publish', $block), ['revision_id' => $block->current_revision_id])->assertSessionHasNoErrors();
+        $this->assertSame($block->current_revision_id, $block->published_revision_id);
         $this->get('/')->assertDontSee('id="faq"', false);
-        $published = $block->current_revision_id;
-        $this->post(route('admin.content.restore', [$block, $initial]), ['revision_id' => $published])->assertSessionHasNoErrors();
+        $emptied = $block->current_revision_id;
+        $this->post(route('admin.content.restore', [$block, $initial]), ['revision_id' => $emptied])->assertSessionHasNoErrors();
         $block->refresh();
-        $this->assertSame($published, $block->published_revision_id);
-        $this->assertNotSame($initial, $block->current_revision_id);
-        $this->get('/admin/preview/es')->assertSee('id="faq"', false);
-        $this->get('/')->assertDontSee('id="faq"', false);
+        $this->assertNotContains($block->current_revision_id, [$initial, $emptied]);
+        $this->assertSame($block->current_revision_id, $block->published_revision_id);
+        $this->get('/')->assertSee('id="faq"', false);
         $this->assertDatabaseHas('audit_events', ['content_block_id' => $block->id, 'action' => 'content.restored']);
     }
 

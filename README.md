@@ -19,7 +19,6 @@ Con el servidor iniciado:
 - Biblioteca de imágenes: http://127.0.0.1:8085/admin/media (requiere acceso al panel).
 - Usuarios: http://127.0.0.1:8085/admin/users (solo propietario).
 - Verificación en dos pasos: http://127.0.0.1:8085/admin/security (cada usuario configura su cuenta).
-- Revisiones: http://127.0.0.1:8085/admin/reviews.
 - Mantenimiento: http://127.0.0.1:8085/admin/maintenance (solo propietario; estado de respaldos y exportación).
 
 Para crear tu cuenta, abre otra terminal en `app-web` y ejecuta:
@@ -30,7 +29,7 @@ php artisan app:create-admin
 
 El comando solicita nombre, correo, rol y contraseña oculta. Elige `owner` para la primera cuenta propietaria. No hay cuentas ni contraseñas predeterminadas. Después, el propietario puede crear y administrar las cuentas desde **Usuarios**.
 
-El catálogo se importa como borrador. En el entorno local actual, los 14 servicios originales ya están publicados por solicitud del titular y aparecen con **Solicitar servicio**, que prepara un mensaje de WhatsApp con el nombre elegido. En nuevas instalaciones, inicia sesión y usa **Vista previa** para revisar los borradores; en **Servicios**, guarda, revisa y publica cada versión cuando corresponda. Esta publicación modifica solo el entorno donde se ejecuta la aplicación; no despliega cambios en HostGator.
+El catálogo se importa como borrador. En el entorno local actual, los 14 servicios originales ya están publicados por solicitud del titular y aparecen con **Solicitar servicio**, que prepara un mensaje de WhatsApp con el nombre elegido. En nuevas instalaciones, el resumen del panel lista los servicios importados como **Pendiente de publicar**: abre cada uno y usa **Publicar ahora**, o edítalo y pulsa **Guardar y publicar**. Desde entonces cada guardado actualiza el sitio al instante, sin revisiones intermedias. Esta publicación modifica solo el entorno donde se ejecuta la aplicación; no despliega cambios en HostGator.
 
 ## Organización
 

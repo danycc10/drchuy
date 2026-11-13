@@ -102,6 +102,6 @@ class PublicSiteTest extends TestCase
             $this->assertStringContainsString('data-print-visit hidden', $matches[0]);
         }
         $this->actingAs($owner)->get('/admin/preview/es')->assertOk()
-            ->assertSee('DIRECCION BORRADOR')->assertSee('datos del borrador')->assertDontSee('data-print-visit');
+            ->assertSee('DIRECCION BORRADOR')->assertSee('última versión guardada')->assertDontSee('data-print-visit');
     }
 }

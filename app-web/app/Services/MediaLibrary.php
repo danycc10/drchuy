@@ -135,7 +135,7 @@ class MediaLibrary
             Gate::forUser($user)->authorize('delete', $media);
             $locked = MediaAsset::whereKey($media->id)->lockForUpdate()->firstOrFail();
             if ($locked->revisions()->exists() || $locked->serviceRevisions()->exists()) {
-                throw ValidationException::withMessages(['media' => 'Esta imagen se utiliza en un borrador, publicación o historial. Se conserva para poder recuperar esas versiones.']);
+                throw ValidationException::withMessages(['media' => 'Esta imagen se utiliza en una versión publicada, pendiente o del historial. Se conserva para poder recuperar esas versiones.']);
             }
             $locked->delete();
             AuditEvent::create(['user_id' => $user->id, 'action' => 'media.deleted', 'metadata' => ['media_id' => $media->id, 'media_title' => $media->title]]);

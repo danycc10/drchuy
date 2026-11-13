@@ -4,7 +4,7 @@ namespace Tests\Feature;
 
 use App\Enums\Role;
 use App\Models\{ContentBlock, User};
-use App\Services\{ContentPublisher, DashboardTasks, EditorialReview};
+use App\Services\{ContentPublisher, DashboardTasks};
 use Database\Seeders\ContentSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
@@ -23,39 +23,42 @@ class DashboardTasksTest extends TestCase
         $publisher->publish($services[0], $services[0]->current_revision_id, $owner);
         $payload = $services[1]->currentRevision->payload;
         $payload['visible'] = false;
-        $publisher->draft($services[1], $payload, $services[1]->current_revision_id, $owner);
+        $publisher->save($services[1], $payload, $services[1]->current_revision_id, $owner);
         $hidden = $services[1]->fresh();
-        $publisher->publish($hidden, $hidden->current_revision_id, $owner);
         $this->actingAs($owner)->get('/admin')->assertOk()->assertViewHas('published', 1)->assertViewHas('hidden', 1)
-            ->assertSee('pendientes más')->assertSee(route('admin.services.order'))->assertSee(route('admin.preview.screen'));
+            ->assertSee('pendientes más')->assertSee(route('admin.services.order'))->assertSee(route('admin.preview.screen'))->assertDontSee('Revisiones');
         $this->get('/admin/services?status=hidden')->assertSee($hidden->currentRevision->payload['es']['name'])->assertDontSee($services[0]->currentRevision->payload['es']['name']);
     }
 
-    public function test_tasks_prioritize_corrections_and_respect_publication_permissions_without_duplicates(): void
+    public function test_tasks_list_only_versions_the_site_does_not_show_yet(): void
     {
         $this->withoutVite();
         $this->seed(ContentSeeder::class);
-        $editor = User::factory()->create();
         $owner = User::factory()->create(['role' => Role::Owner]);
-        $admin = User::factory()->create(['role' => Role::Administrator]);
         $home = ContentBlock::where('key', 'home')->firstOrFail();
-        $profile = ContentBlock::where('key', 'physician')->firstOrFail();
-        $workflow = app(EditorialReview::class);
-        $correction = $workflow->submit($home, $home->current_revision_id, null, $editor);
-        $workflow->decide($correction, $owner, 'changes', 'Revisar el mensaje principal.');
-        $pending = $workflow->submit($profile, $profile->current_revision_id, null, $editor);
         $tasks = app(DashboardTasks::class);
-        $forEditor = $tasks->forUser($editor);
-        $this->assertSame('Inicio y presentación', $forEditor['groups'][0]['items']->first()['title']);
-        $this->assertCount(0, $forEditor['groups'][1]['items']);
-        $this->assertCount(7, $forEditor['groups'][2]['items']);
-        $this->assertSame(1, $forEditor['waiting']);
-        $this->assertCount(0, $tasks->forUser($admin)['groups'][1]['items']);
-        $this->assertSame(route('admin.reviews.show', $pending), $tasks->forUser($owner)['groups'][1]['items']->first()['url']);
-        $this->actingAs($editor)->get('/admin')->assertOk()->assertSee('Revisar el mensaje principal.')->assertDontSee('Listo para tu revisión');
-        app(ContentPublisher::class)->draft($home, $home->currentRevision->payload, $home->current_revision_id, $editor);
-        $updated = $tasks->forUser($editor);
-        $this->assertCount(0, $updated['groups'][0]['items']);
-        $this->assertSame('Inicio y presentación', $updated['groups'][2]['items']->first()['title']);
+        $this->assertCount(ContentBlock::count(), $tasks->forUser($owner)['groups'][0]['items']);
+        $publisher = app(ContentPublisher::class);
+        $publisher->publish($home, $home->current_revision_id, $owner);
+        $this->assertCount(ContentBlock::count() - 1, $tasks->forUser($owner)['groups'][0]['items']);
+        $publisher->draft($home, $home->currentRevision->payload, $home->current_revision_id, $owner);
+        $pending = $tasks->forUser($owner)['groups'][0]['items'];
+        $this->assertCount(ContentBlock::count(), $pending);
+        $this->assertSame('Inicio y presentación', $pending->first()['title']);
+        $this->assertSame('La última versión guardada todavía no se muestra en el sitio.', $pending->first()['description']);
+        $this->assertSame(route('admin.content.edit', $home), $pending->first()['url']);
+        $this->actingAs($owner)->get('/admin')->assertOk()->assertSee('Pendiente de publicar')->assertSee('Abrir y publicar');
+        foreach (ContentBlock::all() as $block) {
+            if ($block->key === 'legal') { // The privacy notice ships empty and cannot be published until both languages exist.
+                $payload = $block->currentRevision->payload;
+                $payload['es']['privacy_content'] = 'Aviso de prueba.';
+                $payload['en']['privacy_content'] = 'Test notice.';
+                $publisher->save($block, $payload, $block->current_revision_id, $owner);
+                continue;
+            }
+            $publisher->publish($block, $block->current_revision_id, $owner);
+        }
+        $this->assertCount(0, $tasks->forUser($owner)['groups'][0]['items']);
+        $this->get('/admin')->assertOk()->assertSee('Todo lo guardado ya se muestra en el sitio.')->assertDontSee('Abrir y publicar');
     }
 }

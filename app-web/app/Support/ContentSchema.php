@@ -16,14 +16,14 @@ class ContentSchema
 
         return [
             'faq' => [
-                'label' => 'Preguntas frecuentes', 'description' => 'Resuelve dudas prácticas antes de la cita. Ordena, oculta y revisa las respuestas en ambos idiomas.',
+                'label' => 'Preguntas frecuentes', 'description' => 'Resuelve dudas prácticas antes de la cita. Ordena, oculta y redacta las respuestas en ambos idiomas.',
                 'shared' => [], 'translated' => [
                     'faq_title' => $text('Título de la sección'), 'faq_intro' => $area('Introducción', 600),
                 ],
             ],
             'media' => [
                 'label' => 'Fotografías del sitio', 'description' => 'Selecciona fotografías del médico e instalaciones y describe cada imagen en español e inglés.',
-                'owner_only' => true, 'shared' => $imageFields, 'translated' => $altFields,
+                'shared' => $imageFields, 'translated' => $altFields,
             ],
             'home' => [
                 'label' => 'Inicio y presentación', 'description' => 'Mensaje principal, botones y presentación de la atención.',
@@ -36,8 +36,7 @@ class ContentSchema
                 ],
             ],
             'physician' => [
-                'label' => 'Perfil profesional', 'description' => 'Biografía y datos profesionales; publicación exclusiva del propietario.',
-                'owner_only' => true,
+                'label' => 'Perfil profesional', 'description' => 'Biografía, cédula y condiciones de los procedimientos.',
                 'shared' => ['physician' => $text('Nombre público del médico', 150), 'license' => $text('Cédula de licenciatura', 20)],
                 'translated' => [
                     'designation' => $text('Denominación pública autorizada'),
@@ -67,8 +66,8 @@ class ContentSchema
                 'shared' => [], 'translated' => ['title' => $text('Título SEO', 200), 'description' => $area('Descripción SEO', 500)],
             ],
             'legal' => [
-                'label' => 'Privacidad y avisos', 'description' => 'Aviso de privacidad revisado y mensaje de urgencias. Publica solo el propietario.',
-                'owner_only' => true, 'shared' => [],
+                'label' => 'Privacidad y avisos', 'description' => 'Aviso de privacidad y mensaje de urgencias. El aviso se guarda cuando está en ambos idiomas.',
+                'shared' => [],
                 'translated' => [
                     'disclaimer' => $area('Aviso de información general y urgencias', 1500),
                     'privacy_title' => $text('Título del aviso de privacidad'),

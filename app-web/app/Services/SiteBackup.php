@@ -12,7 +12,7 @@ use ZipArchive;
 
 class SiteBackup
 {
-    public const TABLES = ['users', 'service_categories', 'services', 'service_revisions', 'content_blocks', 'content_revisions', 'media_assets', 'content_revision_media', 'audit_events', 'review_requests'];
+    public const TABLES = ['users', 'service_categories', 'services', 'service_revisions', 'content_blocks', 'content_revisions', 'media_assets', 'content_revision_media', 'audit_events'];
 
     public function create(): BackupRun
     {

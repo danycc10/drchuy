@@ -2,10 +2,8 @@
 
 namespace App\Policies;
 
-use App\Enums\Role;
 use App\Models\ContentBlock;
 use App\Models\User;
-use App\Support\ContentSchema;
 
 class ContentBlockPolicy
 {
@@ -14,9 +12,9 @@ class ContentBlockPolicy
         return $user->is_active;
     }
 
+    // El consultorio lo administra una sola persona: publicar no requiere revisión ni un rol superior.
     public function publish(User $user, ContentBlock $block): bool
     {
-        return $user->is_active && ($user->role === Role::Owner ||
-            ($user->role === Role::Administrator && ! (ContentSchema::definitions()[$block->key]['owner_only'] ?? false)));
+        return $user->is_active;
     }
 }

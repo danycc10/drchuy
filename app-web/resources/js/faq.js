@@ -46,8 +46,8 @@ export function initFaq(document) {
         const row = button.closest('[data-faq-item]');
         if (button.hasAttribute('data-faq-remove')) {
             const confirmed = await confirmAction(document, {
-                title: 'Quitar pregunta', label: 'Quitar del borrador',
-                message: 'El cambio se aplicará al guardar el borrador. La versión pública se conserva hasta publicar.',
+                title: 'Quitar pregunta', label: 'Quitar pregunta',
+                message: 'El cambio se aplicará al pulsar Guardar y publicar. Hasta entonces el sitio no cambia.',
                 detail: row.querySelector('input:not([type])')?.value || row.querySelector('[data-faq-number]').textContent,
             }, button);
             if (!confirmed || !row.isConnected) return;

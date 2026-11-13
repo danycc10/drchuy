@@ -13,7 +13,7 @@ class ServiceOrderTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function test_reorder_saves_drafts_atomically_preserves_publication_and_rejects_stale_or_partial_lists(): void
+    public function test_reorder_publishes_positions_atomically_and_rejects_stale_or_partial_lists(): void
     {
         $this->withoutVite();
         $this->seed(ServiceCatalogSeeder::class);
@@ -23,7 +23,6 @@ class ServiceOrderTest extends TestCase
         $services = Service::where('service_category_id', $category)->get();
         foreach ($services as $service) { app(ServicePublisher::class)->publish($service, $service->current_revision_id, $owner); }
         $services = Service::where('service_category_id', $category)->get();
-        $public = $services->pluck('published_revision_id', 'id')->all();
         $data = ['category' => $category, 'order' => $services->pluck('id')->reverse()->values()->all(), 'revisions' => $services->pluck('current_revision_id', 'id')->all()];
         $this->get(route('admin.services.order', ['category' => $category]))->assertOk();
         $this->actingAs(User::factory()->create(['role' => Role::Editor]));
@@ -31,7 +30,8 @@ class ServiceOrderTest extends TestCase
         foreach ($data['order'] as $index => $id) {
             $service = Service::findOrFail($id);
             $this->assertSame($index + 1, $service->currentRevision->payload['position']);
-            $this->assertSame($public[$id], $service->published_revision_id);
+            $this->assertSame($service->current_revision_id, $service->published_revision_id);
+            $this->assertSame($index + 1, $service->publishedRevision->payload['position']);
         }
         $current = Service::where('service_category_id', $category)->pluck('current_revision_id', 'id')->all();
         $this->post(route('admin.services.reorder'), $data)->assertSessionHasErrors('order');

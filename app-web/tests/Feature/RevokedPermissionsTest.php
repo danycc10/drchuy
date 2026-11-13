@@ -4,7 +4,7 @@ namespace Tests\Feature;
 
 use App\Enums\Role;
 use App\Models\{ContentBlock, Service, User};
-use App\Services\{EditorialReview, MediaLibrary};
+use App\Services\MediaLibrary;
 use Database\Seeders\{ContentSeeder, ServiceCatalogSeeder};
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\UploadedFile;
@@ -15,24 +15,21 @@ class RevokedPermissionsTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function test_in_flight_editorial_writes_recheck_revoked_permissions_before_committing(): void
+    public function test_in_flight_editorial_writes_recheck_a_deactivated_account_before_committing(): void
     {
         $this->withoutVite();
         $this->seed([ServiceCatalogSeeder::class, ContentSeeder::class]);
         $owner = User::factory()->create(['role' => Role::Owner]);
         $service = Service::firstOrFail();
         $block = ContentBlock::where('key', 'home')->firstOrFail();
-        $review = app(EditorialReview::class)->submit($service, $service->current_revision_id, null, $owner);
         $this->actingAs($owner);
-        User::whereKey($owner->id)->update(['role' => Role::Editor->value, 'auth_version' => 1]);
+        User::whereKey($owner->id)->update(['is_active' => false, 'auth_version' => 1]);
         $this->post(route('admin.services.publish', $service), ['revision_id' => $service->current_revision_id])->assertForbidden();
         $this->post(route('admin.content.publish', $block), ['revision_id' => $block->current_revision_id])->assertForbidden();
-        $this->post(route('admin.reviews.decide', $review), ['decision' => 'publish'])->assertForbidden();
         $this->put(route('admin.services.update', $service), [...$service->currentRevision->payload, 'revision_id' => $service->current_revision_id])->assertForbidden();
         $this->put(route('admin.content.update', $block), ['payload' => $block->currentRevision->payload, 'revision_id' => $block->current_revision_id])->assertForbidden();
         $this->assertNull($service->fresh()->published_revision_id);
         $this->assertNull($block->fresh()->published_revision_id);
-        $this->assertSame('pending', $review->fresh()->status);
         $this->assertDatabaseCount('service_revisions', 14);
         $this->assertDatabaseCount('content_revisions', 9);
     }

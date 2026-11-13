@@ -29,15 +29,13 @@ class AuditEvent extends Model
     public function label(): string
     {
         return match ($this->action) {
-            'service.drafted' => 'Borrador guardado',
+            'service.drafted' => 'Servicio guardado',
             'service.published' => 'Versión publicada',
-            'service.restored' => 'Versión recuperada como borrador',
-            'content.drafted' => 'Contenido guardado como borrador',
+            'service.restored' => 'Versión de servicio restaurada',
+            'content.drafted' => 'Contenido guardado',
             'content.published' => 'Contenido publicado',
-            'content.restored' => 'Contenido recuperado como borrador',
+            'content.restored' => 'Versión de contenido restaurada',
             'user.created' => 'Cuenta creada',
-            'review.requested' => 'Revisión solicitada',
-            'review.changes_requested' => 'Correcciones solicitadas',
             'user.updated' => 'Cuenta actualizada',
             'user.setup_link' => 'Enlace de acceso generado',
             'security.enabled' => 'Verificación en dos pasos activada',

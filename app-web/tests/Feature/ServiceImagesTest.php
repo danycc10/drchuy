@@ -3,7 +3,7 @@
 namespace Tests\Feature;
 
 use App\Enums\Role;
-use App\Models\{MediaAsset, ReviewRequest, Service, User};
+use App\Models\{MediaAsset, Service, User};
 use App\Services\{MediaLibrary, ServicePublisher};
 use Database\Seeders\ServiceCatalogSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -64,24 +64,17 @@ class ServiceImagesTest extends TestCase
         $service->refresh();
     }
 
-    public function test_editor_selects_private_image_and_only_authorized_publication_exposes_it(): void
+    public function test_any_active_account_saves_an_image_and_the_site_shows_it_immediately(): void
     {
         $image = $this->image('Estudio respiratorio');
         $service = Service::where('source_id', 10)->firstOrFail();
-        $this->publish($service);
+        $this->get($image->url())->assertNotFound();
         $this->actingAs(User::factory()->create(['role' => Role::Editor]));
         $this->save($service, $image->id);
         $this->assertSame($image->id, $service->currentRevision->image_id);
+        $this->assertSame($service->current_revision_id, $service->published_revision_id);
         $this->get(route('admin.services.edit', $service))->assertOk()->assertSee('Imagen del servicio')->assertSee($image->url(true, 'thumb'));
-        $this->get('/')->assertDontSee($image->url());
-        $this->get($image->url())->assertNotFound();
-        $this->get('/admin/preview/es')->assertOk()->assertSee($image->url(true));
         $this->get('/admin/preview/en')->assertOk()->assertSee($image->url(true));
-        $this->post(route('admin.services.publish', $service), ['revision_id' => $service->current_revision_id])->assertForbidden();
-        $this->actingAs(User::factory()->create(['role' => Role::Administrator]));
-        $this->post(route('admin.services.publish', $service), ['revision_id' => $service->current_revision_id])->assertForbidden();
-        $this->actingAs($this->owner);
-        $this->publish($service);
         auth()->logout();
         $this->get($image->url())->assertOk()->assertHeader('Content-Type', 'image/webp');
         $this->get('/')->assertSee($image->url());
@@ -96,20 +89,18 @@ class ServiceImagesTest extends TestCase
         $initial = $service->current_revision_id;
         $this->save($service, $first->id);
         $withFirst = $service->current_revision_id;
-        $this->publish($service);
-        $this->save($service, $second->id);
         $this->get('/')->assertSee($first->url())->assertDontSee($second->url());
         $this->get($second->url())->assertNotFound();
-        $this->publish($service);
+        $this->save($service, $second->id);
+        $this->get('/')->assertSee($second->url())->assertDontSee($first->url());
         $this->get($first->url())->assertNotFound();
         $this->save($service, null);
-        $this->publish($service);
         $this->get('/')->assertDontSee($second->url())->assertSee('images/services/consultation-640.webp');
         $this->post(route('admin.services.restore', [$service, $withFirst]), ['revision_id' => $service->current_revision_id])->assertSessionHasNoErrors();
         $service->refresh();
         $this->assertSame($first->id, $service->currentRevision->image_id);
+        $this->assertSame($service->current_revision_id, $service->published_revision_id);
         $this->get(route('admin.services.revision', [$service, $withFirst]))->assertOk()->assertSee($first->url(true))->assertSee($first->title);
-        $this->publish($service);
         $this->get('/')->assertSee($first->url());
         $this->get('/admin/media?usage=used')->assertSee($first->title)->assertSee($second->title);
         $this->get('/admin/media?usage=unused')->assertDontSee($first->title)->assertDontSee($second->title);
@@ -120,17 +111,12 @@ class ServiceImagesTest extends TestCase
         Storage::disk('local')->assertExists([$first->path(), $second->path()]);
     }
 
-    public function test_image_only_change_is_reviewable_and_omitted_field_preserves_current_selection(): void
+    public function test_image_only_change_is_published_and_omitted_field_preserves_current_selection(): void
     {
         $image = $this->image('Imagen propuesta');
         $service = Service::firstOrFail();
-        $this->publish($service);
         $this->save($service, $image->id);
-        $this->post('/admin/reviews', ['type' => 'service', 'target_id' => $service->id, 'revision_id' => $service->current_revision_id])->assertSessionHasNoErrors();
-        $review = ReviewRequest::firstOrFail();
-        $this->get(route('admin.reviews.show', $review))->assertOk()->assertSee('Imagen del servicio')->assertSee($image->title)->assertSee('Ilustración original de la categoría');
-        $this->post(route('admin.reviews.decide', $review), ['decision' => 'publish'])->assertSessionHasNoErrors();
-        $service->refresh();
+        $this->get('/')->assertSee($image->url());
         $this->put(route('admin.services.update', $service), [...$service->currentRevision->payload, 'revision_id' => $service->current_revision_id])->assertSessionHasNoErrors();
         $service->refresh();
         $this->assertSame($image->id, $service->currentRevision->image_id);

@@ -40,9 +40,9 @@ class ContentController extends Controller
         if ($block->key === 'faq') {
             $data['payload']['items'] ??= [];
         }
-        $publisher->draft($block, $data['payload'], (int) $data['revision_id'], $request->user());
+        $publisher->save($block, $data['payload'], (int) $data['revision_id'], $request->user());
 
-        return to_route('admin.content.edit', $block)->with('status', 'Borrador guardado. Revísalo antes de publicar.');
+        return to_route('admin.content.edit', $block)->with('status', 'Cambios guardados. El sitio ya muestra esta información.');
     }
 
     public function publish(Request $request, ContentBlock $block, ContentPublisher $publisher)
@@ -64,8 +64,8 @@ class ContentController extends Controller
     public function restore(Request $request, ContentBlock $block, ContentRevision $revision, ContentPublisher $publisher)
     {
         $data = $request->validate(['revision_id' => 'required|integer|min:1']);
-        $publisher->draft($block, [], (int) $data['revision_id'], $request->user(), $revision);
+        $publisher->save($block, [], (int) $data['revision_id'], $request->user(), $revision);
 
-        return to_route('admin.content.edit', $block)->with('status', 'Versión recuperada como un nuevo borrador.');
+        return to_route('admin.content.edit', $block)->with('status', 'Versión restaurada. El sitio ya la muestra.');
     }
 }

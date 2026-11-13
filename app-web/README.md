@@ -8,7 +8,7 @@ Requisitos: PHP 8.3 compatible con las dependencias, GD con WebP, EXIF, XMLWrite
 
 1. Ejecutar `composer install` en esta carpeta.
 2. Copiar `.env.example` a `.env`, configurar una base exclusiva y ejecutar `php artisan key:generate`.
-3. Ejecutar `php artisan migrate --seed`. La importación crea 14 servicios como borradores; no crea usuarios ni sobrescribe contenido existente.
+3. Ejecutar `php artisan migrate --seed`. La importación crea 14 servicios pendientes de publicar; no crea usuarios ni sobrescribe contenido existente.
 4. Ejecutar `npm ci` y `npm run build`. En PowerShell con restricción de scripts, usar `npm.cmd`.
 5. Ejecutar `php artisan serve --host=127.0.0.1 --port=8085`, o configurar Laragon con raíz en `app-web/public`.
 6. Crear una cuenta con `php artisan app:create-admin` en otra terminal. Elegir el rol `owner` para el titular. No se crean cuentas predeterminadas.
@@ -27,8 +27,8 @@ Las fotografías nuevas se gestionan desde **Imágenes** en el panel. Se almacen
 
 El propietario administra el equipo en **Usuarios**. Cada cuenta activa la verificación TOTP desde **Mi seguridad**, con QR local y códigos de recuperación. La migración de seguridad agrega los campos sin activar 2FA automáticamente ni cambiar contraseñas existentes. Conservar `APP_KEY`: protege las claves de autenticación cifradas.
 
-Consultar `docs/PANEL.md` y `docs/HOSTGATOR.md`. La base de datos local no contiene cuentas predeterminadas. Los servicios se revisan desde la vista previa privada y se publican explícitamente desde el panel.
+Consultar `docs/PANEL.md` y `docs/HOSTGATOR.md`. La base de datos local no contiene cuentas predeterminadas. El panel publica en un solo paso: **Guardar y publicar** actualiza el sitio al instante y cada versión queda en el historial para restaurarla.
 
-La bandeja **Revisiones** compara versiones y permite solicitar correcciones o publicar con los permisos existentes. **Mantenimiento** muestra respaldos y exporta contenido. Consultar `docs/RESPALDOS.md` antes de activar la programación o preparar una restauración. `php artisan app:launch-check` informa los pendientes verificables de lanzamiento sin modificar el sitio.
+**Mantenimiento** muestra respaldos y exporta contenido. Consultar `docs/RESPALDOS.md` antes de activar la programación o preparar una restauración. `php artisan app:launch-check` informa los pendientes verificables de lanzamiento sin modificar el sitio.
 
 El proyecto se encuentra en desarrollo. Consultar el estado de implementación antes de preparar una publicación.

@@ -12,7 +12,7 @@ class ServiceVisitDetailsTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function test_visit_details_are_optional_translated_private_until_published_and_escaped(): void
+    public function test_visit_details_are_optional_translated_published_on_save_and_escaped(): void
     {
         $this->withoutVite();
         $this->seed(ServiceCatalogSeeder::class);
@@ -22,19 +22,17 @@ class ServiceVisitDetailsTest extends TestCase
         $payload = $service->currentRevision->payload;
         $payload['es']['preparation'] = 'Indicaciones <script>alert(1)</script>';
         $this->put(route('admin.services.update', $service), [...$payload, 'revision_id' => $service->current_revision_id])->assertSessionHasErrors('en.preparation');
+        $this->assertNull($service->fresh()->published_revision_id);
         $payload['en']['preparation'] = 'Instructions confirmed by the physician';
         $payload['es']['bring'] = 'Documento confirmado por el médico';
         $payload['en']['bring'] = 'Document confirmed by the physician';
         $this->put(route('admin.services.update', $service), [...$payload, 'revision_id' => $service->current_revision_id])->assertSessionHasNoErrors();
         $service->refresh();
-        $this->get('/')->assertDontSee($payload['es']['preparation']);
-        $this->get('/admin/preview/es')->assertSee($payload['es']['preparation'])->assertDontSee('<script>alert(1)</script>', false)->assertDontSee('<dt>Duración aproximada</dt>', false);
-        $this->get('/admin/preview/en')->assertSee($payload['en']['preparation']);
-        $this->post(route('admin.services.publish', $service), ['revision_id' => $service->current_revision_id])->assertSessionHasNoErrors();
-        $this->get('/')->assertSee($payload['es']['preparation']);
+        $this->withSession(['public_locale' => 'es'])->get('/')->assertSee('Indicaciones')->assertSee($payload['es']['bring'])->assertDontSee('<script>alert(1)</script>', false)->assertDontSee('<dt>Duración aproximada</dt>', false);
+        $this->withSession(['public_locale' => 'en'])->get('/')->assertSee($payload['en']['preparation']);
         $payload['es']['preparation'] = null;
         $payload['en']['preparation'] = null;
         $this->put(route('admin.services.update', $service), [...$payload, 'revision_id' => $service->current_revision_id])->assertSessionHasNoErrors();
-        $this->get('/admin/preview/es')->assertDontSee('<dt>Preparación previa</dt>', false);
+        $this->withSession(['public_locale' => 'es'])->get('/')->assertDontSee('<dt>Preparación previa</dt>', false)->assertSee($payload['es']['bring']);
     }
 }

@@ -33,7 +33,7 @@ class AdminAuthenticationTest extends TestCase
         $user = User::factory()->create(['role' => Role::Owner]);
         $this->post('/admin/login', ['email' => $user->email, 'password' => 'password'])->assertRedirect('/admin');
         $this->assertAuthenticatedAs($user);
-        $this->get('/admin')->assertOk()->assertSee('Borradores por revisar');
+        $this->get('/admin')->assertOk()->assertSee('Sin publicar');
         $this->post('/admin/logout')->assertRedirect('/admin/login');
         $this->assertGuest();
     }

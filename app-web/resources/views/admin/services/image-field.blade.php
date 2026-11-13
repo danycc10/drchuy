@@ -26,7 +26,7 @@
     <div data-inline-upload hidden>
         <label for="service-upload-title">Nombre de la nueva imagen<input id="service-upload-title" type="text" maxlength="150" data-upload-title placeholder="Ej. Equipo para espirometría"></label>
         <label for="service-upload-file">Archivo JPG, PNG o WebP<input id="service-upload-file" type="file" accept="image/jpeg,image/png,image/webp" data-upload-file></label>
-        <p class="field-help">Hasta 8 MB. Subir guarda la imagen en la biblioteca; todavía debes guardar el borrador para asignarla al servicio.</p>
+        <p class="field-help">Hasta 8 MB. Subir guarda la imagen en la biblioteca; todavía debes pulsar Guardar y publicar para asignarla al servicio.</p>
         <button type="button" class="button secondary" data-inline-upload-button><x-site-icon name="image" /> <span data-inline-upload-label>Subir y seleccionar</span></button>
         <progress class="upload-progress" data-upload-progress max="100" aria-label="Progreso de carga" hidden></progress>
         <p class="field-help" data-upload-status role="status" aria-live="polite" tabindex="-1"></p>
@@ -39,5 +39,5 @@
         @endforeach
         <p class="field-help">Mueve el encuadre para mantener el motivo visible. El ajuste depende de las proporciones de la foto y conserva el archivo original. Solo se aplica a imágenes de la biblioteca.</p>
     </fieldset>
-    <p class="field-help">Guarda el borrador y revisa la vista previa antes de publicar.</p>
+    <p class="field-help">Al guardar, la tarjeta del sitio usa esta imagen y su encuadre.</p>
 </section>

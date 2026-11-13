@@ -7,7 +7,6 @@ use App\Http\Controllers\Admin\ContentController;
 use App\Http\Controllers\Admin\MediaController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\TwoFactorController;
-use App\Http\Controllers\Admin\ReviewController;
 use App\Http\Controllers\Admin\MaintenanceController;
 use App\Models\AuditEvent;
 use App\Http\Controllers\PublicSiteController;
@@ -28,10 +27,6 @@ Route::prefix('admin')->middleware('admin.headers')->group(function () {
     Route::middleware(['auth', 'admin.active'])->group(function () {
         Route::get('/maintenance', [MaintenanceController::class, 'index'])->name('admin.maintenance');
         Route::get('/maintenance/export', [MaintenanceController::class, 'export'])->middleware('throttle:3,1,export:')->name('admin.maintenance.export');
-        Route::get('/reviews', [ReviewController::class, 'index'])->name('admin.reviews.index');
-        Route::post('/reviews', [ReviewController::class, 'store'])->middleware('throttle:20,1,reviews:')->name('admin.reviews.store');
-        Route::get('/reviews/{review}', [ReviewController::class, 'show'])->name('admin.reviews.show');
-        Route::post('/reviews/{review}', [ReviewController::class, 'decide'])->middleware('throttle:20,1,reviews:')->name('admin.reviews.decide');
         Route::get('/users', [UserController::class, 'index'])->name('admin.users.index');
         Route::get('/users/create', [UserController::class, 'create'])->name('admin.users.create');
         Route::post('/users', [UserController::class, 'store'])->middleware('throttle:10,1,user-management:')->name('admin.users.store');
@@ -63,8 +58,6 @@ Route::prefix('admin')->middleware('admin.headers')->group(function () {
         Route::get('/content/{block}/revisions/{revision}', [ContentController::class, 'revision'])->name('admin.content.revision');
         Route::post('/content/{block}/revisions/{revision}/restore', [ContentController::class, 'restore'])->name('admin.content.restore');
         Route::get('/services/{service}/edit', [ServiceController::class, 'edit'])->name('admin.services.edit');
-        Route::get('/services/{service}/compare', [\App\Http\Controllers\Admin\ComparisonController::class, 'service'])->name('admin.services.compare');
-        Route::get('/content/{block}/compare', [\App\Http\Controllers\Admin\ComparisonController::class, 'content'])->name('admin.content.compare');
         Route::put('/services/{service}', [ServiceController::class, 'update'])->name('admin.services.update');
         Route::post('/services/{service}/publish', [ServiceController::class, 'publish'])->name('admin.services.publish');
         Route::get('/services/{service}/revisions/{revision}', [ServiceController::class, 'revision'])->name('admin.services.revision');

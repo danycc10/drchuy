@@ -1,6 +1,6 @@
 <article class="visit-card" data-visit-card aria-labelledby="visit-card-title">
     <div class="visit-card-heading"><span class="visit-card-icon"><x-site-icon name="building" /></span><div><p class="eyebrow" id="visit-card-title">{{ $locale === 'es' ? 'Para tu visita' : 'Plan your visit' }}</p><p class="visit-physician">{{ $clinic['physician'] }}</p></div></div>
-    @if($preview)<p class="visit-preview-note">Vista previa privada · datos del borrador</p>@endif
+    @if($preview)<p class="visit-preview-note">Vista previa privada · última versión guardada</p>@endif
     <div class="visit-card-details">
         <div>
             <h3><x-site-icon name="pin" /> {{ $copy['address_label'] }}</h3>

@@ -3,10 +3,6 @@ export function initEditor(document) {
     const editor = document.querySelector('[data-editor]');
     const tabs = [...document.querySelectorAll('[data-language-tabs] [role=tab]')];
     const panels = [...document.querySelectorAll('[data-language-panel]')];
-    document.querySelector('a[href="#editor-workflow"]')?.addEventListener('click', () => {
-        const workflow = document.getElementById('editor-workflow');
-        if (workflow) { workflow.open = true; workflow.querySelector('summary').focus(); }
-    });
 
     function selectTab(tab, focus = false) {
         tabs.forEach((item) => {
@@ -90,9 +86,11 @@ export function initEditor(document) {
     const snapshot = () => JSON.stringify([...new window.FormData(editor).entries()]);
     const initial = editor ? snapshot() : null;
     const recovered = editor?.dataset.recoveredInput === 'true';
+    // A saved version that is not on the site yet: saving again publishes it even without edits.
+    const pending = editor?.dataset.pendingPublish === 'true';
     const saveButton = document.querySelector('[data-save-button]');
     const saveLabel = saveButton?.querySelector('[data-save-label]') ?? saveButton;
-    const idleSaveLabel = saveLabel?.textContent ?? 'Guardar borrador';
+    const idleSaveLabel = saveLabel?.textContent ?? 'Guardar y publicar';
     const publishButtons = [...document.querySelectorAll('[data-publish-button]')].map((button) => ({ button, disabled: button.disabled }));
     let dirty = false;
     let submitting = false;
@@ -100,11 +98,11 @@ export function initEditor(document) {
     function updateState() {
         if (!editor || submitting) return;
         dirty = recovered || snapshot() !== initial;
-        if (saveButton) saveButton.disabled = !dirty;
+        if (saveButton) saveButton.disabled = !dirty && !pending;
         const status = document.querySelector('[data-save-state]');
         if (status) {
-            status.textContent = dirty ? 'Cambios sin guardar' : 'Todos los cambios guardados';
-            status.classList.toggle('unsaved', dirty);
+            status.textContent = dirty ? 'Cambios sin guardar' : (pending ? 'Versión guardada, pendiente de publicar' : 'Todos los cambios guardados');
+            status.classList.toggle('unsaved', dirty || pending);
         }
         document.querySelectorAll('[data-dirty-note]').forEach((note) => { note.hidden = !dirty; });
         publishButtons.forEach(({ button, disabled }) => { button.disabled = disabled || dirty; });

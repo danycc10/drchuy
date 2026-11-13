@@ -89,12 +89,12 @@ class ServiceController extends Controller
                 $payload = $service->currentRevision->payload;
                 if ((int) $payload['position'] !== $index + 1) {
                     $payload['position'] = $index + 1;
-                    $publisher->draft($service, $payload, $service->current_revision_id, $request->user());
+                    $publisher->save($service, $payload, $service->current_revision_id, $request->user());
                 }
             }
         });
 
-        return to_route('admin.services.order', ['category' => $data['category']])->with('status', 'Orden guardado en los borradores. Revisa y publica los servicios modificados para actualizar el catálogo público.');
+        return to_route('admin.services.order', ['category' => $data['category']])->with('status', 'Orden guardado. El catálogo del sitio ya muestra este orden.');
     }
 
     public function update(SaveServiceRequest $request, Service $service, ServicePublisher $publisher)
@@ -103,9 +103,9 @@ class ServiceController extends Controller
         $payload = ['es' => $data['es'], 'en' => $data['en'], 'visible' => $request->boolean('visible'), 'position' => (int) $data['position']];
         if (array_key_exists('image_id', $data)) { $payload['image_id'] = $data['image_id']; }
         if (isset($data['image_position'])) { $payload['image_position'] = array_map('intval', $data['image_position']); }
-        $publisher->draft($service, $payload, (int) $data['revision_id'], $request->user());
+        $publisher->save($service, $payload, (int) $data['revision_id'], $request->user());
 
-        return to_route('admin.services.edit', $service)->with('status', 'Borrador guardado. La versión pública sigue igual hasta que se publique este cambio.');
+        return to_route('admin.services.edit', $service)->with('status', 'Cambios guardados. El sitio ya muestra esta versión en ambos idiomas.');
     }
 
     public function publish(Request $request, Service $service, ServicePublisher $publisher)
@@ -113,7 +113,7 @@ class ServiceController extends Controller
         $data = $request->validate(['revision_id' => 'required|integer|min:1']);
         $publisher->publish($service, (int) $data['revision_id'], $request->user());
 
-        return to_route('admin.services.edit', $service)->with('status', 'Versión publicada. El sitio ya utiliza este contenido y su visibilidad seleccionada.');
+        return to_route('admin.services.edit', $service)->with('status', 'Versión publicada. El sitio ya muestra este contenido.');
     }
 
     public function revision(Service $service, ServiceRevision $revision)
@@ -127,8 +127,8 @@ class ServiceController extends Controller
     public function restore(Request $request, Service $service, ServiceRevision $revision, ServicePublisher $publisher)
     {
         $data = $request->validate(['revision_id' => 'required|integer|min:1']);
-        $publisher->draft($service, [], (int) $data['revision_id'], $request->user(), $revision);
+        $publisher->save($service, [], (int) $data['revision_id'], $request->user(), $revision);
 
-        return to_route('admin.services.edit', $service)->with('status', 'Versión recuperada como un nuevo borrador. Revísala antes de publicar.');
+        return to_route('admin.services.edit', $service)->with('status', 'Versión restaurada. El sitio ya la muestra.');
     }
 }

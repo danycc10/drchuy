@@ -13,6 +13,16 @@ use Illuminate\Validation\ValidationException;
 
 class ServicePublisher
 {
+    /** Guarda la versión y la publica en el mismo paso: el sitio cambia al instante. */
+    public function save(Service $service, array $payload, int $expectedRevision, User $user, ?ServiceRevision $restored = null): void
+    {
+        DB::transaction(function () use ($service, $payload, $expectedRevision, $user, $restored) {
+            $this->draft($service, $payload, $expectedRevision, $user, $restored);
+            $fresh = $service->fresh();
+            $this->publish($fresh, $fresh->current_revision_id, $user);
+        });
+    }
+
     public function draft(Service $service, array $payload, int $expectedRevision, User $user, ?ServiceRevision $restored = null): void
     {
         Gate::forUser($user)->authorize('update', $service);
@@ -45,7 +55,6 @@ class ServicePublisher
             $revision = $locked->revisions()->create(['payload' => $payload, 'image_id' => $imageId, 'created_by' => $user->id]);
             $locked->current_revision_id = $revision->id;
             $locked->save();
-            EditorialReview::onDraft($locked);
             AuditEvent::create([
                 'user_id' => $user->id, 'service_id' => $locked->id,
                 'action' => $restored ? 'service.restored' : 'service.drafted',
@@ -78,7 +87,6 @@ class ServicePublisher
             $locked->published_revision_id = $locked->current_revision_id;
             $locked->published_at = now();
             $locked->save();
-            EditorialReview::onPublish($locked, $user);
             AuditEvent::create([
                 'user_id' => $user->id, 'service_id' => $locked->id, 'action' => 'service.published',
                 'metadata' => ['revision_id' => $locked->published_revision_id],

@@ -85,7 +85,7 @@ export function initServiceImage(document) {
             section.dispatchEvent(new window.Event('image:uploaded'));
             file.value = '';
             title.value = '';
-            status.textContent = 'Imagen seleccionada. Ajusta el encuadre y guarda el borrador.';
+            status.textContent = 'Imagen seleccionada. Ajusta el encuadre y pulsa Guardar y publicar.';
             buttonLabel.textContent = 'Subir otra imagen';
         } catch (error) {
             status.textContent = error.name === 'AbortError' ? 'Carga interrumpida. Revisa la biblioteca antes de volver a subir.' : error.message;

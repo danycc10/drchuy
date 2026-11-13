@@ -23,6 +23,6 @@
                 <form class="panel stack-form" method="post" action="{{ route('admin.users.setup-link', $account) }}">@csrf<h2>Configurar o recuperar contraseña</h2><p class="muted small">Genera un enlace privado para que esta persona elija su contraseña. La verificación en dos pasos, si está activada, seguirá siendo necesaria.</p><label>Tu contraseña actual<input type="password" name="current_password" required autocomplete="current-password" maxlength="255"></label><button class="button secondary"><x-site-icon name="lock" /> Generar enlace privado</button></form>
             @endif
         </div>
-        <aside class="editor-aside"><section class="panel"><h2>Permisos de cada rol</h2><dl class="revision-fields"><dt>Editor</dt><dd>Prepara borradores y consulta vistas previas.</dd><dt>Administrador</dt><dd>También publica contenido general. Los procedimientos, el perfil, las fotografías y los avisos legales requieren al propietario.</dd><dt>Propietario</dt><dd>Publica todo el contenido y administra las cuentas del equipo.</dd></dl></section></aside>
+        <aside class="editor-aside"><section class="panel"><h2>Permisos de cada rol</h2><dl class="revision-fields"><dt>Editor y Administrador</dt><dd>Editan y publican todo el contenido del sitio en un solo paso.</dd><dt>Propietario</dt><dd>Además administra las cuentas y el módulo de Mantenimiento. Crear cuentas solo para personas de confianza.</dd></dl></section></aside>
     </div>
 </x-admin-layout>

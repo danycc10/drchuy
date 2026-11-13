@@ -1,5 +1,5 @@
 <section class="panel dashboard-tasks" aria-labelledby="tasks-heading">
-    <div class="section-heading"><div><span class="eyebrow">QUÉ HACER AHORA</span><h2 id="tasks-heading">Tus próximos pasos</h2></div><a class="small-link" href="{{ route('admin.reviews.index') }}"><x-site-icon name="document" /> Todas las revisiones</a></div>
+    <div class="section-heading"><div><span class="eyebrow">QUÉ HACER AHORA</span><h2 id="tasks-heading">Tus próximos pasos</h2></div></div>
     @foreach($tasks['groups'] as $group)
         @if($group['items']->isNotEmpty())
             <div class="task-group"><h3>{{ $group['title'] }} <span class="badge">{{ $group['items']->count() }}</span></h3><p class="muted small">{{ $group['description'] }}</p>
@@ -8,6 +8,5 @@
             </div>
         @endif
     @endforeach
-    @if(collect($tasks['groups'])->every(fn ($group) => $group['items']->isEmpty()))<p class="empty-state">No tienes correcciones, solicitudes para resolver ni borradores por preparar.</p>@endif
-    @if($tasks['waiting'])<p class="notice task-waiting">{{ $tasks['waiting'] }} solicitudes esperan a una cuenta con permisos de publicación. Puedes consultar su estado en Revisiones.</p>@endif
+    @if(collect($tasks['groups'])->every(fn ($group) => $group['items']->isEmpty()))<p class="empty-state">Todo lo guardado ya se muestra en el sitio. Cuando necesites cambiar algo, ábrelo, edítalo y pulsa Guardar y publicar.</p>@endif
 </section>

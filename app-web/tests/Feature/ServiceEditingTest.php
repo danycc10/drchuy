@@ -4,6 +4,7 @@ namespace Tests\Feature;
 
 use App\Enums\Role;
 use App\Models\Service;
+use App\Models\ServiceRevision;
 use App\Models\User;
 use Database\Seeders\ServiceCatalogSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -25,37 +26,54 @@ class ServiceEditingTest extends TestCase
         return User::factory()->create(['role' => $role]);
     }
 
-    public function test_editor_can_save_but_cannot_publish_even_by_direct_request(): void
+    public function test_saving_publishes_immediately_for_any_active_account(): void
     {
         $this->actingAs($this->actor(Role::Editor));
         $service = Service::firstOrFail();
         $payload = $service->currentRevision->payload;
-        $payload['es']['description'] = 'Texto actualizado para revisión.';
+        $payload['es']['description'] = 'Texto actualizado al instante.';
         $this->put(route('admin.services.update', $service), [...$payload, 'revision_id' => $service->current_revision_id])->assertSessionHasNoErrors()->assertRedirect();
         $service->refresh();
-        $this->assertNull($service->published_revision_id);
-        $this->assertSame($payload['es']['description'], $service->currentRevision->payload['es']['description']);
-        $this->post(route('admin.services.publish', $service), ['revision_id' => $service->current_revision_id])->assertForbidden();
+        $this->assertSame($service->current_revision_id, $service->published_revision_id);
+        $this->assertSame($payload['es']['description'], $service->publishedRevision->payload['es']['description']);
+        $this->withSession(['public_locale' => 'es'])->get('/')->assertOk()->assertSee('Texto actualizado al instante.');
+        $this->assertDatabaseHas('audit_events', ['action' => 'service.published', 'service_id' => $service->id]);
+        $this->get(route('admin.services.edit', $service))->assertOk()->assertSee('Guardar y publicar')->assertSee('En el sitio')
+            ->assertSee('data-pending-publish="false"', false)->assertDontSee('Publicar ahora')->assertDontSee('Solicitar revisión')->assertDontSee('Revisiones');
     }
 
-    public function test_publication_remains_stable_while_drafts_and_restores_are_created(): void
+    public function test_pending_initial_versions_are_listed_and_can_be_published_as_they_are(): void
+    {
+        $this->actingAs($this->actor());
+        $service = Service::firstOrFail();
+        $this->get(route('admin.services.edit', $service))->assertOk()->assertSee('data-pending-publish="true"', false)->assertSee('Publicar ahora')->assertSee('Sin publicar');
+        $this->get('/admin')->assertOk()->assertSee('Pendiente de publicar')->assertSee('Abrir y publicar')->assertSee('Sin publicar');
+        $this->post(route('admin.services.publish', $service), ['revision_id' => $service->current_revision_id])->assertSessionHasNoErrors();
+        $service->refresh();
+        $this->assertSame($service->current_revision_id, $service->published_revision_id);
+        $this->get(route('admin.services.edit', $service))->assertOk()->assertSee('data-pending-publish="false"', false)->assertDontSee('Publicar ahora');
+    }
+
+    public function test_restore_publishes_the_restored_version_and_keeps_history(): void
     {
         $this->actingAs($this->actor());
         $service = Service::firstOrFail();
         $initial = $service->current_revision_id;
-        $this->post(route('admin.services.publish', $service), ['revision_id' => $initial])->assertSessionHasNoErrors();
         $payload = $service->currentRevision->payload;
         $payload['es']['name'] = 'Nombre nuevo';
         $this->put(route('admin.services.update', $service), [...$payload, 'revision_id' => $initial])->assertSessionHasNoErrors();
         $service->refresh();
-        $this->assertSame($initial, $service->published_revision_id);
-        $this->assertNotSame($initial, $service->current_revision_id);
-        $this->post(route('admin.services.restore', [$service, $initial]), ['revision_id' => $service->current_revision_id])->assertSessionHasNoErrors();
+        $renamed = $service->current_revision_id;
+        $this->assertSame($renamed, $service->published_revision_id);
+        $this->withSession(['public_locale' => 'es'])->get('/')->assertSee('Nombre nuevo');
+        $this->post(route('admin.services.restore', [$service, $initial]), ['revision_id' => $renamed])->assertSessionHasNoErrors();
         $service->refresh();
-        $this->assertSame($initial, $service->published_revision_id);
-        $this->assertNotSame($initial, $service->current_revision_id);
-        $this->assertSame($service->publishedRevision->payload, $service->currentRevision->payload);
+        $this->assertNotContains($service->current_revision_id, [$initial, $renamed]);
+        $this->assertSame($service->current_revision_id, $service->published_revision_id);
+        $this->assertSame(ServiceRevision::findOrFail($initial)->payload, $service->publishedRevision->payload);
+        $this->withSession(['public_locale' => 'es'])->get('/')->assertDontSee('Nombre nuevo');
         $this->assertDatabaseHas('audit_events', ['action' => 'service.restored', 'service_id' => $service->id]);
+        $this->assertDatabaseCount('service_revisions', 16);
     }
 
     public function test_stale_edits_and_stale_publication_are_rejected(): void
@@ -69,11 +87,12 @@ class ServiceEditingTest extends TestCase
         $this->assertDatabaseCount('service_revisions', 15);
     }
 
-    public function test_only_owner_can_publish_procedures_and_revisions_are_scoped(): void
+    public function test_administrators_publish_procedures_and_revisions_are_scoped(): void
     {
         $this->actingAs($this->actor(Role::Administrator));
         $service = Service::where('source_id', 10)->firstOrFail();
-        $this->post(route('admin.services.publish', $service), ['revision_id' => $service->current_revision_id])->assertForbidden();
+        $this->post(route('admin.services.publish', $service), ['revision_id' => $service->current_revision_id])->assertSessionHasNoErrors();
+        $this->assertSame($service->current_revision_id, $service->fresh()->published_revision_id);
         $other = Service::where('source_id', 1)->firstOrFail();
         $this->get(route('admin.services.revision', [$service, $other->current_revision_id]))->assertNotFound();
         $this->post(route('admin.services.restore', [$service, $other->current_revision_id]), ['revision_id' => $service->current_revision_id])->assertNotFound();
@@ -87,11 +106,14 @@ class ServiceEditingTest extends TestCase
         $data = [...$service->currentRevision->payload, 'revision_id' => $service->current_revision_id];
         $data['en']['description'] = '';
         $this->put(route('admin.services.update', $service), $data)->assertSessionHasErrors('en.description');
+        $this->assertNull($service->fresh()->published_revision_id);
         $data['en']['description'] = '<script>alert(1)</script>';
         $this->put(route('admin.services.update', $service), $data)->assertSessionHasNoErrors();
         $this->get(route('admin.services.edit', $service))->assertOk()->assertDontSee('<script>alert(1)</script>', false)->assertSee('&lt;script&gt;alert(1)&lt;/script&gt;', false);
+        $this->withSession(['public_locale' => 'en'])->get('/')->assertDontSee('<script>alert(1)</script>', false);
         $this->get(route('admin.services.index', ['q' => 'asma']))->assertOk()->assertSee('Atención del asma');
-        $this->get(route('admin.services.index', ['status' => 'published']))->assertOk()->assertSee('No encontramos');
+        $this->get(route('admin.services.index', ['status' => 'published']))->assertOk()->assertSee($data['es']['name']);
+        $this->get(route('admin.services.index', ['status' => 'draft']))->assertOk()->assertDontSee($data['es']['name']);
         $this->get(route('admin.activity'))->assertOk();
     }
 }

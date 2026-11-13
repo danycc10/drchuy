@@ -2,7 +2,6 @@
 
 namespace App\Policies;
 
-use App\Enums\Role;
 use App\Models\Service;
 use App\Models\User;
 
@@ -13,9 +12,9 @@ class ServicePolicy
         return $user->is_active;
     }
 
+    // El consultorio lo administra una sola persona: publicar no requiere revisión ni un rol superior.
     public function publish(User $user, Service $service): bool
     {
-        return $user->is_active && ($user->role === Role::Owner ||
-            ($user->role === Role::Administrator && $service->category->slug !== 'procedures'));
+        return $user->is_active;
     }
 }

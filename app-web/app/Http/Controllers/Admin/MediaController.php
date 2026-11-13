@@ -66,7 +66,7 @@ class MediaController extends Controller
             return response()->json(['id' => $asset->id, 'title' => $asset->title, 'url' => $asset->url(true), 'thumb' => $asset->url(true, 'thumb')], 201);
         }
 
-        return to_route('admin.media.index')->with('status', 'Imagen guardada en la biblioteca. Puedes seleccionarla al editar un servicio o en «Fotografías del sitio». Guarda el borrador y publica cuando esté listo.');
+        return to_route('admin.media.index')->with('status', 'Imagen guardada en la biblioteca. Puedes seleccionarla al editar un servicio o en «Fotografías del sitio». Al guardar ese editor, el sitio mostrará la imagen.');
     }
 
     public function image(MediaAsset $media, string $variant)

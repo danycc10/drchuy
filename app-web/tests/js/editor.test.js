@@ -13,10 +13,10 @@ test('security errors reveal and focus the submitted form when fields share name
     assert.equal(window.document.activeElement.id, 'submitted-code');
 });
 
-function setup({ recovered = false, published = false, errors = '' } = {}) {
+function setup({ recovered = false, published = false, pending = false, errors = '' } = {}) {
     const dom = new JSDOM(`<!doctype html><body>${errors}
-        <p data-save-state role="status"></p><button data-save-button form="editor"><svg aria-hidden="true"></svg><span data-save-label>Guardar borrador</span></button>
-        <form id="editor" data-editor data-recovered-input="${recovered}">
+        <p data-save-state role="status"></p><button data-save-button form="editor"><svg aria-hidden="true"></svg><span data-save-label>Guardar y publicar</span></button>
+        <form id="editor" data-editor data-recovered-input="${recovered}" data-pending-publish="${pending}">
             <div data-language-tabs hidden><button type="button" id="tab-es" role="tab" aria-controls="language-es">Español</button><button type="button" id="tab-en" role="tab" aria-controls="language-en">Inglés</button></div>
             <section id="language-es" data-language-panel><label>Nombre<input id="name-es" name="payload[es][name]" value="Consulta" required></label></section>
             <section id="language-en" data-language-panel><label>Description<textarea id="description-en" name="payload[en][description]" maxlength="100" required>Consultation</textarea></label></section>
@@ -66,6 +66,20 @@ test('recovered validation input stays unsaved and an already published version 
     assert.equal(find('[data-publish-button]').disabled, true);
 });
 
+test('a saved version that is not on the site yet keeps saving enabled without blocking navigation', () => {
+    const { window, find } = setup({ pending: true });
+    assert.equal(find('[data-save-button]').disabled, false);
+    assert.equal(find('[data-save-state]').textContent, 'Versión guardada, pendiente de publicar');
+    assert.equal(find('[data-publish-button]').disabled, false);
+    const leaving = new window.Event('beforeunload', { cancelable: true });
+    window.dispatchEvent(leaving);
+    assert.equal(leaving.defaultPrevented, false);
+    find('#name-es').value = 'Changed';
+    find('#name-es').dispatchEvent(new window.Event('input', { bubbles: true }));
+    assert.equal(find('[data-save-state]').textContent, 'Cambios sin guardar');
+    assert.equal(find('[data-publish-button]').disabled, true);
+});
+
 test('keyboard tabs retain both languages in submitted data and validation reveals the hidden language', async () => {
     const { window, document, find } = setup();
     assert.equal(find('#language-en').hidden, true);
@@ -108,6 +122,6 @@ test('saving blocks double submits and restores controls when returning with bro
     assert.equal(second.defaultPrevented, true);
     window.dispatchEvent(new window.Event('pageshow'));
     assert.equal(find('[data-save-button]').disabled, false);
-    assert.equal(find('[data-save-button]').textContent, 'Guardar borrador');
+    assert.equal(find('[data-save-button]').textContent, 'Guardar y publicar');
     assert.ok(find('[data-save-button] svg'), 'The icon survives saving and browser Back');
 });

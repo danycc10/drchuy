@@ -15,6 +15,20 @@ class ContentPublisher
 {
     public function __construct(private ContentValidator $validator) {}
 
+    /** Guarda la versión y la publica en el mismo paso; valida con las reglas de publicación para que los errores lleguen al campo. */
+    public function save(ContentBlock $block, array $payload, int $expectedRevision, User $user, ?ContentRevision $restored = null): void
+    {
+        if ($restored) {
+            abort_unless($restored->content_block_id === $block->id, 404);
+        }
+        $this->validator->validate($block->key, $restored ? $restored->payload : $payload, true);
+        DB::transaction(function () use ($block, $payload, $expectedRevision, $user, $restored) {
+            $this->draft($block, $payload, $expectedRevision, $user, $restored);
+            $fresh = $block->fresh();
+            $this->publish($fresh, $fresh->current_revision_id, $user);
+        });
+    }
+
     public function draft(ContentBlock $block, array $payload, int $expectedRevision, User $user, ?ContentRevision $restored = null): void
     {
         Gate::forUser($user)->authorize('update', $block);
@@ -35,7 +49,6 @@ class ContentPublisher
             $revision->mediaAssets()->attach($mediaIds);
             $locked->current_revision_id = $revision->id;
             $locked->save();
-            EditorialReview::onDraft($locked);
             AuditEvent::create([
                 'user_id' => $user->id, 'content_block_id' => $locked->id,
                 'action' => $restored ? 'content.restored' : 'content.drafted',
@@ -58,7 +71,6 @@ class ContentPublisher
             $locked->published_revision_id = $locked->current_revision_id;
             $locked->published_at = now();
             $locked->save();
-            EditorialReview::onPublish($locked, $user);
             AuditEvent::create([
                 'user_id' => $user->id, 'content_block_id' => $locked->id, 'action' => 'content.published',
                 'metadata' => ['block' => $locked->key, 'revision_id' => $locked->published_revision_id],

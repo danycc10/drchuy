@@ -30,7 +30,7 @@ class MediaPublicationTest extends TestCase
         return MediaAsset::latest('id')->firstOrFail();
     }
 
-    public function test_only_published_images_and_bilingual_alts_reach_the_public_site(): void
+    public function test_saved_images_and_bilingual_alts_reach_the_public_site_immediately(): void
     {
         $owner = User::factory()->create(['role' => Role::Owner]);
         $this->actingAs($owner);
@@ -44,15 +44,10 @@ class MediaPublicationTest extends TestCase
         $this->put(route('admin.content.update', $block), ['revision_id' => $block->current_revision_id, 'payload' => $payload])->assertSessionHasNoErrors();
         $block->refresh();
         $this->assertSame(1, $block->currentRevision->mediaAssets()->count());
-        $this->get('/')->assertOk()->assertDontSee('Retrato revisado del médico')->assertDontSee($image->url());
-        $this->get($image->url())->assertNotFound();
+        $this->assertSame($block->current_revision_id, $block->published_revision_id);
         $this->get('/admin/preview/es')->assertOk()->assertSee($image->url(true))->assertSee('Retrato revisado del médico');
-        $this->get('/admin/preview/en')->assertOk()->assertSee('Reviewed physician portrait');
         $this->get(route('admin.content.edit', $block))->assertOk()->assertSee($image->url(true, 'thumb'));
         $this->get(route('admin.content.revision', [$block, $block->current_revision_id]))->assertOk()->assertSee('Retrato aprobado')->assertSee($image->url(true, 'thumb'));
-        $this->actingAs(User::factory()->create(['role' => Role::Administrator]));
-        $this->post(route('admin.content.publish', $block), ['revision_id' => $block->current_revision_id])->assertForbidden();
-        $this->actingAs($owner)->post(route('admin.content.publish', $block), ['revision_id' => $block->current_revision_id])->assertSessionHasNoErrors();
         auth()->logout();
         $this->get($image->url())->assertOk()->assertHeader('Content-Type', 'image/webp')->assertHeader('X-Content-Type-Options', 'nosniff');
         $this->get('/')->assertOk()->assertSee('Retrato revisado del médico')->assertSee($image->url());
@@ -72,17 +67,15 @@ class MediaPublicationTest extends TestCase
         $this->put(route('admin.content.update', $block), ['revision_id' => $block->current_revision_id, 'payload' => $payload])->assertSessionHasNoErrors();
         $block->refresh();
         $firstRevision = $block->current_revision_id;
-        $this->post(route('admin.content.publish', $block), ['revision_id' => $firstRevision])->assertSessionHasNoErrors();
-        $payload['shared']['doctor_image_id'] = $second->id;
-        $this->put(route('admin.content.update', $block), ['revision_id' => $firstRevision, 'payload' => $payload])->assertSessionHasNoErrors();
         $this->get('/')->assertSee($first->url())->assertDontSee($second->url());
         $this->get($second->url())->assertNotFound();
-        $this->post(route('admin.content.publish', $block), ['revision_id' => $block->fresh()->current_revision_id])->assertSessionHasNoErrors();
+        $payload['shared']['doctor_image_id'] = $second->id;
+        $this->put(route('admin.content.update', $block), ['revision_id' => $firstRevision, 'payload' => $payload])->assertSessionHasNoErrors();
+        $this->get('/')->assertSee($second->url())->assertDontSee($first->url());
         $this->get($first->url())->assertNotFound();
         $this->post(route('admin.content.restore', [$block, $firstRevision]), ['revision_id' => $block->fresh()->current_revision_id])->assertSessionHasNoErrors();
-        $this->get('/')->assertSee($second->url());
-        $this->post(route('admin.content.publish', $block), ['revision_id' => $block->fresh()->current_revision_id])->assertSessionHasNoErrors();
-        $this->get('/')->assertSee($first->url());
+        $this->get('/')->assertSee($first->url())->assertDontSee($second->url());
+        $this->get($second->url())->assertNotFound();
         $this->delete(route('admin.media.destroy', $first))->assertSessionHasErrors('media');
         $this->delete(route('admin.media.destroy', $second))->assertSessionHasErrors('media');
         Storage::disk('local')->assertExists([$first->path(), $second->path()]);

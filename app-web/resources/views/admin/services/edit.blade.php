@@ -1,9 +1,9 @@
 <x-admin-layout title="Editar servicio">
     @php($payload = $service->currentRevision->payload)
-    <div class="page-heading"><div><a class="small-link" href="{{ route('admin.services.index') }}"><x-site-icon name="list" /> Todos los servicios</a><h1 style="margin-top:18px">{{ $payload['es']['name'] }}</h1><p>Editar servicio · {{ $service->category->name['es'] }}</p></div><span class="badge {{ $service->hasDraft() ? 'draft' : 'published' }}">{{ $service->hasDraft() ? 'Borrador' : 'Publicado' }}</span></div>
-    <x-editor-workflow :target="$service" form="service-editor" />
+    <div class="page-heading"><div><a class="small-link" href="{{ route('admin.services.index') }}"><x-site-icon name="list" /> Todos los servicios</a><h1 style="margin-top:18px">{{ $payload['es']['name'] }}</h1><p>Editar servicio · {{ $service->category->name['es'] }}</p></div><span class="badge {{ $service->hasDraft() ? 'draft' : 'published' }}">{{ $service->hasDraft() ? 'Sin publicar' : 'En el sitio' }}</span></div>
+    <x-editor-actions :target="$service" form="service-editor" />
     <div class="editor-grid">
-        <form id="service-editor" data-editor data-recovered-input="{{ session()->hasOldInput('es') || session()->hasOldInput('en') ? 'true' : 'false' }}" method="post" action="{{ route('admin.services.update', $service) }}" class="editor-fields">
+        <form id="service-editor" data-editor data-pending-publish="{{ $service->hasDraft() ? 'true' : 'false' }}" data-recovered-input="{{ session()->hasOldInput('es') || session()->hasOldInput('en') ? 'true' : 'false' }}" method="post" action="{{ route('admin.services.update', $service) }}" class="editor-fields">
             @csrf @method('PUT')<input type="hidden" name="revision_id" value="{{ old('revision_id', $service->current_revision_id) }}">
             <x-language-tabs />
             @foreach(['es' => 'Español · ES', 'en' => 'Inglés · EN'] as $locale => $label)
@@ -20,7 +20,7 @@
                 </section>
             @endforeach
             @include('admin.services.image-field')
-            <section class="panel"><h2>Presentación</h2><label style="margin-top:20px">Orden dentro de la categoría<input type="number" name="position" value="{{ old('position', $payload['position']) }}" min="1" max="999" required></label><input type="hidden" name="visible" value="0"><label style="margin-top:20px"><input type="checkbox" name="visible" value="1" @checked(old('visible', $payload['visible']))> Mostrar este servicio al publicar</label></section>
+            <section class="panel"><h2>Presentación</h2><label style="margin-top:20px">Orden dentro de la categoría<input type="number" name="position" value="{{ old('position', $payload['position']) }}" min="1" max="999" required></label><input type="hidden" name="visible" value="0"><label style="margin-top:20px"><input type="checkbox" name="visible" value="1" @checked(old('visible', $payload['visible']))> Mostrar este servicio en el sitio</label></section>
         </form>
         <aside class="editor-aside"><section class="panel"><h2>Historial</h2>@foreach($revisions as $revision)<div class="revision-row"><a class="small-link" href="{{ route('admin.services.revision', [$service, $revision]) }}">Versión #{{ $revision->id }}</a><small>{{ $revision->author?->name ?? 'Importación inicial' }}</small><small>{{ $revision->created_at->timezone('America/Matamoros')->format('d/m/Y H:i') }}</small>@if($revision->id === $service->published_revision_id)<span class="badge published">Versión pública</span>@endif</div>@endforeach<div class="pagination">{{ $revisions->links('pagination::simple-tailwind') }}</div></section></aside>
     </div>
